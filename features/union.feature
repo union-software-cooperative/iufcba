@@ -15,7 +15,6 @@ Feature: Maintain a list of unions
   	Given there's a "union" titled "NUW"
 		When I'm on the "unions" list
 		Then I can delete the "union" titled "NUW"
-	
-	Feature: Unions can have a banner and a logo
-		Scenario: Upload banner to union
+
+	Scenario: Upload banner to union
 		

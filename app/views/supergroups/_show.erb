@@ -1,4 +1,5 @@
 <%=render 'title' %>
 <%=render partial: 'recs/recs' if @recs %>
+<p id="notice"><%= notice %></p>
 <%=render partial: 'posts/form'%>
 <%=render @supergroup.posts%>
