@@ -6,6 +6,8 @@ class Person < ActiveRecord::Base
 
   mount_uploader :attachment, ProfileUploader
   
+  belongs_to :union
+  
   acts_as_follower
   
   include Filterable

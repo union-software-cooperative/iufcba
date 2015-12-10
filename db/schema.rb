@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151017112001) do
+ActiveRecord::Schema.define(version: 20151210044118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 20151017112001) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "attachment"
+    t.string   "gender"
+    t.integer  "union_id"
   end
 
   add_index "people", ["email"], name: "index_people_on_email", unique: true, using: :btree
@@ -95,6 +97,7 @@ ActiveRecord::Schema.define(version: 20151017112001) do
   add_index "people", ["invitations_count"], name: "index_people_on_invitations_count", using: :btree
   add_index "people", ["invited_by_id"], name: "index_people_on_invited_by_id", using: :btree
   add_index "people", ["reset_password_token"], name: "index_people_on_reset_password_token", unique: true, using: :btree
+  add_index "people", ["union_id"], name: "index_people_on_union_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.text     "body"
@@ -157,6 +160,7 @@ ActiveRecord::Schema.define(version: 20151017112001) do
 
   add_foreign_key "comments", "people"
   add_foreign_key "comments", "posts"
+  add_foreign_key "people", "supergroups", column: "union_id"
   add_foreign_key "posts", "people"
   add_foreign_key "recs", "people"
   add_foreign_key "recs", "supergroups", column: "company_id"

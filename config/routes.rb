@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   resources :comments
   resources :posts
-  devise_for :people
+  devise_for :people, :controllers => { :invitations => 'people/invitations' }
+    
   resources :companies, type: 'Company'  do
     member do
       get 'follow'

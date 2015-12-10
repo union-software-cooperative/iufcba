@@ -22,5 +22,8 @@ module Iufad
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.after_initialize do
+        config.owner_union = Union.find_by_short_name(ENV['OWNER_UNION']) rescue nil
+    end
   end
 end
