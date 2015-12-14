@@ -32,19 +32,27 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :union_id %> <%=link_to "new union", new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
-    <%= f.select :union_id, 
-      selected_option(@rec.union),  
-      {
-          include_blank: false,
-      },
-      data: { 
-        placeholder: "Please select a union.",
-        url: unions_path
-      }, 
-      class: "ac-select2 form-control", 
-      style: "width: 100%;"
-    %>
+    <% if owner? %>
+      <%= f.label :union_id %> <%=link_to "new union", new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
+      <%= f.select :union_id, 
+        selected_option(@rec.union),  
+        {
+            include_blank: false,
+        },
+        data: { 
+          placeholder: "Please select a union.",
+          url: unions_path
+        }, 
+        class: "ac-select2 form-control", 
+        style: "width: 100%;"
+      %>
+    <% else %>
+      <%= f.label :union_id %> 
+      <br/><%= (@rec.union || current_person.union).name %>
+      <br/><small>you can only create and edit agreements belonging to your union</small>
+      <%= f.hidden_field :union_id, value: ((@rec.union || current_person.union).id) %>
+    <% end %>
+
   </div>
   <div class="form-group">
     <%= f.label :taking_action %><br>

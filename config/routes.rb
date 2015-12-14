@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :posts
   devise_for :people, :controllers => { :invitations => 'people/invitations' }
     
-  resources :companies, type: 'Company'  do
+  resources :companies, controller: :supergroups, type: 'Company'  do
     member do
       get 'follow'
     end
@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :people
+  resources :people, except: [:new] # people can only be invited
   resources :recs do
     member do
       get 'follow'

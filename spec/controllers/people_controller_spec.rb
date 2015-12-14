@@ -19,142 +19,192 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe PeopleController do
-
+  
   # This should return the minimal set of attributes required to create a valid
   # Person. As you add validations to Person, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "firstname" => "MyString" } }
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # PeopleController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
-  describe "GET index" do
-    it "assigns all people as @people" do
-      person = Person.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:people).should eq([person])
-    end
+  let(:valid_attributes) { FactoryGirl.attributes_for(:person, union_id: FactoryGirl.create(:union).id, email: 'test@iuf.org', authorizer: admin) }
+  let(:invalid_attributes) do
+    { email: "invalid.email.com" }
   end
 
-  describe "GET show" do
-    it "assigns the requested person as @person" do
-      person = Person.create! valid_attributes
-      get :show, {:id => person.to_param}, valid_session
-      assigns(:person).should eq(person)
-    end
+  describe "Security" do
+    describe "low priviledge" do
+      login_person
+
+      describe "Get JSON index" do
+        it "only returns people from user's union" do
+          # User should only be able to choose people from their own union
+          outsider = Person.create! valid_attributes
+          insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)
+          get :index, {format: 'json'}
+          assigns(:people).should eq([subject.current_person]+[insider])
+        end
+      end
+
+      describe "access to" do
+
+        describe "outsiders" do
+          before(:each) do 
+            @outsider = Person.create! valid_attributes
+          end
+
+          it "won't allow viewing of outsiders" do
+            get :show, {id: @outsider.to_param}
+            expect(response).to be_forbidden
+          end
+
+          it "won't allow editing of outsiders" do
+            get :edit, {id: @outsider.to_param}
+            expect(response).to be_forbidden
+          end
+
+          it "won't allow updating outsiders" do
+            put :update, {id: @outsider.to_param, person: { first_name: "bob"} }
+            expect(response).to be_forbidden
+          end
+        end
+
+        describe "colleagues" do
+          before(:each) do
+            @insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)        
+          end  
+          
+          it "won't allow deleting of people" do
+            expect {
+              delete :destroy, {:id => @insider.to_param}
+              expect(response).to be_forbidden
+            }.to change(Person, :count).by(0)
+          end
+
+          it "will allow viewing colleagues" do
+            get :show, {id: @insider.to_param}
+            expect(response).to be_successful
+            response.should render_template(:show)
+          end
+
+          it "will allow editing colleagues" do 
+            get :edit, {id: @insider.to_param}
+            expect(response).to be_successful
+            response.should render_template(:edit)
+          end
+
+          it "will allow updating of colleagues" do
+            put :update, {id: @insider.to_param, person: { first_name: "bob"} }
+            response.should redirect_to(@insider)
+          end
+        end
+      end
+    end 
+
+    describe "High priviledge access" do
+      login_admin
+
+      describe "Get JSON index" do
+          it "returns all people" do
+          # User should only be able to choose people from their own union
+          outsider = Person.create! valid_attributes
+          insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)
+          get :index, {format: 'json'}
+          assigns(:people).should eq([subject.current_person]+[outsider]+[insider])
+        end
+      end
+    end 
   end
 
-  describe "GET new" do
-    it "assigns a new person as @person" do
-      get :new, {}, valid_session
-      assigns(:person).should be_a_new(Person)
-    end
-  end
+  describe "Basic Functionality" do 
+    login_admin
 
-  describe "GET edit" do
-    it "assigns the requested person as @person" do
-      person = Person.create! valid_attributes
-      get :edit, {:id => person.to_param}, valid_session
-      assigns(:person).should eq(person)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Person" do
-        expect {
-          post :create, {:person => valid_attributes}, valid_session
-        }.to change(Person, :count).by(1)
-      end
-
-      it "assigns a newly created person as @person" do
-        post :create, {:person => valid_attributes}, valid_session
-        assigns(:person).should be_a(Person)
-        assigns(:person).should be_persisted
-      end
-
-      it "redirects to the created person" do
-        post :create, {:person => valid_attributes}, valid_session
-        response.should redirect_to(Person.last)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved person as @person" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Person.any_instance.stub(:save).and_return(false)
-        post :create, {:person => { "firstname" => "invalid value" }}, valid_session
-        assigns(:person).should be_a_new(Person)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Person.any_instance.stub(:save).and_return(false)
-        post :create, {:person => { "firstname" => "invalid value" }}, valid_session
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested person" do
+    describe "GET index" do
+      it "assigns all people as @people" do
         person = Person.create! valid_attributes
-        # Assuming there are no other people in the database, this
-        # specifies that the Person created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Person.any_instance.should_receive(:update).with({ "firstname" => "MyString" })
-        put :update, {:id => person.to_param, :person => { "firstname" => "MyString" }}, valid_session
+        get :index, {}
+        assigns(:people).should eq([subject.current_person]+[person])
       end
+    end
 
+    describe "GET show" do
       it "assigns the requested person as @person" do
         person = Person.create! valid_attributes
-        put :update, {:id => person.to_param, :person => valid_attributes}, valid_session
+        get :show, {:id => person.to_param}
         assigns(:person).should eq(person)
-      end
-
-      it "redirects to the person" do
-        person = Person.create! valid_attributes
-        put :update, {:id => person.to_param, :person => valid_attributes}, valid_session
-        response.should redirect_to(person)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the person as @person" do
+    describe "GET edit" do
+      it "assigns the requested person as @person" do
         person = Person.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Person.any_instance.stub(:save).and_return(false)
-        put :update, {:id => person.to_param, :person => { "firstname" => "invalid value" }}, valid_session
+        get :edit, {:id => person.to_param}
         assigns(:person).should eq(person)
       end
+    end
 
-      it "re-renders the 'edit' template" do
+    describe "PUT update" do
+      describe "with valid params" do
+        it "updates the requested person" do
+          person = Person.create! valid_attributes
+          # Assuming there are no other people in the database, this
+          # specifies that the Person created on the previous line
+          # receives the :update_attributes message with whatever params are
+          # submitted in the request.
+          #Person.any_instance.should_receive(:update).with({ "firstname" => "MyString" })
+          #expect_any_instance_of(Person).to receive(:update).with({ "firstname" => "MyString" })
+          put :update, {:id => person.to_param, :person => { "first_name" => "MyString" }}
+          person.reload
+          person.first_name.should eq("MyString")
+        end
+
+        it "assigns the requested person as @person" do
+          person = Person.create! valid_attributes
+          put :update, {:id => person.to_param, :person => valid_attributes}
+          assigns(:person).should eq(person)
+        end
+
+        it "redirects to the person" do
+          person = Person.create! valid_attributes
+          put :update, {:id => person.to_param, :person => valid_attributes}
+          response.should redirect_to(person)
+        end
+      end
+
+      describe "with invalid params" do
+        it "assigns the person as @person" do
+          person = Person.create! valid_attributes
+          # Trigger the behavior that occurs when invalid params are submitted
+          #Person.any_instance.stub(:save).and_return(false)
+          put :update, {:id => person.to_param, :person => invalid_attributes}
+          updated = Person.find(person.id)
+          updated.email.should eq(person.email)
+        end
+
+        it "re-renders the 'edit' template" do
+          person = Person.create! valid_attributes
+
+          # test failure on invalid_params
+          put :update, {:id => person.to_param, :person => invalid_attributes}
+          response.should render_template("edit")
+
+          # test other failure on save
+          Person.any_instance.stub(:save).and_return(false)
+          put :update, {:id => person.to_param, :person => valid_attributes}
+          response.should render_template("edit")
+        end
+      end
+    end
+
+    describe "DELETE destroy" do
+      it "destroys the requested person" do
         person = Person.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Person.any_instance.stub(:save).and_return(false)
-        put :update, {:id => person.to_param, :person => { "firstname" => "invalid value" }}, valid_session
-        response.should render_template("edit")
+        expect {
+          delete :destroy, {:id => person.to_param}
+        }.to change(Person, :count).by(-1)
+      end
+
+      it "redirects to the people list" do
+        person = Person.create! valid_attributes
+        delete :destroy, {:id => person.to_param}
+        response.should redirect_to(people_url)
       end
     end
   end
-
-  describe "DELETE destroy" do
-    it "destroys the requested person" do
-      person = Person.create! valid_attributes
-      expect {
-        delete :destroy, {:id => person.to_param}, valid_session
-      }.to change(Person, :count).by(-1)
-    end
-
-    it "redirects to the people list" do
-      person = Person.create! valid_attributes
-      delete :destroy, {:id => person.to_param}, valid_session
-      response.should redirect_to(people_url)
-    end
-  end
-
 end

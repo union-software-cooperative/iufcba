@@ -1,6 +1,6 @@
 
 Given(/^I'm looking at an agreement titled "(.*?)"$/) do |title|
-	agreement = FactoryGirl.create(:agreement, name: title )
+	agreement = FactoryGirl.create(:authorized_agreement, name: title )
 	visit rec_path(agreement)
 end
 
@@ -35,7 +35,7 @@ Then(/^I can comment "(.*?)" beneath "(.*?)"$/) do |comment_body, post_body|
 end
 
 Given(/^I'm looking at an agreement with "(.*?)" posting "(.*?)"$/) do |who, post_body|
-	agreement = FactoryGirl.create(:agreement, name: title )
+	agreement = FactoryGirl.create(:authorized_agreement, name: title )
 	
 	post = FactoryGirl.create(:post, person: get_person(who), parent: agreement, body: post_body)
 	visit rec_path(agreement)
@@ -43,7 +43,7 @@ end
 
 
 Given(/^I'm on an agreement with "(.*?)" posting "(.*?)" and "(.*?)" comment "(.*?)"$/) do |who, post_body, comment_who, comment_body|
-	agreement = FactoryGirl.create(:agreement, name: title )
+	agreement = FactoryGirl.create(:authorized_agreement, name: title )
 	post = FactoryGirl.create(:post, person: get_person(who), parent: agreement, body: post_body)
 	comment = FactoryGirl.create(:comment, person: get_person(comment_who), post: post, body: comment_body)
 	visit rec_path(agreement)
@@ -112,7 +112,7 @@ def get_person(who)
 	if who != "my"
 		person = Person.find_by_first_name who
 		if person == nil
-			person = FactoryGirl.create(:person, email: "#{who}@iuf.org", first_name: who)
+			person = FactoryGirl.create(:authorized_person, email: "#{who}@iuf.org", first_name: who)
 		end
 	end
 	person

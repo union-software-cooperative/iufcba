@@ -1,5 +1,6 @@
 class RecsController < ApplicationController
   before_action :set_rec, only: [:show, :edit, :update, :destroy, :follow]
+  before_action :forbid, only: [:edit, :update]
 
   # GET /recs
   # GET /recs.json
@@ -26,6 +27,7 @@ class RecsController < ApplicationController
   # POST /recs.json
   def create
     @rec = Rec.new(rec_params)
+    @rec.authorizer = current_person
 
     respond_to do |format|
       if @rec.save
@@ -41,6 +43,8 @@ class RecsController < ApplicationController
   # PATCH/PUT /recs/1
   # PATCH/PUT /recs/1.json
   def update
+    @rec.authorizer = current_person
+    
     respond_to do |format|
       if @rec.update(rec_params)
         format.html { redirect_to @rec, notice: 'Rec was successfully updated.' }
@@ -76,7 +80,11 @@ class RecsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def rec_params
       result = params.require(:rec).permit(:taking_action, :name, :tags, :start_date, :end_date, :attachment, :coverage, :union_id, :company_id, :person_id, :multi_site, :union_mandate, :union_mandate_clause, :anti_precariat, :anti_precariat_clause, :grievance_handling, :grievance_handling_clause, :other_provisions, :specific_rights, :specific_rights_clause, :nature_of_operation => [])
-      result['nature_of_operation'].delete("")
+      result['nature_of_operation'].delete("") if result['nature_of_operation']
       result
+    end
+
+    def forbid
+      return forbidden unless can_edit_union?(@rec.union)
     end
 end

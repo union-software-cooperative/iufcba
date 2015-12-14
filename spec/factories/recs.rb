@@ -5,6 +5,9 @@ FactoryGirl.define do
 		start_date Time.now
 		association :company, factory: :company, name: "Mondelz"
 		association :union, factory: :union, name: "NUW"
-		association :person, factory: :person
+		association :person, factory: :authorized_person
+		factory :authorized_agreement do |f|
+			f.authorizer {admin}
+		end
 	end
 end

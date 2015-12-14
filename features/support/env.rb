@@ -31,6 +31,7 @@ ActionController::Base.allow_rescue = false
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
 begin
+	DatabaseCleaner.clean_with(:truncation) # clean once, now
   DatabaseCleaner.strategy = :transaction
 rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
@@ -56,3 +57,21 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+
+#TODO refactor owner_union and admin to remove duplication in spec_helper
+def owner_union
+   Union.find_by_short_name("IUF") || FactoryGirl.create(:owner)
+end
+
+def admin(params = {})
+  result = owner_union.people.first
+  
+  if result.blank?
+    result = FactoryGirl.build(:admin, {union: owner_union}.merge(params))
+    result.authorizer = result # self authorizing?
+    result.save
+  end
+
+  result
+end
+  

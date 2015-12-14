@@ -36,7 +36,8 @@ Then(/^I can delete the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
 	entity = klass.find_by_name(title)
 	entity.should_not eq(nil)
 
-	click_link "Destroy" # TODO Assumes only one company in list
+	#click_link "Destroy" # TODO Assumes only one company in list
+	all('td', text: title)[0].find(:xpath, '..').click_link("Destroy")
 
 	entity = klass.find_by_name(title)
 	entity.should eq(nil)

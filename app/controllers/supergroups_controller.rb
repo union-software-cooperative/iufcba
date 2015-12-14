@@ -2,13 +2,14 @@ class SupergroupsController < ApplicationController
   
   before_action :set_klass
   before_action :set_supergroup, only: [:show, :edit, :update, :destroy, :follow]
+  before_action :forbid, only: [:new, :create, :edit, :update]
 
   include SupergroupsHelper
   
   # GET /supergroups
   # GET /supergroups.json
   def index
-    @supergroups = @klass.filter(params.slice(:name_like))
+    @supergroups = @klass.filter(params.slice(:name_like)).order(:short_name, :id)
     respond_to do |format|
       format.html
       format.json { render json: @supergroups }
@@ -90,5 +91,9 @@ class SupergroupsController < ApplicationController
     def supergroup_params
       params[supergroup]['type'] = @klass.name
       params.require(supergroup).permit(:name, :type, :www, :banner, :logo, :short_name)
+    end
+
+    def forbid
+      return forbidden unless (owner? || params[:id] == current_person.union.id.to_s)
     end
 end

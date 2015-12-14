@@ -10,6 +10,11 @@ FactoryGirl.define do
     name "Test Union"
 		type "Union"
 		www "www.union.com"
-    short_name "iuf"
+    short_name "tu"
+
+    factory :owner do
+      name "Owner"
+      short_name 'IUF'
+    end
   end
 end

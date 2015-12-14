@@ -22,5 +22,12 @@ module CapybaraHelpers
 	  #drop_container = ".select2-results"
 	  #find(:xpath, "//body").all("#{drop_container} li", text: value)[-1].click
 	end
+
+	def select2_clear(selector)
+		if selector[:label]
+			f = field_labeled(selector[:label]).parent
+		end
+		f.find('.select2-selection__clear').click
+	end
 end
 World(CapybaraHelpers)

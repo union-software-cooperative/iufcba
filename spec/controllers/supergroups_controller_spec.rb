@@ -18,143 +18,192 @@ require 'spec_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-describe SupergroupsController do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Supergroup. As you add validations to Supergroup, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) { { "name" => "MyString" } }
+shared_examples "a supergroup type" do |type|
+  let(:type) {type}
+  let(:type_sym) {type.downcase.to_sym}
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # SupergroupsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_attributes) { { "name" => "name", "short_name" => "sn", "type"=> type } }
+  
+  describe "Security" do 
 
-  describe "GET index" do
-    it "assigns all supergroups as @supergroups" do
-      supergroup = Supergroup.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:supergroups).should eq([supergroup])
+    before(:all) do 
+      @admin = admin
     end
-  end
 
-  describe "GET show" do
-    it "assigns the requested supergroup as @supergroup" do
-      supergroup = Supergroup.create! valid_attributes
-      get :show, {:id => supergroup.to_param}, valid_session
-      assigns(:supergroup).should eq(supergroup)
-    end
-  end
+    describe "Low priviledge access" do
+      login_person
 
-  describe "GET new" do
-    it "assigns a new supergroup as @supergroup" do
-      get :new, {}, valid_session
-      assigns(:supergroup).should be_a_new(Supergroup)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested supergroup as @supergroup" do
-      supergroup = Supergroup.create! valid_attributes
-      get :edit, {:id => supergroup.to_param}, valid_session
-      assigns(:supergroup).should eq(supergroup)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Supergroup" do
-        expect {
-          post :create, {:supergroup => valid_attributes}, valid_session
-        }.to change(Supergroup, :count).by(1)
+      describe "POST create" do
+        it "won't allow union or company creation" do
+          post :create, {type_sym => valid_attributes, type: type}
+          expect(response).to be_forbidden
+        end
       end
 
-      it "assigns a newly created supergroup as @supergroup" do
-        post :create, {:supergroup => valid_attributes}, valid_session
-        assigns(:supergroup).should be_a(Supergroup)
-        assigns(:supergroup).should be_persisted
-      end
+      describe "edit/update" do
+        it "won't allow edit of unions or companies unless my own" do
+          supergroup = Supergroup.create! valid_attributes
+          get :edit, {:id => supergroup.to_param, type: type }
+          response.should be_forbidden
 
-      it "redirects to the created supergroup" do
-        post :create, {:supergroup => valid_attributes}, valid_session
-        response.should redirect_to(Supergroup.last)
-      end
-    end
+          if type == "Union"
+            supergroup = subject.current_person.union
+            get :edit, {:id => supergroup.to_param, type: type }
+            response.should render_template(:edit)   
+          end       
+        end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved supergroup as @supergroup" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Supergroup.any_instance.stub(:save).and_return(false)
-        post :create, {:supergroup => { "name" => "invalid value" }}, valid_session
-        assigns(:supergroup).should be_a_new(Supergroup)
-      end
+        it "won't allow update of unions or companies unless my own" do
+          supergroup = Supergroup.create! valid_attributes
+          post :edit, {:id => supergroup.to_param, name: "blah", type: type }
+          response.should be_forbidden
 
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Supergroup.any_instance.stub(:save).and_return(false)
-        post :create, {:supergroup => { "name" => "invalid value" }}, valid_session
-        response.should render_template("new")
+          if type == "Union"
+            supergroup = subject.current_person.union
+            put :update, { :id => supergroup.to_param, type_sym => {name: "blah"}, type: type }
+            response.should redirect_to(supergroup)  
+          end        
+        end
       end
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested supergroup" do
+  describe "basic functionality" do
+    login_admin
+
+    describe "GET index" do
+      it "assigns all supergroups as @supergroups" do
         supergroup = Supergroup.create! valid_attributes
-        # Assuming there are no other supergroups in the database, this
-        # specifies that the Supergroup created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Supergroup.any_instance.should_receive(:update).with({ "name" => "MyString" })
-        put :update, {:id => supergroup.to_param, :supergroup => { "name" => "MyString" }}, valid_session
+        get :index, {type: type}
+        assigns(:supergroups).should eq([owner_union]+[supergroup]) if type == "Union"
+        assigns(:supergroups).should eq([supergroup]) if type == "Company"
       end
+    end
 
+    describe "GET show" do
       it "assigns the requested supergroup as @supergroup" do
         supergroup = Supergroup.create! valid_attributes
-        put :update, {:id => supergroup.to_param, :supergroup => valid_attributes}, valid_session
+        get :show, {:id => supergroup.to_param, type: type}
         assigns(:supergroup).should eq(supergroup)
-      end
-
-      it "redirects to the supergroup" do
-        supergroup = Supergroup.create! valid_attributes
-        put :update, {:id => supergroup.to_param, :supergroup => valid_attributes}, valid_session
-        response.should redirect_to(supergroup)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the supergroup as @supergroup" do
+    describe "GET new" do
+      it "assigns a new supergroup as @supergroup" do
+        get :new, {type: type}
+        assigns(:supergroup).should be_a_new(Supergroup)
+      end
+    end
+
+    describe "GET edit" do
+      it "assigns the requested supergroup as @supergroup" do
         supergroup = Supergroup.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Supergroup.any_instance.stub(:save).and_return(false)
-        put :update, {:id => supergroup.to_param, :supergroup => { "name" => "invalid value" }}, valid_session
+        get :edit, {:id => supergroup.to_param, type: type}
         assigns(:supergroup).should eq(supergroup)
       end
+    end
 
-      it "re-renders the 'edit' template" do
+    describe "POST create" do
+      describe "with valid params" do
+        it "creates a new Supergroup" do
+          expect {
+            post :create, {type_sym => valid_attributes, type: type}
+          }.to change(Supergroup, :count).by(1)
+        end
+
+        it "assigns a newly created supergroup as @supergroup" do
+          post :create, {type_sym => valid_attributes, type: type}
+          assigns(:supergroup).should be_a(Supergroup)
+          assigns(:supergroup).should be_persisted
+        end
+
+        it "redirects to the created supergroup" do
+          post :create, {type_sym => valid_attributes, type: type}
+          response.should redirect_to(Supergroup.last)
+        end
+      end
+
+      describe "with invalid params" do
+        it "assigns a newly created but unsaved supergroup as @supergroup" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Supergroup.any_instance.stub(:save).and_return(false)
+          post :create, {type_sym => { "name" => "invalid value" }, type: type}
+          assigns(:supergroup).should be_a_new(Supergroup)
+        end
+
+        it "re-renders the 'new' template" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Supergroup.any_instance.stub(:save).and_return(false)
+          post :create, {type_sym => { "name" => "invalid value" }, type: type}
+          response.should render_template("new")
+        end
+      end
+    end
+
+    describe "PUT update" do
+      describe "with valid params" do
+        it "updates the requested supergroup" do
+          supergroup = Supergroup.create! valid_attributes
+          # Assuming there are no other supergroups in the database, this
+          # specifies that the Supergroup created on the previous line
+          # receives the :update_attributes message with whatever params are
+          # submitted in the request.
+          Supergroup.any_instance.should_receive(:update).with({ "name" => "MyString", "type" => type })
+          put :update, {:id => supergroup.to_param, type_sym => { "name" => "MyString" }, type: type}
+        end
+
+        it "assigns the requested supergroup as @supergroup" do
+          supergroup = Supergroup.create! valid_attributes
+          put :update, {:id => supergroup.to_param, type_sym => valid_attributes, type: type}
+          assigns(:supergroup).should eq(supergroup)
+        end
+
+        it "redirects to the supergroup" do
+          supergroup = Supergroup.create! valid_attributes
+          put :update, {:id => supergroup.to_param, type_sym => valid_attributes, type: type}
+          response.should redirect_to(supergroup)
+        end
+      end
+
+      describe "with invalid params" do
+        it "assigns the supergroup as @supergroup" do
+          supergroup = Supergroup.create! valid_attributes
+          # Trigger the behavior that occurs when invalid params are submitted
+          Supergroup.any_instance.stub(:save).and_return(false)
+          put :update, {:id => supergroup.to_param, type_sym => { "name" => "invalid value" }, type: type}
+          assigns(:supergroup).should eq(supergroup)
+        end
+
+        it "re-renders the 'edit' template" do
+          supergroup = Supergroup.create! valid_attributes
+          # Trigger the behavior that occurs when invalid params are submitted
+          Supergroup.any_instance.stub(:save).and_return(false)
+          put :update, {:id => supergroup.to_param, type_sym => { "name" => "invalid value" }, type: type}
+          response.should render_template("edit")
+        end
+      end
+    end
+
+    describe "DELETE destroy" do
+      it "destroys the requested supergroup" do
         supergroup = Supergroup.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Supergroup.any_instance.stub(:save).and_return(false)
-        put :update, {:id => supergroup.to_param, :supergroup => { "name" => "invalid value" }}, valid_session
-        response.should render_template("edit")
+        expect {
+          delete :destroy, {:id => supergroup.to_param, type: type}
+        }.to change(Supergroup, :count).by(-1)
+      end
+
+      it "redirects to the supergroups list" do
+        supergroup = Supergroup.create! valid_attributes
+        delete :destroy, {:id => supergroup.to_param, type: type}
+        response.should redirect_to(type.constantize)
       end
     end
   end
+end
 
-  describe "DELETE destroy" do
-    it "destroys the requested supergroup" do
-      supergroup = Supergroup.create! valid_attributes
-      expect {
-        delete :destroy, {:id => supergroup.to_param}, valid_session
-      }.to change(Supergroup, :count).by(-1)
-    end
-
-    it "redirects to the supergroups list" do
-      supergroup = Supergroup.create! valid_attributes
-      delete :destroy, {:id => supergroup.to_param}, valid_session
-      response.should redirect_to(supergroups_url)
-    end
-  end
-
+RSpec.describe SupergroupsController do
+  #https://www.relishapp.com/rspec/rspec-core/docs/example-groups/shared-examples
+  it_behaves_like "a supergroup type", "Union"
+  it_behaves_like "a supergroup type", "Company"
 end
