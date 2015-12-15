@@ -43,18 +43,26 @@ class Person < ActiveRecord::Base
       # there is an authorizer
       if @authorizer.union.short_name != ENV['OWNER_UNION']
         # the authorizer isn't an owner
-        if self.union_id_was.present? && self.union_id_was != self.union_id
-          # there was a union id and it is being changed changed
-          errors.add(:union, "cannot be changed.")
-          self.union_id = self.union_id_was # put it back
-          result = false
+        if self.union_id_was.present? 
+          if self.union_id_was != self.union_id
+            # there was a union id and it is being changed changed
+            errors.add(:union, "cannot be changed.")
+            self.union_id = self.union_id_was # put it back
+            result = false
+          else
+            if self.union_id != @authorizer.union_id
+              # or the authorizer is attempting to access a person outside their union
+              errors.add(:authorizer, "cannot access this person's record.")
+              result = false
+            end
+          end
         else
           if self.union_id != @authorizer.union_id
-            # or the authorizer is attempting to access a person outside their union
-            errors.add(:authorizer, "cannot access this person's record.")
+            # the authorizer is attempting to invite/create a person outside their union
+            errors.add(:authorizer, "cannot assign a person to a union other than their own.")
             result = false
           end
-        end 
+        end
       end
     end
     return result

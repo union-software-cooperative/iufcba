@@ -31,7 +31,7 @@ Then(/^I can not post an invite to union "(.*?)"$/) do |union|
   fill_in "person_email", :with => @invitee.email
   find(:xpath, "//input[@id='person_union_id']").set @union.id
   click_button "Send an invitation"
-  page.should have_content("Union cannot be changed.")
+  page.should have_content("Authorizer cannot assign a person to a union other than their own.")
 end
 
 Then(/^I can not post my profile with union "(.*?)"$/) do |union|
@@ -58,7 +58,7 @@ end
 
 Given(/^there's another user called "(.*?)" in "(.*?)"$/) do |name, union_name|
 	union = Union.find_by_name(union_name)
-	FactoryGirl.create(:person, union: union, first_name: name, union: @current_person.union) 
+	FactoryGirl.create(:person, union: union, first_name: name) 
 end
 
 Then(/^I am permitted to edit "(.*?)"$/) do |name|
