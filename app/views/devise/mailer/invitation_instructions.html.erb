@@ -1,7 +1,25 @@
-<p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
+<p><%= t("devise.mailer.invitation_instructions.hello", first_name: @resource.first_name) %></p>
 
-<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
+<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", inviter: @resource.invited_by.display_name, union: @resource.invited_by.union.name,  url: root_url) %></p>
 
 <p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %></p>
 
+<h1>What's this for?</h1>
+<p>
+	This website has been put together by the IUF and the NUW Australia to help IUF dairy sector affiliates share collective bargaining information in major dairy companies and communicate more effectively amongst themselves. 
+</p>
+
+<h1>Interested? What do I do next?</h1>
+<ol>
+	<li>Click <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %> and setup your account/contact details</li>
+	<li>To customize your union's agreement page, <%=link_to "click here", edit_union_path(locale: I18n.locale, id: @resource.union.short_name) %> or click the pencil next to you union's name</li>
+	<li>Click the follow button on companies, agreements or other unions, then keep an eye out for relevant notifications in your email inbox</li>
+</ol>
+
+<h1>How does it help?</h1>
+<p>The form is designed to allow IUF dairy sector affiliates to input information about their collective bargaining situation with dairy companies and more.
+</p>
+
+<h1>Not interested?</h1>
+<p>If you are not the right person, please tell <%=@resource.invited_by.display_name%> (<%=@resource.invited_by.email%>) who is so they can invite them instead.  Or accept the <i></i>nvite, then <%= link_to 'invite them yourself', new_person_invitation_url %>.  Thanks.</p>
 <p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>

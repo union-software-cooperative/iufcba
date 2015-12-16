@@ -60,6 +60,7 @@ class Person < ActiveRecord::Base
           if self.union_id != @authorizer.union_id
             # the authorizer is attempting to invite/create a person outside their union
             errors.add(:authorizer, "cannot assign a person to a union other than their own.")
+            self.union_id = @authorizer.union_id # put it back
             result = false
           end
         end
