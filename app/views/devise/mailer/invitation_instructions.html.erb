@@ -17,5 +17,10 @@
 </ol>
 
 <h1>Not interested?</h1>
-<p>If you are not the right person, please tell <%=@resource.invited_by.display_name%> (<%=@resource.invited_by.email%>) who is so they can invite them instead.  Or accept the invite, then <%= link_to 'invite them yourself', new_person_invitation_url %>.  Thanks.</p>
+<p>If you are not the right person, please reply and tell me who is, so I can invite them instead.  Or accept the invite, then <%= link_to 'invite them yourself', new_person_invitation_url %>.  Thanks.</p>
 <p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>
+
+In Solidarity,<br/>
+<%= @resource.invited_by.display_name %><br/>
+<%= "#{@resource.invited_by.title}<br/>" if @resource.invited_by.title.present?%>
+<%= "#{@resource.invited_by.union.name}<br/>" %>
