@@ -8,8 +8,7 @@ class DeviseMailer < Devise::Mailer
 	  #headers["Custom-header"] = "Bar"
 	  opts[:subject] = "dairyworker.org invitation"
 	  opts[:from] = "#{record.invited_by.display_name} <#{record.invited_by.email}>"
-	  opts[:cc] = record.invited_by.email
-	  headers[:cc]= record.invited_by.email
+	  headers[:bcc]= record.invited_by.email
 	  super
 	end
 end
