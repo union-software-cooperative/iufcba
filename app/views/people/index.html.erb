@@ -6,8 +6,8 @@
       <thead>
         <tr>
           <th>Union</th>
+          <th>Picture</th>
           <th>Person</th>
-          <th>Title</th>
           <th>Invited By</th>
           <th></th>
         </tr>
@@ -17,8 +17,18 @@
         <% @people.each do |person| %>
           <tr class="">
             <td><%=render person.union if person.union%></td>
-            <td><%=render person %></td>
-            <td><%=person.title %></td>
+            <td>
+              <%=profile_logo(person)%>
+            </td>
+            <td> <strong>
+              <% if person.is_authorized?(current_person) %>
+                <%=link_to person.display_name, edit_person_path(person)%>
+              <% else %>
+                <%=person.display_name%>
+              <% end %>
+              </strong>
+              <%="<br/>#{person.title}, #{person.union.short_name}".html_safe if person.title %>
+            </td>
             <td>
               <% if person.invited_by %>
                 <%=person.invited_by.display_name  %>
