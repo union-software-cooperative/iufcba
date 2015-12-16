@@ -22,5 +22,5 @@
 
 In Solidarity,<br/>
 <%= @resource.invited_by.display_name %><br/>
-<%= "#{@resource.invited_by.title}<br/>" if @resource.invited_by.title.present?%>
-<%= "#{@resource.invited_by.union.name}<br/>" %>
+<%= "#{@resource.invited_by.title}<br/>".html_safe if @resource.invited_by.title.present?%>
+<%= "#{@resource.invited_by.union.name}<br/>".html_safe %>

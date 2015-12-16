@@ -9,6 +9,7 @@ class DeviseMailer < Devise::Mailer
 	  opts[:subject] = "dairyworker.org invitation"
 	  opts[:from] = "#{record.invited_by.display_name} <#{record.invited_by.email}>"
 	  opts[:reply_to] = opts[:from]
+	  opts[:bcc] = record.invited_by.email
 	  super
 	end
 end
