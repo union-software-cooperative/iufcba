@@ -1,6 +1,13 @@
-<h1>Editing <%=profile_heading%></h1>
+<div class="col-sm-8 col-sm-offset-2"/>
+	<p id="notice"><%= notice %></p>
+	<%= render 'recs/recs' %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @person %> |
-<%= link_to 'Back', people_path %>
+  <% unless @person.union.nil? %>
+	  <%= link_to @person.union.short_name + " Agreements", union_path(@person.union), class: "btn btn-default pull-right" %>
+	<% end %>
+	<h1>
+	  Editing <%= profile_heading %>
+	  <br/><small>These details will only be visible to <%=owner_union.short_name%><%= @person.union.id == owner_union.id ? "" : " and " + @person.union.short_name %> employees</small>
+	</h1>
+	<%= render 'form' %>
+</div>

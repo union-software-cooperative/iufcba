@@ -1,5 +1,5 @@
 class ProfileUploader < AttachmentUploader
-	 # Include RMagick or MiniMagick support:
+   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
@@ -22,12 +22,16 @@ class ProfileUploader < AttachmentUploader
   process quality: 100
 
   def quality(asdf)
-  	#DO NOTHING FOR PROFILE PICS
+    #DO NOTHING FOR PROFILE PICS
   end
 
   # Create different versions of your uploaded files:
   version :thumb do
     process resize_and_crop: [40]
+  end
+
+  version :quote do 
+    process resize_and_crop: [150]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

@@ -7,6 +7,13 @@ module ApplicationHelper
 		end
 	end
 
+
+	def profile_logo(person)		
+		unless person.attachment.blank?
+			image_tag person.attachment.quote.url, class: "profile_logo"
+		end
+	end
+
 	def pencil_button
 		"<span class=\"small glyphicon glyphicon-pencil\"/>".html_safe 
 	end

@@ -1,5 +1,5 @@
 class BannerUploader < AttachmentUploader
-	include CarrierWave::MiniMagick
+  include CarrierWave::MiniMagick
 
   def filename
     if original_filename.present?
@@ -8,7 +8,7 @@ class BannerUploader < AttachmentUploader
   end
   
   # Process files as they are uploaded:
-  process quality: 80
+  process quality: 60
   process resize_and_crop: [1280,400]
   
   def extension_white_list

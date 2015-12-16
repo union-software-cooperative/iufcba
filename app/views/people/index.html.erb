@@ -1,37 +1,30 @@
-<p id="notice"><%= notice %></p>
+<div class="col-sm-8 col-sm-offset-2"/>
+  <p id="notice"><%= notice %></p>
+  <%= link_to 'Invite someone', new_person_invitation_path, class: "btn btn-default pull-right" %>
+    <h2 class="no-left-margin">People</h2>
+    <table class="table table-condensed table-striped box-shadow">
+      <thead>
+        <tr>
+          <th>Union</th>
+          <th>Person</th>
+          <th>Title</th>
+          <th>Invited By</th>
+          <th></th>
+        </tr>
+      </thead>
 
-<h1>Listing People</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Title</th>
-      <th>Address</th>
-      <th>Mobile</th>
-      <th>Fax</th>
-      <th>Email</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @people.each do |person| %>
-      <tr>
-        <td><%= person.first_name %></td>
-        <td><%= person.last_name %></td>
-        <td><%= person.title %></td>
-        <td><%= person.address %></td>
-        <td><%= person.mobile %></td>
-        <td><%= person.fax %></td>
-        <td><%= person.email %></td>
-        <td><%= link_to 'Show', person %></td>
-        <td><%= link_to 'Edit', edit_person_path(person) %></td>
-        <td><%= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
+      <tbody>
+        <% @people.each do |person| %>
+          <tr class="">
+            <td><%=render person.union if person.union%></td>
+            <td><%=render person %></td>
+            <td><%=person.title %></td>
+            <td><%=person.invited_by.display_name if person.invited_by %>
+              <%="<small>&nbsp;(accepted)</small>".html_safe if person.invitation_accepted_at %>
+            </td>
+            <td><span class="glyphicon glyphicon-envelope"></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+</div>
