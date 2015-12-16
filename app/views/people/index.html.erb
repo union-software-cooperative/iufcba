@@ -35,7 +35,7 @@
                 <%=person.invited_by.display_name  %>
               <%="<br/><small>not yet accepted</small>".html_safe unless person.invitation_accepted_at || person.first_name == "Admin" %>
               <% else %>
-                <br/><small>not yet invited</small>
+                <small>not yet invited</small>
               <% end %>
             </td>
             <td><span class="glyphicon glyphicon-envelope"></span></td>
