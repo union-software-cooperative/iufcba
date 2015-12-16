@@ -19,8 +19,13 @@
             <td><%=render person.union if person.union%></td>
             <td><%=render person %></td>
             <td><%=person.title %></td>
-            <td><%=person.invited_by.display_name if person.invited_by %>
-              <%="<br/><small>(not yet accepted)</small>".html_safe unless person.invitation_accepted_at || person.first_name == "Admin" %>
+            <td>
+              <% if person.invited_by %>
+                <%=person.invited_by.display_name  %>
+              <%="<br/><small>not yet accepted</small>".html_safe unless person.invitation_accepted_at || person.first_name == "Admin" %>
+              <% else %>
+                <br/><small>not yet invited</small>
+              <% end %>
             </td>
             <td><span class="glyphicon glyphicon-envelope"></span></td>
           </tr>
