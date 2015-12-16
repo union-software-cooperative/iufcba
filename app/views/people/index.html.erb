@@ -27,7 +27,8 @@
                 <%=person.display_name%>
               <% end %>
               </strong>
-              <%="<br/>#{person.title}, #{person.union.short_name}".html_safe if person.title %>
+              <%="<br/>#{person.title}".html_safe if person.title %>
+              <%="<br/>#{person.union.short_name}".html_safe if person.union.short_name %>
             </td>
             <td>
               <% if person.invited_by %>
