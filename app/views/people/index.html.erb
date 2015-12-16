@@ -20,7 +20,7 @@
             <td><%=render person %></td>
             <td><%=person.title %></td>
             <td><%=person.invited_by.display_name if person.invited_by %>
-              <%="<small>&nbsp;(accepted)</small>".html_safe if person.invitation_accepted_at %>
+              <%="<br/><small>(not yet accepted)</small>".html_safe unless person.invitation_accepted_at || person.first_name == "Admin" %>
             </td>
             <td><span class="glyphicon glyphicon-envelope"></span></td>
           </tr>
