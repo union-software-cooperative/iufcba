@@ -6,8 +6,8 @@ class DeviseMailer < Devise::Mailer
 
 	def invitation_instructions(record, token, opts={})
 	  #headers["Custom-header"] = "Bar"
-	  #opts[:from] = 'my_custom_from@domain.com'
-	  opts[:reply_to] = record.invited_by.email
+	  opts[:from] = "#{record.invited_by.display_name} <#{record.invited_by.email}>"
+	  opts[:reply_to] = opts[:from]
 	  super
 	end
 end
