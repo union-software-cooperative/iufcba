@@ -16,10 +16,6 @@
 	<li>Click the follow button on companies, agreements or other unions, then keep an eye out for relevant notifications in your email inbox</li>
 </ol>
 
-<h1>How does it help?</h1>
-<p>The form is designed to allow IUF dairy sector affiliates to input information about their collective bargaining situation with dairy companies and more.
-</p>
-
 <h1>Not interested?</h1>
-<p>If you are not the right person, please tell <%=@resource.invited_by.display_name%> (<%=@resource.invited_by.email%>) who is so they can invite them instead.  Or accept the <i></i>nvite, then <%= link_to 'invite them yourself', new_person_invitation_url %>.  Thanks.</p>
+<p>If you are not the right person, please tell <%=@resource.invited_by.display_name%> (<%=@resource.invited_by.email%>) who is so they can invite them instead.  Or accept the invite, then <%= link_to 'invite them yourself', new_person_invitation_url %>.  Thanks.</p>
 <p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>
