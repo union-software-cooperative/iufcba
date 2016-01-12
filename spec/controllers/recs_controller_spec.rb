@@ -52,6 +52,8 @@ describe RecsController do
           assigns(:rec).errors[:union].should include('is not your union so this assignment is not authorized.')
           response.should render_template("new")
         end
+
+
       end
 
       describe "update/edit" do
@@ -147,6 +149,76 @@ describe RecsController do
         end
       end
     end 
+  end
+
+  describe "Notifications" do
+    login_admin
+
+    it "will send thank you email" do
+      expect {
+        post :create, {:rec => valid_attributes}
+        ActionMailer::Base.deliveries.last.subject.should include("Thanks")
+        ActionMailer::Base.deliveries.last.to.should include(@admin.email)
+      }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+
+    it "will send notifications" do
+      u = Union.find(valid_attributes[:union_id])
+      c = Company.find(valid_attributes[:company_id])
+
+      subject.current_person.follow! u
+
+      follower1 = FactoryGirl.create(:person, authorizer: @admin)
+      follower1.follow! u
+
+      follower2 = FactoryGirl.create(:person, authorizer: @admin)
+      follower2.follow! c
+
+      follower3 = FactoryGirl.create(:person, authorizer: @admin)
+      follower3.follow! u
+      follower3.follow! c
+      
+      follower4 = FactoryGirl.create(:person, authorizer: @admin)
+      follower4.follow! FactoryGirl.create(:company) # Shouldn't be notified
+
+      expect {
+        post :create, {:rec => valid_attributes}
+        messages = ActionMailer::Base.deliveries
+
+        # these should probably be separate tests
+
+        # Shouldn't notify current user, even if following
+        messages.select{|m| m.to == [subject.current_person.email] && m.subject.include?("has posted an agreement")}.count.should eq(0) 
+        
+        # should notify if following union
+        messages.select{|m| m.to == [follower1.email] && m.subject.include?("has posted an agreement")}.count.should eq(1) 
+        
+        # should notify if following company
+        messages.select{|m| m.to == [follower2.email] && m.subject.include?("has posted an agreement")}.count.should eq(1)
+      
+        # should only notify once even if following both union and company
+        messages.select{|m| m.to == [follower3.email] && m.subject.include?("has posted an agreement")}.count.should eq(1) 
+        
+        # shouldn't notify if following something else
+        messages.select{|m| m.to == [follower4.email] && m.subject.include?("has posted an agreement")}.count.should eq(0) 
+        
+      }.to change { ActionMailer::Base.deliveries.count }.by(4) # Thanks + 3 notifications
+    end
+
+
+    it "union and company followers are made to follow new rec" do
+      u = Union.find(valid_attributes[:union_id])
+      c = Company.find(valid_attributes[:company_id])
+
+      follower1 = FactoryGirl.create(:person, authorizer: @admin)
+      follower1.follow! u
+
+      follower2 = FactoryGirl.create(:person, authorizer: @admin)
+      follower2.follow! c
+
+      post :create, {:rec => valid_attributes}
+      assigns(:rec).followers(Person).count.should eq(2)
+    end
   end
 
   describe "Basic Functionality" do 

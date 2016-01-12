@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/union-software-cooperative/socialization.git
+  revision: 06e5e05006c907068b9e129caed2897207d0270c
+  specs:
+    socialization (1.2.0)
+      activerecord
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -376,8 +383,6 @@ GEM
     shoulda-matchers (3.0.1)
       activesupport (>= 4.0.0)
     slop (3.6.0)
-    socialization (1.2.0)
-      activerecord
     spring (1.6.0)
     spring-commands-cucumber (1.0.1)
       spring (>= 0.9.1)
@@ -447,7 +452,7 @@ DEPENDENCIES
   select2-rails
   selenium-webdriver
   shoulda-matchers (~> 3.0)
-  socialization
+  socialization!
   spring
   spring-commands-cucumber
   spring-commands-rspec

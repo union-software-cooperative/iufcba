@@ -78,4 +78,5 @@ gem 'select2-rails'
 # Environment var helpers
 gem "figaro"
 
-gem "socialization"
+gem "socialization", :git => 'https://github.com/union-software-cooperative/socialization.git'
+

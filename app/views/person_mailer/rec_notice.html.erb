@@ -1,6 +1,6 @@
 Hi <%=@person.first_name%>
 
-<h1>An agreement has been received for <%= @rec.union.short_name %> and <%= rec.company.short_name %></h1>
+<h1>An agreement has been received for <%= @rec.union.short_name %> and <%= @rec.company.short_name %></h1>
 
 <p>
 	<a href="<%=rec_url(id: @rec.id)%>">View Online</a>
@@ -8,4 +8,7 @@ Hi <%=@person.first_name%>
 
 <p>
 	You received this because you are following either <%= @rec.union.short_name %> or <%= @rec.company.short_name %>
+</p>
+<p>
+	And you are now following this agreement.
 </p>

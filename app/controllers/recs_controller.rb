@@ -31,6 +31,7 @@ class RecsController < ApplicationController
 
     respond_to do |format|
       if @rec.save
+        subscribe
         notify
         thank
 
@@ -91,17 +92,23 @@ class RecsController < ApplicationController
       return forbidden unless can_edit_union?(@rec.union)
     end
 
-    def notify_recipients(rec)
+    def notification_recipients(rec)
       (@rec.union.followers(Person) + @rec.company.followers(Person)).uniq.reject { |p| p.id == current_person.id }
     end
 
+    def subscribe
+      (@rec.union.followers(Person) + @rec.company.followers(Person)).uniq.each do |p|
+        p.follow! @rec
+      end
+    end
+
     def notify
-      notify_recipients(@rec).uniq.each do |p|
+      notification_recipients(@rec).each do |p|
         PersonMailer.rec_notice(p, @rec, request).deliver_now
       end
     end
 
     def thank
-      PersonMailer.thanks(@rec.person, @rec, request, notify_recipients(@rec)).deliver_now
+      PersonMailer.thanks(current_person, @rec, request, notification_recipients(@rec)).deliver_now
     end
 end
