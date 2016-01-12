@@ -11,7 +11,7 @@ Given /^I am a new, authenticated person$/ do
   visit '/people/sign_in'
   fill_in "person_email", :with => email
   fill_in "person_password", :with => password
-  click_button "Log in"
+  click_button "Sign in"
 end
 
 Given /^I am authenticated as admin$/ do
@@ -21,7 +21,7 @@ Given /^I am authenticated as admin$/ do
   visit '/people/sign_in'
   fill_in "person_email", :with => @current_person.email
   fill_in "person_password", :with => 'temptemp'
-  click_button "Log in"
+  click_button "Sign in"
 end
 
 Given(/^I am a new, authenticated person belonging to "(.*?)"$/) do |union_name|
@@ -34,7 +34,7 @@ Given(/^I am a new, authenticated person belonging to "(.*?)"$/) do |union_name|
   visit '/people/sign_in'
   fill_in "person_email", :with => email
   fill_in "person_password", :with => password
-  click_button "Log in"
+  click_button "Sign in"
 end
 
 

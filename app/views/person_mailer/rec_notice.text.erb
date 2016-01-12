@@ -1,0 +1,7 @@
+Hi <%=@person.first_name%>
+
+-- An agreement has been posted for <%= @rec.union.short_name %> and <%= rec.company.short_name %> --
+
+<%="#{@request.protocol}#{@request.host}/recs/#{@rec.id}"%>
+
+	You received this because you are following either <%= @rec.union.short_name %> or <%= @rec.company.short_name %>

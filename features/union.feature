@@ -8,6 +8,7 @@ Feature: Maintain a list of unions
 		Given I am authenticated as admin
 		Given there's a "union" titled "NUW"
 		When I'm on the "unions" list
+		Then I can view the "union" titled "NUW"
 		Then I can edit the "union" titled "NUW"
 	
 	Scenario: Delete a union

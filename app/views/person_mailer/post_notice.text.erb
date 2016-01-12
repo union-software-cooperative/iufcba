@@ -1,0 +1,7 @@
+Hi <%=@person.first_name%>
+
+-- <%= @post.person.display_name %> said --
+
+"<%= @post.body %>"
+
+<%="#{@request.protocol}#{@request.host}#{polymorphic_path(@post.parent)}"%>

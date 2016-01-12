@@ -23,6 +23,8 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
     respond_to do |format|
       if @post.save
+        notify
+
         format.html { redirect_to @post.parent, notice: 'Post was successfully created.' }
         format.json { render :show, status: :created, location: @post }
       else
@@ -77,4 +79,12 @@ class PostsController < ApplicationController
       result[:person] = current_person
       result
     end
+
+    def notify
+      @post.parent.followers(Person).each do |p|
+      if p.id != current_person.id
+        PersonMailer.post_notice(p, @post, request).deliver_now
+      end
+    end
+  end
 end

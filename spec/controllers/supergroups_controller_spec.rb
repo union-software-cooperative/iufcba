@@ -76,7 +76,8 @@ shared_examples "a supergroup type" do |type|
       it "assigns all supergroups as @supergroups" do
         supergroup = Supergroup.create! valid_attributes
         get :index, {type: type}
-        assigns(:supergroups).should eq([owner_union]+[supergroup]) if type == "Union"
+        
+        assigns(:supergroups).should eq([supergroup]+[owner_union]) if type == "Union"
         assigns(:supergroups).should eq([supergroup]) if type == "Company"
       end
     end

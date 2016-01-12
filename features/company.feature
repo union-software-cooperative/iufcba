@@ -8,6 +8,7 @@ Feature: Maintain a list of companies
 		Given I am authenticated as admin
   	Given there's a "company" titled "Mondelez"
 		When I'm on the "companies" list
+		Then I can view the "company" titled "Mondelez"
 		Then I can edit the "company" titled "Mondelez"
 	
 	Scenario: Delete a company

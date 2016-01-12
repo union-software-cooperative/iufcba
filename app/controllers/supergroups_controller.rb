@@ -9,7 +9,7 @@ class SupergroupsController < ApplicationController
   # GET /supergroups
   # GET /supergroups.json
   def index
-    @supergroups = @klass.filter(params.slice(:name_like)).order(:short_name, :id)
+    @supergroups = @klass.filter(params.slice(:name_like)).order(:name, :id)
     respond_to do |format|
       format.html
       format.json { render json: @supergroups }

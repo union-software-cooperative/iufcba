@@ -5,10 +5,10 @@ Feature: Home Page
 	When I am on the homepage
 	Then I should see the "UFCW LOCAL 700/ConAgra Foods - Indianapolis, Indiana, USA" agreement
 	Then I should see the link "agreements"
-	Then I should see the link "directory"
+	Then I should see the link "people"
 	Then I should see the link "unions"
 	Then I should see the link "companies"
-	When I click the "directory" link 
+	When I click the "people" link 
 	Then I see a list of "People"
 	When I click the "agreements" link 
 	Then I see a list of "Agreements"

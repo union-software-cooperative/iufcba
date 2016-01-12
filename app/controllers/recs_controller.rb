@@ -31,6 +31,9 @@ class RecsController < ApplicationController
 
     respond_to do |format|
       if @rec.save
+        notify
+        thank
+
         format.html { redirect_to @rec, notice: 'Rec was successfully created.' }
         format.json { render :show, status: :created, location: @rec }
       else
@@ -86,5 +89,19 @@ class RecsController < ApplicationController
 
     def forbid
       return forbidden unless can_edit_union?(@rec.union)
+    end
+
+    def notify_recipients(rec)
+      (@rec.union.followers(Person) + @rec.company.followers(Person)).uniq.reject { |p| p.id == current_person.id }
+    end
+
+    def notify
+      notify_recipients(@rec).uniq.each do |p|
+        PersonMailer.rec_notice(p, @rec, request).deliver_now
+      end
+    end
+
+    def thank
+      PersonMailer.thanks(@rec.person, @rec, request, notify_recipients(@rec)).deliver_now
     end
 end

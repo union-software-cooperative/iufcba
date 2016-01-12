@@ -6,11 +6,22 @@ When(/^I'm on the "(.*?)" list$/) do |entity|
 	visit polymorphic_path(entity)
 end
 
+Then(/^I can view the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
+	klass = entity_name.titlecase.constantize
+	entity = klass.find_by_name(title)
+
+	page.should have_link(title, href: polymorphic_path(entity))
+	click_link(title)
+	
+	page.should have_link(title)
+	page.should have_selector(:link_or_button, 'Create Post')
+end
+
 Then(/^I can edit the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
 	klass = entity_name.titlecase.constantize
 	entity = klass.find_by_name(title)
 
-	page.should have_link("Edit", href: edit_polymorphic_path(entity))
+	page.should have_link('', href: edit_polymorphic_path(entity))
 	visit edit_polymorphic_path(entity)
 
 	fill_in "#{entity_name}[name]", with: "New Company Name"
@@ -36,8 +47,12 @@ Then(/^I can delete the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
 	entity = klass.find_by_name(title)
 	entity.should_not eq(nil)
 
+	click_link title
+	click_link '', edit_polymorphic_path(entity)
+	click_link "Permanently Delete This #{klass.to_s}" # TODO Assumes only one company in list
+
 	#click_link "Destroy" # TODO Assumes only one company in list
-	all('td', text: title)[0].find(:xpath, '..').click_link("Destroy")
+	#all('td', text: title)[0].find(:xpath, '..').click_link("Destroy")
 
 	entity = klass.find_by_name(title)
 	entity.should eq(nil)

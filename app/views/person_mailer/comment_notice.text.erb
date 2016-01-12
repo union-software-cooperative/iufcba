@@ -1,0 +1,17 @@
+Hi <%=@person.first_name%>
+
+-- <%= @comment.person.display_name %> said --
+
+"<%= @comment.body %>"
+
+-- In response to --
+"<%= @comment.post.body %>" - <%= @comment.post.person.display_name %> 
+
+<% @comment.post.comments.each do |c| %>
+	<% if @comment.id != c.id %>
+	"<%= c.body %>" - <%= c.person.display_name %>
+	 
+	<% end %>
+<% end %>
+
+<%="#{@request.protocol}#{@request.host}#{polymorphic_path(@comment.post.parent)}"%>

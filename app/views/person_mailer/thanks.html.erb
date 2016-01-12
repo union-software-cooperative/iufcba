@@ -1,0 +1,23 @@
+Hi <%=@person.first_name%>
+
+<p>
+Thank you for sharing an agreement
+</p>
+
+<p>
+The following people where notified
+</p>
+
+<ul>
+	<% @recipients.each do |p| %>
+		<li>
+			<%= p.display_name %>
+		</li>
+	<% end %>
+</ul>
+
+
+<p>
+The private URL for the agreement is here 
+<%=link_to rec_url(id: @rec.id), rec_url(id: @rec.id) %>
+</p>
