@@ -97,9 +97,10 @@ class RecsController < ApplicationController
     end
 
     def subscribe
-      (@rec.union.followers(Person) + @rec.company.followers(Person)).uniq.each do |p|
-        p.follow! @rec
-      end
+      ##(@rec.union.followers(Person) + @rec.company.followers(Person)).uniq.each do |p|
+      #@rec.union.people.each do |p|
+      #  p.follow! @rec
+      #end
     end
 
     def notify

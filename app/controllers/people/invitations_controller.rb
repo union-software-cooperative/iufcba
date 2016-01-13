@@ -6,9 +6,9 @@ class People::InvitationsController < Devise::InvitationsController
       resource.follow!(resource.union)
       
       # Follow all agreements too
-      resource.union.recs.each do |r|
-        resource.follow!(r)
-      end
+      #resource.union.recs.each do |r|
+      #  resource.follow!(r)
+      #end
     end
     return response
   end

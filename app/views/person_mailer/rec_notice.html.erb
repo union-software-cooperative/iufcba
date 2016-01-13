@@ -10,5 +10,9 @@ Hi <%=@person.first_name%>
 	You received this because you are following either <%= @rec.union.short_name %> or <%= @rec.company.short_name %>
 </p>
 <p>
-	And you are now following this agreement.
+	<% if @rec.followers(Person).include?(@person) %>
+		You are now following this agreement
+	<% else %>
+		Follow the agreement by clicking <a href="<%follow_rec_url(@rec)%>">here</a>
+	<% end %>
 </p>

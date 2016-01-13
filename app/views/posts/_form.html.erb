@@ -14,7 +14,14 @@
     <h3>
       <%=profile_thumb(current_person)%>
       <%=@post.parent.post_title%> 
-      <small><%=@post.parent.followers_count%> people are following...</small></h3>
+      <small>
+        <% if @post.parent.respond_to?(:parent) && @post.parent.person.present? %>
+          <%=@post.parent.person.display_name %> is assigned and 
+        <% end %>
+          
+        <%="#{@post.parent.followers_count} #{pluralize(@post.parent.followers_count, "person")}"%> following...
+      </small>
+    </h3>
     <p>
       <div class="form_group">
         <%= f.file_field :attachment %>
