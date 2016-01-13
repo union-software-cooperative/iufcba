@@ -68,6 +68,9 @@
       <br/><small>you can only assign yourself and other people to your union</small>
       <%= f.hidden_field :union_id, value: ((@person.union || current_person.union).id) %>
     <% end %>
+  </div>
 
-
+  <div class="form-group">
+    <%= label_tag "Resend Invite" %><br>
+    <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
   </div>

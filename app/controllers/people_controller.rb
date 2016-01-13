@@ -31,6 +31,9 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       if @person.update(person_params)
+        @person.invite!(current_person) if params['resend_invite']=='true' 
+
+
         format.html { redirect_to @person, notice: 'Profile successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
