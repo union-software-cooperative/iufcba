@@ -13,6 +13,6 @@ Hi <%=@person.first_name%>
 	<% if @rec.followers(Person).include?(@person) %>
 		You are now following this agreement
 	<% else %>
-		Follow the agreement by clicking <a href="<%follow_rec_url(@rec)%>">here</a>
+		Follow the agreement by clicking <a href="<%= follow_rec_url(@rec)%>">here</a>
 	<% end %>
 </p>
