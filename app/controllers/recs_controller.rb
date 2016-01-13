@@ -71,7 +71,7 @@ class RecsController < ApplicationController
   end
 
   def follow
-    current_person.toggle_follow!(@rec)
+    current_person.toggle_follow!(@rec) unless @rec.person.id == current_person.id # can't toggle follow status if you are assigned
     redirect_to @rec
   end
 
@@ -101,6 +101,8 @@ class RecsController < ApplicationController
       #@rec.union.people.each do |p|
       #  p.follow! @rec
       #end
+
+      @rec.person.follow! @rec
     end
 
     def notify

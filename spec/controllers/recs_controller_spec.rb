@@ -219,6 +219,11 @@ describe RecsController do
     #   post :create, {:rec => valid_attributes}
     #   assigns(:rec).followers(Person).count.should eq(2)
     # end
+
+    it "person assigned is made to follow new rec" do
+      post :create, {:rec => valid_attributes}
+      assigns(:rec).followers(Person).should include(subject.current_person)
+    end
   end
 
   describe "Basic Functionality" do 

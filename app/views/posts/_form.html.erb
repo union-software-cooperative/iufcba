@@ -14,12 +14,9 @@
     <h3>
       <%=profile_thumb(current_person)%>
       <%=@post.parent.post_title%> 
+      <br/>
       <small>
-        <% if @post.parent.respond_to?(:person) && @post.parent.person.present? %>
-          <%=@post.parent.person.display_name %> is assigned and 
-        <% end %>
-          
-        <%=pluralize(@post.parent.followers_count, "person") %> following...
+        <%= notification_indicator(@post) %>
       </small>
     </h3>
     <p>
