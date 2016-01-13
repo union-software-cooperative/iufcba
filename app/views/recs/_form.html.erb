@@ -54,10 +54,12 @@
     <% end %>
 
   </div>
+<!--
   <div class="form-group">
     <%= f.label :taking_action %><br>
     <%= f.check_box :taking_action, class: "switch", :data => { :size => 'small', 'on-text'=>'On', 'off-text'=>'Off', 'on-color'=>'danger'} %>
   </div>
+-->
   <div class="form-group">
     <%= f.label :name %><br>
     <%= f.text_field :name, class: "form-control", placeholder: "Please describe the agreement e.g. Nestle Australia (Tongara Plant) And NUW Enterprise Agreement 2014" %>
@@ -118,7 +120,11 @@
   </div>
   <div class="form-group">
     <%= f.label :grievance_handling %><br>
-    <%= f.check_box :grievance_handling, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :grievance_handling, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+  </div>
+  <div class="form-group">
+    <%= f.label :grievance_handling_page %><br>
+    <%= f.number_field :grievance_handling_page, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :grievance_handling_clause %><br>
@@ -126,7 +132,11 @@
   </div>
   <div class="form-group">
     <%= f.label :union_mandate %><br>
-    <%= f.check_box :union_mandate, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :union_mandate, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+  </div>
+  <div class="form-group">
+    <%= f.label :union_mandate_page %><br>
+    <%= f.number_field :union_mandate_page, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :union_mandate_clause %><br>
@@ -134,7 +144,11 @@
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat %><br>
-    <%= f.check_box :anti_precariat, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :anti_precariat, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+  </div>
+  <div class="form-group">
+    <%= f.label :anti_precariat_page %><br>
+    <%= f.number_field :anti_precariat_page, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat_clause %><br>
@@ -142,7 +156,11 @@
   </div>
   <div class="form-group">
     <%= f.label :specific_rights %><br>
-    <%= f.check_box :specific_rights, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :specific_rights, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+  </div>
+  <div class="form-group">
+    <%= f.label :specific_rights_page %><br>
+    <%= f.number_field :specific_rights_page, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :specific_rights_clause %><br>
@@ -156,3 +174,36 @@
     <%= f.submit value: "Save Agreement", class: "btn btn-default"%>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  
+  function rec_ready() {
+
+    $('input[type=number]').bind('keypress', function (e) {
+      return !(e.which != 8 && e.which != 0 &&
+              (e.which < 48 || e.which > 57) && e.which != 46);
+    });
+
+
+    <% %w[grievance_handling anti_precariat union_mandate specific_rights].each do |q| %>
+      function toggle_<%= q %>() {
+        if ($('#rec_<%= q %>').bootstrapSwitch('state')) {
+          $('#rec_<%= q %>_page').parent().slideDown();
+          $('#rec_<%= q %>_clause').parent().slideDown();
+        } else {
+          $('#rec_<%= q %>_page').parent().slideUp();
+          $('#rec_<%= q %>_clause').parent().slideUp();
+        }
+      }  
+
+      $('#rec_<%= q %>').bootstrapSwitch({
+        onSwitchChange: toggle_<%= q %>
+      });
+
+      toggle_<%= q %>();  
+    <% end %>
+  }
+
+  $(document).ready(rec_ready);
+  $(document).on('page:load', rec_ready);
+</script>
