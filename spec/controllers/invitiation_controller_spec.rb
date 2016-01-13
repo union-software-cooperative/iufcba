@@ -24,7 +24,7 @@ describe People::InvitationsController do
     #@union = FactoryGirl.create(:union)
     #@owner_union = owner_union
     #@company = FactoryGirl.create(:company)
-    #@admin = admin
+    @admin = admin
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -99,6 +99,34 @@ describe People::InvitationsController do
           response.should render_template("new")
         end
       end
+    end
+
+
+  end
+
+
+  describe "PUT Update" do
+
+    it "person can accept invitation" do
+      invitee = FactoryGirl.create(:person, authorizer: admin)
+      invitee.invite! admin
+      @request.env["devise.mapping"] = Devise.mappings[:person]
+      put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
+      invitee.reload
+      invitee.invitation_accepted_at.should_not be_nil
+    end
+
+    it "person can't accept invitation if their inviter becomes invalid" do
+      invitee = FactoryGirl.create(:person, authorizer: @admin)
+      invitee.invite! @admin
+
+      # remove invite priviledges from inviter, by moving them to a different union
+      @admin.update!(union: FactoryGirl.create(:union), authorizer: FactoryGirl.create(:admin, authorizer: @admin))
+
+      @request.env["devise.mapping"] = Devise.mappings[:person]
+      put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
+      invitee.reload
+      invitee.invitation_accepted_at.should be_nil
     end
   end
 end

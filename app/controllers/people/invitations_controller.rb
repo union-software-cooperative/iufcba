@@ -29,4 +29,11 @@ class People::InvitationsController < Devise::InvitationsController
 ])[:person].merge(authorizer: current_person)
     result
    end
+
+  def update_resource_params
+    result = devise_parameter_sanitizer.sanitize(:accept_invitation)
+    invitee = resource_class.find_by_invitation_token(result[:invitation_token], false)
+    authorizer = invitee.invited_by unless invitee.blank?
+    result.merge(authorizer: authorizer)
+  end
 end
