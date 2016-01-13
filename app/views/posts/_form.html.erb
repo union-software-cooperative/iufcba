@@ -15,11 +15,11 @@
       <%=profile_thumb(current_person)%>
       <%=@post.parent.post_title%> 
       <small>
-        <% if @post.parent.respond_to?(:parent) && @post.parent.person.present? %>
+        <% if @post.parent.respond_to?(:person) && @post.parent.person.present? %>
           <%=@post.parent.person.display_name %> is assigned and 
         <% end %>
           
-        <%="#{@post.parent.followers_count} #{pluralize(@post.parent.followers_count, "person")}"%> following...
+        <%=pluralize(@post.parent.followers_count, "person") %> following...
       </small>
     </h3>
     <p>
