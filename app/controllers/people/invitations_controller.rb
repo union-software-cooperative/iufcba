@@ -4,6 +4,11 @@ class People::InvitationsController < Devise::InvitationsController
     response = super
     if resource.errors.empty?
       resource.follow!(resource.union)
+      
+      # Follow all agreements too
+      resource.union.recs.each do |r|
+        resource.follow!(r)
+      end
     end
     return response
   end

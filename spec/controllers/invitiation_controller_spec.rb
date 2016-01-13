@@ -128,5 +128,18 @@ describe People::InvitationsController do
       invitee.reload
       invitee.invitation_accepted_at.should be_nil
     end
+
+    it "upon accepting an invitation, user will be following their union and all agreements" do
+      invitee = FactoryGirl.create(:person, authorizer: @admin)
+      invitee.invite! @admin
+      
+      agreement = FactoryGirl.create(:agreement, union_id: invitee.union_id, authorizer: @admin)
+      
+      @request.env["devise.mapping"] = Devise.mappings[:person]
+      put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
+      
+      invitee.union.followers(Person).should include(invitee)
+      agreement.followers(Person).should include(invitee)
+    end
   end
 end
