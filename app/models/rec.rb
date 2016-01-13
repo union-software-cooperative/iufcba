@@ -34,7 +34,7 @@ class Rec < ActiveRecord::Base
 				errors.add(:union, "is not your union so this assignment is not authorized.")
 			end 
 
-			if self.person.union_id != @authorizer.union_id
+			if self.person.present? && self.person.union_id != @authorizer.union_id
 				errors.add(:person, "is not a colleague from your union so this assignment is not authorized.")
 			end
 		end
