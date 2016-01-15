@@ -22,14 +22,23 @@ module Secpubsub
     	(url.scheme == 'https' ? "wss" : "ws") + "://#{url.host}:#{url.port}"
     end
 
+
+ 		# Determine if the signature has expired given a timestamp.
+    def signature_expired?(timestamp)
+      timestamp < ((Time.now.to_f - config[:signature_expiration])*1000).round if config[:signature_expiration]
+    end
+
     def subscription(options = {})
       sub = {
       	server: server, 
       	timestamp: (Time.now.to_f * 1000).round
       }.merge(options)
       sub[:auth_token] = Digest::SHA1.hexdigest([config[:secret_token], sub[:channel], sub[:timestamp]].join)
+      sub[:auth_token] = nil if signature_expired?(sub[:timestamp])
       sub
     end
+
+
 	
     # Publish the given data to a specific channel. This ends up sending
     # a Net::HTTP POST request to the Faye server.

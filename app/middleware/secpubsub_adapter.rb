@@ -7,7 +7,7 @@ module Secpubsub
 
     def initialize(app, options)
       @app     = app
-      @clients = []
+      @channels = {}
     end
 
     def call(env)
@@ -15,17 +15,27 @@ module Secpubsub
         ws = Faye::WebSocket.new(env, nil, {ping: KEEPALIVE_TIME })
         ws.on :open do |event|
           p [:open, ws.object_id]
-          @clients << ws
         end
 
         ws.on :message do |event|
-          p [:message, "clients: #{@clients.count}", event.data]
-          @clients.each {|client| client.send(event.data) }
+          data = unpack(event.data)
+          
+          subscribed = authenticate_subscribe(data, ws)
+          published = authenticate_publish(data)
+          
+          unless subscribed || published
+            p [:message, data]
+            ws.close(1000, 'authentication failed')
+          end
+        
+          ws.close(1000, 'publish request fulfilled') if published
         end
 
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
-          @clients.delete(ws)
+          @channels.each do |k,v|
+            v.delete(ws)
+          end
           ws = nil
         end
 
@@ -36,5 +46,33 @@ module Secpubsub
         @app.call(env)
       end
     end
+
+    def unpack(data)
+      JSON.parse(data).symbolize_keys
+    end
+  
+    def authenticate_subscribe(data, ws)
+      if Secpubsub.subscription(data)[:auth_token] == data[:auth_token]
+        @channels[data[:channel]] ||= []
+        @channels[data[:channel]] << ws
+        p [:subscribe, data[:channel], "subscribers: #{(@channels[data[:channel]]||[]).count}"]
+        
+        true
+      end
+    end
+
+    def authenticate_publish(data)
+      if Secpubsub.config[:secret_token] == data[:auth_token]
+        sanitised_data = data.reject {|k,v| k == :auth_token}.to_json
+        p [:publish, sanitised_data]
+        channel_clients = @channels[data[:channel]] || []
+        channel_clients.each do |client| 
+          client.send(sanitised_data) 
+          p [:sent, data[:channel], client.object_id, sanitised_data]
+        end
+
+        true
+      end 
+    end   
   end
 end
