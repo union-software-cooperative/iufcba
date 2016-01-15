@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :chat do 
+    collection do 
+      get 'publish'
+    end
+  end
+  
   resources :comments
   resources :posts
   devise_for :people, :controllers => { :invitations => 'people/invitations' }

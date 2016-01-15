@@ -16,5 +16,6 @@
 //= require turbolinks
 //= require select2
 //= require bootstrap-switch.min
+//= require secpubsub
 //= require application_helpers
 //= require_tree .

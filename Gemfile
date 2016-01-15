@@ -80,3 +80,5 @@ gem "figaro"
 
 gem "socialization", :git => 'https://github.com/union-software-cooperative/socialization.git'
 
+gem "faye-websocket"
+gem "puma"
