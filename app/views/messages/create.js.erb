@@ -1,0 +1,6 @@
+<% data = capture do %>
+	$("#chat").append("<%= escape_javascript render(@message) %>");
+<% end %> 
+<% Secpubsub.publish_to "/messages/new", data %>
+
+$("#new_message")[0].reset();

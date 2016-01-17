@@ -38,16 +38,17 @@ module Secpubsub
       sub
     end
 
-
-	  # Returns a message hash for sending to Faye
+    # Returns a message hash for sending to Faye
     def publish_to(channel, data)
       #message = {:channel => channel, :data => {:channel => channel}, :ext => {:auth_ => config[:secret_token]}}
       message = subscription(channel: channel, command: 'publish')
       
+
+      #data = yield
       if data.kind_of? String
-        message[:eval] = data
+        message[:eval] = data # JS string for eval
       else
-        message[:data] = data
+        message[:data] = data # JSON data
       end
       
       publish_message(message)

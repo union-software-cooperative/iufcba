@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113051713) do
+ActiveRecord::Schema.define(version: 20160117064400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,14 @@ ActiveRecord::Schema.define(version: 20160113051713) do
 
   add_index "mentions", ["mentionable_id", "mentionable_type"], name: "fk_mentionables", using: :btree
   add_index "mentions", ["mentioner_id", "mentioner_type"], name: "fk_mentions", using: :btree
+
+  create_table "messages", force: :cascade do |t|
+    t.text     "body"
+    t.string   "display_name"
+    t.integer  "person_id",    null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "people", force: :cascade do |t|
     t.string   "title"
@@ -164,6 +172,7 @@ ActiveRecord::Schema.define(version: 20160113051713) do
 
   add_foreign_key "comments", "people"
   add_foreign_key "comments", "posts"
+  add_foreign_key "messages", "people"
   add_foreign_key "people", "supergroups", column: "union_id"
   add_foreign_key "posts", "people"
   add_foreign_key "recs", "people"
