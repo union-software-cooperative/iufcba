@@ -33,17 +33,24 @@ module Secpubsub
       	server: server, 
       	timestamp: (Time.now.to_f * 1000).round
       }.merge(options)
-      sub[:auth_token] = Digest::SHA1.hexdigest([config[:secret_token], sub[:channel], sub[:timestamp]].join)
+      sub[:auth_token] = Digest::SHA1.hexdigest([config[:secret_token], sub[:command], sub[:channel], sub[:timestamp]].join)
       sub[:auth_token] = nil if signature_expired?(sub[:timestamp])
       sub
     end
 
 
-	
-    # Publish the given data to a specific channel. This ends up sending
-    # a Net::HTTP POST request to the Faye server.
+	  # Returns a message hash for sending to Faye
     def publish_to(channel, data)
-      publish_message(message(channel, data))
+      #message = {:channel => channel, :data => {:channel => channel}, :ext => {:auth_ => config[:secret_token]}}
+      message = subscription(channel: channel, command: 'publish')
+      
+      if data.kind_of? String
+        message[:eval] = data
+      else
+        message[:data] = data
+      end
+      
+      publish_message(message)
     end
 
     # Sends the given message hash to the Faye server using Net::HTTP.
@@ -55,23 +62,11 @@ module Secpubsub
 		    end	
     	}
     end
-
-    # Returns a message hash for sending to Faye
-    def message(channel, data)
-      #message = {:channel => channel, :data => {:channel => channel}, :ext => {:auth_ => config[:secret_token]}}
-      message = {:channel => channel, :auth_token => config[:secret_token]}
-      if data.kind_of? String
-        message[:eval] = data
-      else
-        message[:data] = data
-      end
-      message
-    end
 	end
 
 	module ViewHelpers
     def subscribe_to(channel)
-    	subscription = Secpubsub.subscription(:channel => channel)
+    	subscription = Secpubsub.subscription(channel: channel, command: 'subscribe')
       content_tag "script", :type => "text/javascript" do
         raw("Secpubsub.subscribe(#{subscription.to_json});")
       end

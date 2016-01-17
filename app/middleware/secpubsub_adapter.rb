@@ -20,15 +20,20 @@ module Secpubsub
         ws.on :message do |event|
           data = unpack(event.data)
           
-          subscribed = authenticate_subscribe(data, ws)
-          published = authenticate_publish(data)
-          
-          unless subscribed || published
-            p [:message, data]
-            ws.close(1000, 'authentication failed')
+          if authenticated(data)
+
+            case data[:command]
+            when 'subscribe'
+              subscribe(data, ws)
+            when 'publish'
+              publish(data)
+              ws.close(1000, 'publish request fulfilled')
+            else
+              ws.close(1000, 'unknown command')
+            end
+          else 
+            ws.close(1000, 'authentication failed') #neither 1008 code works, or reason???
           end
-        
-          ws.close(1000, 'publish request fulfilled') if published
         end
 
         ws.on :close do |event|
@@ -50,29 +55,27 @@ module Secpubsub
     def unpack(data)
       JSON.parse(data).symbolize_keys
     end
+
+    def authenticated(data)
+      Secpubsub.subscription(data)[:auth_token] == data[:auth_token]
+    end
   
-    def authenticate_subscribe(data, ws)
-      if Secpubsub.subscription(data)[:auth_token] == data[:auth_token]
-        @channels[data[:channel]] ||= []
-        @channels[data[:channel]] << ws
-        p [:subscribe, data[:channel], "subscribers: #{(@channels[data[:channel]]||[]).count}"]
-        
-        true
-      end
+    def subscribe(data, ws)
+        ch = data[:channel]
+        @channels[ch] ||= []
+        @channels[ch] << ws
+        p [:subscribe, ch, "subscribers: #{(@channels[ch]||[]).count}"]    
     end
 
-    def authenticate_publish(data)
-      if Secpubsub.config[:secret_token] == data[:auth_token]
-        sanitised_data = data.reject {|k,v| k == :auth_token}.to_json
-        p [:publish, sanitised_data]
-        channel_clients = @channels[data[:channel]] || []
-        channel_clients.each do |client| 
-          client.send(sanitised_data) 
-          p [:sent, data[:channel], client.object_id, sanitised_data]
-        end
-
-        true
-      end 
+    def publish(data)
+      ch = data[:channel]
+      sanitised_data = data.reject {|k,v| k == :auth_token}.to_json
+      p [:publish, sanitised_data]
+      channel_clients = @channels[ch] || []
+      channel_clients.each do |client| 
+        client.send(sanitised_data) 
+        p [:sent, ch, client.object_id, sanitised_data]
+      end
     end   
   end
 end
