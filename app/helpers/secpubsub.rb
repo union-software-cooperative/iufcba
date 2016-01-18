@@ -70,7 +70,7 @@ module Secpubsub
     def subscribe_to(channel, data = {})
     	subscription = Secpubsub.subscription(data.merge(channel: channel, command: 'subscribe'))
       content_tag "script", :type => "text/javascript" do
-        raw("Secpubsub.subscribe(#{subscription.to_json});")
+        raw("Secpubsub.subscribe(#{subscription.to_json}, #{data[:callback]||'undefined'});")
       end
     end
 

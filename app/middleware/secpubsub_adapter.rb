@@ -46,7 +46,6 @@ module Secpubsub
 
           @channels.each do |k,v|
             v.delete(ws)
-            p [k, "count: #{v.length}"]
           end
           ws = nil
         end
@@ -87,23 +86,34 @@ module Secpubsub
 
     def create_presence(data, ws)
       if data[:person_id].present?
-        c = presence.length
+        c = presence[:data].length
         @presence[ws.object_id] = {
           id: data[:person_id], 
           handle: data[:person_handle],
-          created_at: Time.now
+          created_at: Time.now,
+          channel: data[:channel]
         }
-        if c != presence.length
+        if c != presence[:data].length
           p [:presence_change, presence]
+          send_presence
         end
       end
     end
 
     def destroy_presence(ws)
-      c = presence.length
+      c = presence[:data].length
       @presence.reject! { |k,v| k==ws.object_id }
-      if c != presence.length
+      if c != presence[:data].length
         p [:presence_change, presence]
+        send_presence
+      end
+    end
+
+    def send_presence
+      p = presence
+      (@channels['/presence'] || []).each do |client|
+        p [:send_presence]
+        client.send(p.to_json)
       end
     end
 
@@ -112,7 +122,7 @@ module Secpubsub
       @presence.each do |k,v|
         result[v[:id]] = v # assumes items at end of enumeration will have later timestamps
       end
-      result
+      {channel: '/presence', data: result }
     end   
   end
 end

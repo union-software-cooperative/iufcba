@@ -4,6 +4,9 @@ function buildSecpubsub(doc) {
 		subscribe: function(subscription, callback) {
 			var ws = new WebSocket(subscription.server);
 			
+			if (!(callback === undefined))
+				self.set_callback(subscription.channel, callback)
+
 			ws.onmessage = self.callbackDispatch;
 			ws.onopen = function () {
 				ws.send(JSON.stringify(subscription));
@@ -12,12 +15,10 @@ function buildSecpubsub(doc) {
 		},
 		get_callback: function(channel) {
 			result = secpubsub_callbacks[channel];
-			alert('getting ' + channel + ' callback: ' + result);
 			return result;
 		},
 		set_callback: function(channel, callback) {
 			secpubsub_callbacks[channel] = callback;
-			alert('setting ' + channel);
 		}, 
 		callbackDispatch: function(messageEvent) {
 			message = JSON.parse(messageEvent.data);
@@ -29,11 +30,11 @@ function buildSecpubsub(doc) {
 			if (callback === undefined)
 				self.defaultCallback(message);
 			else
-				eval(callback);			
+				callback(message);			
 		},
 		defaultCallback: function(message) {
 			if (typeof message['eval'] === 'undefined')
-				console.log("When subscribing, please provide a callback to handle this message: " + messageEvent.data);
+				console.log("When subscribing, please provide a callback to handle this message: " + message);
 			else
 				eval(message['eval']);
 		},

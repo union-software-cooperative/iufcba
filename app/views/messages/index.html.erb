@@ -1,5 +1,9 @@
 
-<div class="col-sm-8 col-sm-offset-2"/>
+<div id="presence" class="col-sm-2" style="padding-top: 25px;">
+	<strong>Currently Online</strong></h1>
+</div>
+
+<div class="col-sm-8"/>
 	<h1 style="margin-left:0px">Chat</h1>
 	
 	<div id="chatlog" class="left" style="overflow-y:auto;border-top: 1px solid #aaa;">
@@ -22,8 +26,6 @@
 		<% end %> 
 	</div>
 </div>
-<%= subscribe_to "/messages/new", person_id: current_person.id, person_handle: current_person.display_name %>
-<%= subscribe_to "/messages/new/presence" %>
 
 <script type="text/javascript">
 	
@@ -40,15 +42,26 @@
 		});
 	}
 
+	function refresh_presence(message) {
+		presence = "<strong>Currently Online</strong>";
+			presence += "<ul style='padding-left:20px;'>";
+			for (k in message['data']) {
+				presence += "<li>" + message['data'][k]['handle'] + "</li>";
+			}
+			presence += "</ul>";
+			$('#presence').html(presence);
+	}
+
 	function chat_ready() {
 		resize();	
 		localise_time();
 		Secpubsub.connection_lost = function () {
 			$('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
 		}
-		Secpubsub.set_callback('/message/new/presence', function (message) {
-				alert(message);
-		});
+
+		//Secpubsub.set_callback('/presence', function (message) {
+			
+		//});
 	}
 
 	$(document).ready(chat_ready);
@@ -83,3 +96,7 @@
   })
 	
 </script>
+
+<%= subscribe_to "/presence", callback: 'refresh_presence' %>
+<%= subscribe_to "/messages/new", person_id: current_person.id, person_handle: current_person.display_name %>
+
