@@ -68,4 +68,10 @@ class Person < ActiveRecord::Base
     end
     return result
   end
+
+  def reset_password(new_password, new_password_confirmation)
+    # patch devise password reset to include authorizer
+    self.authorizer = self
+    super(new_password, new_password_confirmation)
+  end
 end
