@@ -20,7 +20,7 @@ module Secpubsub
 
         ws.on :message do |event|
           data = unpack(event.data)
-          #p [:message, data]
+          p [:message, data]
           
           if authenticated(data)
             
