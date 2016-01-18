@@ -6,4 +6,4 @@ ENV.each do |k,v|
 end
 
 Rails.application.config.middleware.use Secpubsub::Adapter, Secpubsub.adapter_options
- 
+Rails.application.config.allow_concurrency=true # needed this for my development box, prevent mutex locks - should i run puma with more than one thread?

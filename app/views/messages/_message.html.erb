@@ -1,9 +1,10 @@
 <div class="message">
-	<span class="profile">
-		<%= profile_thumb(message.person) %>
-	</span>
-	<span class="message">
-		<div class="message_heading">
+	<span class="message_text">
+		<div class="message_profile" style="float:left;">
+			<%= profile_thumb(message.person) %>
+		</div>
+		
+		<div class="message_heading" style="margin-left: 40px;">
 			<span class="message_display_name">
 				<strong><%=message.person.display_name %></strong>
 			</span>
@@ -11,7 +12,8 @@
 				<%= time_ago_in_words(message.created_at) %>
 			</span>
 		</div>
-		<div class="body">
+		
+		<div class="body" style="margin-left: 40px;">
 			<p><%=message.body %></p>
 		</div>
 	</span>

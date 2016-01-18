@@ -1,22 +1,25 @@
-<html>
-	<head>
-		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-	  <%= csrf_meta_tags %>
-	</head>
-	<body>
-		<h1>Chat</h1>
 
-		<ul id="chat">
+<div class="col-sm-8 col-sm-offset-2"/>
+	<h1 style="margin-left:0px">Chat</h1>
+
+	<div id="chatlog" class="left" style="overflow-y:auto;">
+		<div id="chat">
 		  <%= render @messages %>
-		</ul>
+		</div>
+	</div>
 
-		<%= form_for Message.new(person_id: current_person.id, display_name: current_person.display_name), remote: true do |f| %>
-		  <%= f.text_field :body %>
-		  <%= f.hidden_field :person_id %>
-		  <%= f.hidden_field :display_name %>
-		  <%= f.submit "Send" %>
-		<% end %> 
+	<%= form_for Message.new(person_id: current_person.id, display_name: current_person.display_name), remote: true do |f| %>
+	  <%= f.text_field :body, style: "margin-left: 40px;" %>
+	  <%= f.hidden_field :person_id %>
+	  <%= f.hidden_field :display_name %>
+	  <%= f.submit "Send" %>
+	<% end %> 
+</div>
+<%= subscribe_to "/messages/new" %>
+<script type="text/javascript">
+	$(function(){
+		$(".left").height(window.innerHeight-200 + 'px');
 		
-		<%= subscribe_to "/messages/new" %>
-	</body>
-</html>
+		 var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); $('#chatlog').scrollTop(height);
+	})
+</script>

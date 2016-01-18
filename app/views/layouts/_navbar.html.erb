@@ -20,6 +20,9 @@
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
           <li>
+            <%= link_to "chat", messages_path %>
+          </li>
+          <li>
             <%= link_to "unions", unions_path %>
           </li>
           <li>

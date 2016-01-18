@@ -1,5 +1,5 @@
-class MessagesController < ActionController::Base
-	layout false 
+class MessagesController < ApplicationController
+	#layout false 
 
 	def index
 		@messages = Message.all

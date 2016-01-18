@@ -1,5 +1,6 @@
 <% data = capture do %>
 	$("#chat").append("<%= escape_javascript render(@message) %>");
+	var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); $('#chatlog').scrollTop(height);
 <% end %> 
 <% Secpubsub.publish_to "/messages/new", data %>
 
