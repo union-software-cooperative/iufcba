@@ -9,7 +9,7 @@
 				<strong><%=message.person.display_name %></strong>
 			</span>
 			<span class="message_timestamp">
-				<%= time_ago_in_words(message.created_at) %>
+				<%=  content_tag(:span, I18n.l(message.created_at, format: :long), data: { time: message.created_at.iso8601 }) %>
 			</span>
 		</div>
 		

@@ -20,18 +20,25 @@
 	<% end %> 
 </div>
 <%= subscribe_to "/messages/new" %>
+
 <script type="text/javascript">
 	
 	function resize() {
-		$(".left").height(window.innerHeight-230 + 'px');
+		$(".left").height(window.innerHeight-230 /* TODO calculate size of header and footer */ + 'px');
 		$('#message_body').width(($('#chatlog').width())+'px');
 		var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
 		$('#chatlog').scrollTop(height);
 	}
 
+	function localise_time() {
+		$("span[data-time]").each(function() {
+			$(this).html(new Date($(this).data('time')).toString());
+		});
+	}
 
 	function chat_ready() {
 		resize();	
+		localise_time();
 	}
 	$(document).ready(chat_ready);
   $(document).on('page:load', chat_ready);
