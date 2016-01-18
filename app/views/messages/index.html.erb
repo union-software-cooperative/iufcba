@@ -8,16 +8,18 @@
 		</div>
 	</div>
 	
-	<%= form_for Message.new(person_id: current_person.id, display_name: current_person.display_name), remote: true do |f| %>
-		<div>
-	  	<%= f.text_area :body, style: 'border: 1px solid #aaa' %>
-		</div>
-	  <%= f.hidden_field :person_id %>
-	  <%= f.hidden_field :display_name %>
-	  <div>
-	  	<%= f.submit "Send" %>
-	  </div>
-	<% end %> 
+	<div id="post_area">
+		<%= form_for Message.new(person_id: current_person.id, display_name: current_person.display_name), remote: true do |f| %>
+			<div>
+		  	<%= f.text_area :body, style: 'border: 1px solid #aaa' %>
+			</div>
+		  <%= f.hidden_field :person_id %>
+		  <%= f.hidden_field :display_name %>
+		  <div>
+		  	<%= f.submit "Send" %>
+		  </div>
+		<% end %> 
+	</div>
 </div>
 <%= subscribe_to "/messages/new" %>
 
@@ -39,6 +41,9 @@
 	function chat_ready() {
 		resize();	
 		localise_time();
+		Secpubsub.connection_lost = function () {
+			$('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
+		}
 	}
 	$(document).ready(chat_ready);
   $(document).on('page:load', chat_ready);
