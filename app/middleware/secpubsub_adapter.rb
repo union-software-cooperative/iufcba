@@ -8,6 +8,7 @@ module Secpubsub
     def initialize(app, options)
       @app     = app
       @channels = {}
+      @presence = {}
     end
 
     def call(env)
@@ -19,10 +20,12 @@ module Secpubsub
 
         ws.on :message do |event|
           data = unpack(event.data)
-          p [:message, data]
+          #p [:message, data]
           
           if authenticated(data)
-
+            
+            create_presence(data, ws)
+            
             case data[:command]
             when 'subscribe'
               subscribe(data, ws)
@@ -39,11 +42,11 @@ module Secpubsub
 
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
+          destroy_presence(ws)
+
           @channels.each do |k,v|
-            p [k, "count: #{v.length}"]
             v.delete(ws)
             p [k, "count: #{v.length}"]
-            
           end
           ws = nil
         end
@@ -78,8 +81,38 @@ module Secpubsub
       channel_clients = @channels[ch] || []
       channel_clients.each do |client| 
         client.send(sanitised_data) 
-        p [:sent, ch, client.object_id, sanitised_data]
+        #p [:sent, ch, client.object_id, sanitised_data]
       end
+    end
+
+    def create_presence(data, ws)
+      if data[:person_id].present?
+        c = presence.length
+        @presence[ws.object_id] = {
+          id: data[:person_id], 
+          handle: data[:person_handle],
+          created_at: Time.now
+        }
+        if c != presence.length
+          p [:presence_change, presence]
+        end
+      end
+    end
+
+    def destroy_presence(ws)
+      c = presence.length
+      @presence.reject! { |k,v| k==ws.object_id }
+      if c != presence.length
+        p [:presence_change, presence]
+      end
+    end
+
+    def presence
+      result = {} 
+      @presence.each do |k,v|
+        result[v[:id]] = v # assumes items at end of enumeration will have later timestamps
+      end
+      result
     end   
   end
 end

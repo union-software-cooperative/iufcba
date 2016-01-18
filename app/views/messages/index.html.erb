@@ -22,7 +22,8 @@
 		<% end %> 
 	</div>
 </div>
-<%= subscribe_to "/messages/new" %>
+<%= subscribe_to "/messages/new", person_id: current_person.id, person_handle: current_person.display_name %>
+<%= subscribe_to "/messages/new/presence" %>
 
 <script type="text/javascript">
 	
@@ -45,6 +46,9 @@
 		Secpubsub.connection_lost = function () {
 			$('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
 		}
+		Secpubsub.set_callback('/message/new/presence', function (message) {
+				alert(message);
+		});
 	}
 
 	$(document).ready(chat_ready);

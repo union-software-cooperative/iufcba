@@ -3,8 +3,10 @@ require 'secpubsub_adapter'
 require 'eventmachine'
 
 module Secpubsub
+  
 	class << self
-		attr_reader :config
+	 
+    attr_reader :config
 
     # Resets the configuration to the default (empty hash)
     def reset_config
@@ -31,7 +33,7 @@ module Secpubsub
     def subscription(options = {})
       sub = {
       	server: server, 
-      	timestamp: (Time.now.to_f * 1000).round
+      	timestamp: (Time.now.to_f * 1000).round, 
       }.merge(options)
       sub[:auth_token] = Digest::SHA1.hexdigest([config[:secret_token], sub[:command], sub[:channel], sub[:timestamp]].join)
       sub[:auth_token] = nil if signature_expired?(sub[:timestamp])
@@ -39,10 +41,9 @@ module Secpubsub
     end
 
     # Returns a message hash for sending to Faye
-    def publish_to(channel, data)
+    def publish_to(channel, data, options = {})
       #message = {:channel => channel, :data => {:channel => channel}, :ext => {:auth_ => config[:secret_token]}}
-      message = subscription(channel: channel, command: 'publish')
-      
+      message = subscription(options.merge(channel: channel, command: 'publish'))
 
       #data = yield
       if data.kind_of? String
@@ -66,8 +67,8 @@ module Secpubsub
 	end
 
 	module ViewHelpers
-    def subscribe_to(channel)
-    	subscription = Secpubsub.subscription(channel: channel, command: 'subscribe')
+    def subscribe_to(channel, data = {})
+    	subscription = Secpubsub.subscription(data.merge(channel: channel, command: 'subscribe'))
       content_tag "script", :type => "text/javascript" do
         raw("Secpubsub.subscribe(#{subscription.to_json});")
       end

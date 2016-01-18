@@ -4,6 +4,6 @@
 	$('#chatlog').animate({scrollTop: height}, 'slow');
 	localise_time();
 <% end %> 
-<% Secpubsub.publish_to "/messages/new", data %>
+<% Secpubsub.publish_to "/messages/new", data, person_id: current_person.id, person_handle: current_person.display_name %>
 
 $("#new_message")[0].reset();
