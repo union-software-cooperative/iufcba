@@ -2,7 +2,12 @@ class MessagesController < ApplicationController
 	#layout false 
 
 	def index
-		@messages = Message.all
+		since = Time.parse(params[:last_message_time] || Time.now.to_s)
+		@messages = Message.where(['created_at < ?', since]).order('created_at desc').limit(25).reverse
+		respond_to do |format|
+      format.html 
+      format.json { return render @messages, formats: 'html' }
+    end
 	end
 
 	def create

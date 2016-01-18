@@ -4,6 +4,7 @@
 	
 	<div id="chatlog" class="left" style="overflow-y:auto;border-top: 1px solid #aaa;">
 		<div id="chat">
+			<div id="load_here"></div>
 		  <%= render @messages %>
 		</div>
 	</div>
@@ -45,9 +46,36 @@
 			$('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
 		}
 	}
+
 	$(document).ready(chat_ready);
   $(document).on('page:load', chat_ready);
 
   $(window).resize(resize);	
+  
+  $('#chatlog').scroll(function(){ 
+  	
+  	if ($(this).scrollTop()==0) {
+  		last_message_time = $("span[data-time]").first().data('time');
+
+  		//$('#load_here').html("Loading...");
+  			
+  		if ($('#load_here').text() != "Loading...") {
+  			$('#load_here').text('Loading...');
+  			
+	  		$.ajax({ 
+	  			url: "messages.json",
+	  			data:  {last_message_time: last_message_time}, 
+	  			dataType: 'html',
+	  			success: function(data) {
+			  		$('#load_here').text('');
+			  		$('#load_here').after(data);
+					}, 
+					error: function(data) {
+						$('#load_here').text('an error occurred loading more messages');
+					}
+				});
+			}
+  	};
+  })
 	
 </script>
