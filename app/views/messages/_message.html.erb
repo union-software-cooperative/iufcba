@@ -14,7 +14,7 @@
 		</div>
 		
 		<div class="body" style="margin-left: 40px;">
-			<p><%=message.body %></p>
+			<%= message.body.split("\r\n").collect{ |i| "<p>#{h(i)}</p>".html_safe}.join("\r\n").html_safe %>
 		</div>
 	</span>
 </div>
