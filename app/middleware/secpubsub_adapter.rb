@@ -67,10 +67,13 @@ module Secpubsub
     end
   
     def subscribe(data, ws)
-        ch = data[:channel]
-        @channels[ch] ||= []
-        @channels[ch] << ws
-        p [:subscribe, ch, "subscribers: #{(@channels[ch]||[]).count}"]    
+      ch = data[:channel]
+      @channels[ch] ||= []
+      @channels[ch] << ws
+      p [:subscribe, ch, "subscribers: #{(@channels[ch]||[]).count}"]    
+      if ch == "/presence"
+        ws.send(presence.to_json)
+      end
     end
 
     def publish(data)
