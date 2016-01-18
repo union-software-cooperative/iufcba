@@ -40,7 +40,10 @@ module Secpubsub
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
           @channels.each do |k,v|
+            p [k, "count: #{v.length}"]
             v.delete(ws)
+            p [k, "count: #{v.length}"]
+            
           end
           ws = nil
         end
