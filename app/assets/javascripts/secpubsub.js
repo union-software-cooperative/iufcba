@@ -13,12 +13,15 @@ function buildSecpubsub(doc) {
 			}
 			ws.onclose = self.default_connection_lost;
 		},
-		get_callback: function(channel) {
+		get_callbacks: function(channel) {
 			result = secpubsub_callbacks[channel];
 			return result;
 		},
 		set_callback: function(channel, callback) {
-			secpubsub_callbacks[channel] = callback;
+			if (secpubsub_callbacks[channel] === undefined)
+				secpubsub_callbacks[channel] = [];
+
+			secpubsub_callbacks[channel].push(callback);
 		}, 
 		callbackDispatch: function(messageEvent) {
 			message = JSON.parse(messageEvent.data);
@@ -26,11 +29,13 @@ function buildSecpubsub(doc) {
 			self.lastMessageEvent = messageEvent;
 			self.lastMessage = message
 
-			callback = self.get_callback(message['channel'])
-			if (callback === undefined)
+			callbacks = self.get_callbacks(message['channel'])
+			if (callbacks === undefined)
 				self.defaultCallback(message);
 			else
-				callback(message);			
+				callbacks.forEach(function(cb){
+					cb(message);
+				});				
 		},
 		defaultCallback: function(message) {
 			if (typeof message['eval'] === 'undefined')
@@ -42,7 +47,7 @@ function buildSecpubsub(doc) {
 			self.connection_lost();
 		}, 
 		connection_lost: function() {
-			alert("Connection lost.  Please refresh the page.");
+			console.log("Connection lost.  Please refresh the page.");
 		}
 	}
 	return self;

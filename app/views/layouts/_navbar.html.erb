@@ -20,9 +20,6 @@
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
           <li>
-            <%= link_to "chat", messages_path %>
-          </li>
-          <li>
             <%= link_to "unions", unions_path %>
           </li>
           <li>
@@ -30,6 +27,9 @@
           </li>
           <li>
             <%= link_to "people", people_path %>
+          </li>
+          <li>
+            <%= link_to "chat <span class='chat-badge badge'>1</span>".html_safe, messages_path %>
           </li>
           <li class="dropdown">
             <a class="dropdown-toggle" aria-expanded="false" area-haspopup="true" role="button" data-toggle="dropdown" href="#">
@@ -54,3 +54,8 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+<div id="message-flash-zone">
+
+</div>
+
+

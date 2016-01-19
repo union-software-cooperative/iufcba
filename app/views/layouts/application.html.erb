@@ -14,9 +14,22 @@
 </head>
 <body>
   <%= render "layouts/navbar" %>
-<div class="container-fluid content-area">
-	<%= yield %>
-</div>
+	<div class="container-fluid content-area">
+		<%= yield %>
+	</div>
 
+	<% if person_signed_in? %>
+		<script type="text/javascript">
+			function refresh_chat_icon(message) {
+				$(".chat-badge").html(Object.keys(message.data).length);
+			}
+			function flash_message(message) {
+				flash = '<div class="alert alert-info">' + message.person_handle + ' is chatting...' + '</div>';
+				$(flash).appendTo("#message-flash-zone").slideDown('fast').delay(1500).slideUp('slow');
+			}
+		</script>
+		<%= subscribe_to "/presence", person_id: current_person.id, person_handle: current_person.display_name, callback: 'refresh_chat_icon' %>
+		<%= subscribe_to "/messages/new", person_id: current_person.id, person_handle: current_person.display_name, callback: 'flash_message' unless params[:controller] == 'messages'%>
+	<% end %>
 </body>
 </html>
