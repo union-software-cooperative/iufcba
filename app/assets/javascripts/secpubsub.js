@@ -1,15 +1,17 @@
 function buildSecpubsub(doc) {
 	var secpubsub_callbacks = {}
+	var clients = []
 	var self = {
 		subscribe: function(subscription, callback) {
 			var ws = new WebSocket(subscription.server);
-			
+
 			if (!(callback === undefined))
 				self.set_callback(subscription.channel, callback)
 
 			ws.onmessage = self.callbackDispatch;
 			ws.onopen = function () {
 				ws.send(JSON.stringify(subscription));
+				clients.push(ws)
 			}
 			ws.onclose = self.default_connection_lost;
 		},
@@ -48,8 +50,18 @@ function buildSecpubsub(doc) {
 		}, 
 		connection_lost: function() {
 			console.log("Connection lost.  Please refresh the page.");
+		},
+		page_reset: function() {
+			secpubsub_callbacks = {};
+			clients.forEach(function(client){
+				client.close();
+			})
+			clients = [];
+
 		}
 	}
+	$(document).on('page:before-change', self.page_reset); // handle turbo links
+
 	return self;
 }
 
