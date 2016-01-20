@@ -9,6 +9,7 @@ module Secpubsub
       @app     = app
       @channels = {}
       @presence = {}
+      Secpubsub.adapter = self # I kind of hate circular references
     end
 
     def call(env)

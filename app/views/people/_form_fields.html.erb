@@ -70,7 +70,9 @@
     <% end %>
   </div>
 
-  <div class="form-group">
-    <%= label_tag "Resend Invite" %><br>
-    <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
-  </div>
+  <% unless params[:action] == "new" %>
+    <div class="form-group">
+      <%= label_tag "Resend Invite" %>&nbsp;&nbsp;<small>you will be BCC'd the invitation email FYI</small><br>
+      <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %> 
+    </div>
+  <% end %>

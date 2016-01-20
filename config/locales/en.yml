@@ -23,18 +23,18 @@ en:
   helpers:
     label:
       rec:
-        anti_precariat: Casual conversion or limitation
-        anti_precariat_page: Casual conversion/limitation page number
-        anti_precariat_clause:  Casual conversion/limitation notes
+        anti_precariat: Limit to casual work
+        anti_precariat_page: Limits to casual work page number
+        anti_precariat_clause:  Limits to casual work notes
         union_mandate: Union recognition
         union_mandate_page: Union recognition page number
         union_mandate_clause:  Union recognition notes
         grievance_handling: Grievance handling
         grievance_handling_page: Grievance handling page number
         grievance_handling_clause: Grievance handling notes
-        specific_rights: Specific rights
-        specific_rights_page: Specific rights page number
-        specific_rights_clause: Specific rights notes
+        specific_rights: Specific union rights
+        specific_rights_page: Specific union rights page number
+        specific_rights_clause: Specific union rights notes
         other_provisions: Other provisions and comments
   hello: "Hello world"
   gender:

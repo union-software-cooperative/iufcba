@@ -36,8 +36,7 @@ function buildSecpubsub(doc) {
 
 				subscriptions.push(subscription);
 			} else {
-				// Else convert the subscription into a resubscription 
-				// for the sake of updating presence
+				// resubscribe for the sake of updating presence
 				if (!(subscription.client === undefined)) {
 					subscription.client.send(JSON.stringify(registration));
 				}
@@ -53,26 +52,18 @@ function buildSecpubsub(doc) {
 			subscription = self.get_subscription(channel);
 			if (subscription === undefined) return;
 
+			// Find the index of the callback - bloody IE8 has no indexOf
 			var index = -1;
 			for (var i = 0; i < subscription.callbacks.length; i++)
 				if (subscription.callbacks[i].toString() == callback.toString())
 					index = i;
 
+			// Remove the callback
 			if (index != -1) 
 				subscription.callbacks.splice(index, 1);
 
-			/*
-			// Because the connection may not be open by the time we unsubscribe
-			// I remarked this, in order to let it hang around.  It will get reused
-			// when the next turbolinks pages subscribes again.
-
-			if (subscription.callbacks.length == 0) {
-				subscription.client.close();
-				subscriptions = $.grep(subscriptions, function(sub) {
-					return sub.channel != channel;
-				});
-			}
-			*/
+			// I don't close the websocket when there are no callbacks
+			// because it might get used again - think turbo links
 		},
 		get_subscription: function(channel) {
 			var result;
@@ -89,12 +80,15 @@ function buildSecpubsub(doc) {
 
 			return result;
 		}, 
+		// Execute zero or more callbacks for channel
 		callbackDispatch: function(messageEvent) {
 			message = JSON.parse(messageEvent.data);
 			
+			// For diagnostics
 			self.lastMessageEvent = messageEvent;
 			self.lastMessage = message
 
+			// Execute callbacks for channel
 			subscription = self.get_subscription(message['channel'])
 			if (!(subscription === undefined)) {
 				subscription.callbacks.forEach(function(cb){
@@ -102,6 +96,7 @@ function buildSecpubsub(doc) {
 				});	
 			}			
 		},
+		// Will execute what ever is sent as eval, otherwise will just console log the data
 		defaultCallback: function(message) {
 			if (typeof message['eval'] === 'undefined')
 				console.log("When subscribing, please provide a callback to handle this message: " + message);

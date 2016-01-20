@@ -30,6 +30,13 @@ class PersonMailer < ApplicationMailer
 		mail(from: from(request), to: person.email, subject: "Thanks for sharing an agreement")
 	end
 
+	def message_notice(person, message, request)
+		@person = person
+		@message = message
+		@request = request
+		mail(from: from(request), to: person.email, subject: "#{message.person.display_name} is chatting")
+	end
+
 private
 	def from(request)
 		"noreply@#{request.host}".gsub("www.", "")

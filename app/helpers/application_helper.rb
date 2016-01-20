@@ -58,4 +58,9 @@ module ApplicationHelper
         options_for_select([[entity.name, entity.id]], entity.id) :
         []
 	end
+
+	def offline_people()
+    Person.where(["not (invitation_accepted_at is null or id in (?))", Secpubsub.presence.keys])
+  end
+
 end

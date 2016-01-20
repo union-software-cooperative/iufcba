@@ -19,6 +19,20 @@ module Secpubsub
     	}
     end
 
+    def adapter=(adapter)
+      @adapter = adapter
+    end
+
+    def adapter
+      @adapter
+    end 
+
+    def presence
+      # this might be a really really bad thing to do?
+      # should my server be subscribing to presence, and getting the response.  
+      @adapter.presence[:data] unless @adapter.nil?
+    end
+
     def server 
     	url = URI.parse(config[:server])
     	(url.scheme == 'https' ? "wss" : "ws") + "://#{url.host}:#{url.port}"

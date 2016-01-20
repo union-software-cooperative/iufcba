@@ -26,6 +26,7 @@
 			function flash_message(message) {
 				flash = '<div class="alert alert-info" style="z-index: 1000; position:fixed; right: 10px; top: 10px; box-shadow: 0 0 30px black;"><a href="/messages">' + message.eval + '</a></div>';
 				$(flash).appendTo("#message-flash-zone").slideDown('fast').delay(3000).slideUp('slow');
+				localise_time();
 			}
 		</script>
 		<%= subscribe_to "/presence", person_id: current_person.id, person_handle: current_person.display_name, callback: 'refresh_chat_icon' %>
