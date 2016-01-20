@@ -1,9 +1,6 @@
-<% data = capture do %>
-	$("#chat").append("<%= escape_javascript render(@message) %>");
-	var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
-	$('#chatlog').animate({scrollTop: height}, 'slow');
-	localise_time();
+<% message_html = capture do %>
+	<%= render(@message) %>
 <% end %> 
-<% Secpubsub.publish_to "/messages/new", data, person_id: current_person.id, person_handle: current_person.display_name %>
+<% Secpubsub.publish_to "/messages/new", message_html, person_id: current_person.id, person_handle: current_person.display_name %>
 
 $("#new_message")[0].reset();

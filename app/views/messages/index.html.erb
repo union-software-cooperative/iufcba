@@ -42,6 +42,14 @@
 		});
 	}
 
+	function append_message(message)
+	{
+		$("#chat").append(message.eval);
+		var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
+		$('#chatlog').animate({scrollTop: height}, 'slow');
+		localise_time();
+	}
+
 	function refresh_presence(message) {
 		presence = "<strong>Currently Online</strong>";
 			presence += "<ul style='padding-left:20px;'>";
@@ -52,24 +60,7 @@
 			$('#presence').html(presence);
 	}
 
-	function chat_ready() {
-		resize();	
-		localise_time();
-		Secpubsub.connection_lost = function () {
-			$('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
-		}
-
-		//Secpubsub.set_callback('/presence', function (message) {
-			
-		//});
-	}
-
-	$(document).ready(chat_ready);
-  $(document).on('page:load', chat_ready);
-
-  $(window).resize(resize);	
-  
-  $('#chatlog').scroll(function(){ 
+	$('#chatlog').scroll(function(){ 
   	
   	if ($(this).scrollTop()==0) {
   		last_message_time = $("span[data-time]").first().data('time');
@@ -86,6 +77,7 @@
 	  			success: function(data) {
 			  		$('#load_here').text('');
 			  		$('#load_here').after(data);
+			  		localise_time();
 					}, 
 					error: function(data) {
 						$('#load_here').text('an error occurred loading more messages');
@@ -93,10 +85,33 @@
 				});
 			}
   	};
-  })
-	
+  });
+
+	function chat_ready() {
+		resize();	
+		localise_time();
+		Secpubsub.connection_lost = function (subscription, closeEvent) {
+			if (subscription.channel == '/messages/new')
+				$('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
+		}
+
+		// Application flashes_message, and turbo links prevents clean up, so unsubscribe here
+		Secpubsub.unsubscribe('/messages/new', flash_message); 
+	}
+
+	$(document).ready(chat_ready);
+  $(document).on('page:load', chat_ready);
+  $(document).on('page:before-change', function() {
+  	Secpubsub.unsubscribe('/messages/new', append_message);
+  	Secpubsub.unsubscribe('/presence', refresh_presence);
+  	$(window).off("resize");
+  	$(document).off('page:load');
+  	$(document).off('page:before-change');
+  });
+
+  $(window).resize(resize);		
 </script>
 
 <%= subscribe_to "/presence", callback: 'refresh_presence' %>
-<%= subscribe_to "/messages/new", person_id: current_person.id, person_handle: current_person.display_name %>
+<%= subscribe_to "/messages/new", callback: 'append_message', person_id: current_person.id, person_handle: current_person.display_name %>
 

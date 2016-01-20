@@ -1,29 +1,93 @@
 function buildSecpubsub(doc) {
-	var secpubsub_callbacks = {}
-	var clients = []
+	var subscriptions = [];
 	var self = {
-		subscribe: function(subscription, callback) {
-			var ws = new WebSocket(subscription.server);
+		subscribe: function(registration, callback) {
 
-			if (!(callback === undefined))
-				self.set_callback(subscription.channel, callback)
+			var subscription = self.get_subscription(registration.channel);
 
-			ws.onmessage = self.callbackDispatch;
-			ws.onopen = function () {
-				ws.send(JSON.stringify(subscription));
-				clients.push(ws)
+			if (subscription === undefined) {
+				// if no existing subscription and websocket
+				var ws = new WebSocket(registration.server);
+			
+				ws.onmessage = self.callbackDispatch;
+			
+				ws.onopen = function () {
+					ws.send(JSON.stringify(registration));
+					subscription.client = ws;
+				}
+
+				subscription = {
+					channel: registration.channel,
+					registration: registration,
+					callbacks: [], 
+					client: undefined, 
+					add_callback: function(callback) {
+						var exists = false;
+						subscription.callbacks.forEach(function(cb) {
+							if (cb.toString() == callback.toString()) exists = true;
+						});
+						if (!exists) subscription.callbacks.push(callback);
+					}	
+				}
+
+				ws.onclose = function (closeEvent) {
+					self.default_connection_lost(subscription, closeEvent);
+				}
+
+				subscriptions.push(subscription);
+			} else {
+				// Else convert the subscription into a resubscription 
+				// for the sake of updating presence
+				if (!(subscription.client === undefined)) {
+					subscription.client.send(JSON.stringify(registration));
+				}
 			}
-			ws.onclose = self.default_connection_lost;
+			
+			if (callback === undefined)
+				callback = self.defaultCallback;
+
+			subscription.add_callback(callback);
+			return subscription;
 		},
-		get_callbacks: function(channel) {
-			result = secpubsub_callbacks[channel];
+		unsubscribe: function(channel, callback) {
+			subscription = self.get_subscription(channel);
+			if (subscription === undefined) return;
+
+			var index = -1;
+			for (var i = 0; i < subscription.callbacks.length; i++)
+				if (subscription.callbacks[i].toString() == callback.toString())
+					index = i;
+
+			if (index != -1) 
+				subscription.callbacks.splice(index, 1);
+
+			/*
+			// Because the connection may not be open by the time we unsubscribe
+			// I remarked this, in order to let it hang around.  It will get reused
+			// when the next turbolinks pages subscribes again.
+
+			if (subscription.callbacks.length == 0) {
+				subscription.client.close();
+				subscriptions = $.grep(subscriptions, function(sub) {
+					return sub.channel != channel;
+				});
+			}
+			*/
+		},
+		get_subscription: function(channel) {
+			var result;
+			subscriptions.forEach(function(sub){
+				if (sub.channel == channel) result = sub;
+			});
 			return result;
 		},
-		set_callback: function(channel, callback) {
-			if (secpubsub_callbacks[channel] === undefined)
-				secpubsub_callbacks[channel] = [];
+		get_callbacks: function(channel) {
+			var result = [];
+			subscription = self.get_subscription(channel);
+			if (!(subscription === undefined))
+				result = subscription.callbacks;
 
-			secpubsub_callbacks[channel].push(callback);
+			return result;
 		}, 
 		callbackDispatch: function(messageEvent) {
 			message = JSON.parse(messageEvent.data);
@@ -31,13 +95,12 @@ function buildSecpubsub(doc) {
 			self.lastMessageEvent = messageEvent;
 			self.lastMessage = message
 
-			callbacks = self.get_callbacks(message['channel'])
-			if (callbacks === undefined)
-				self.defaultCallback(message);
-			else
-				callbacks.forEach(function(cb){
+			subscription = self.get_subscription(message['channel'])
+			if (!(subscription === undefined)) {
+				subscription.callbacks.forEach(function(cb){
 					cb(message);
-				});				
+				});	
+			}			
 		},
 		defaultCallback: function(message) {
 			if (typeof message['eval'] === 'undefined')
@@ -45,22 +108,30 @@ function buildSecpubsub(doc) {
 			else
 				eval(message['eval']);
 		},
-		default_connection_lost: function() {
-			self.connection_lost();
-		}, 
-		connection_lost: function() {
-			console.log("Connection lost.  Please refresh the page.");
-		},
-		page_reset: function() {
-			secpubsub_callbacks = {};
-			clients.forEach(function(client){
-				client.close();
-			})
-			clients = [];
+		// TODO clean up subscriptions
+		default_connection_lost: function(subscription, closeEvent) {
+			var index = -1;
+			for(var i = 0; i < subscriptions.length; i++)
+				if (subscription == subscriptions[1]) index = i;
 
+			subscriptions.splice(index, 1);
+
+			self.connection_lost(subscription, closeEvent); // user customizable event
+		}, 
+		// Generic function for user override
+		connection_lost: function(subscription, closeEvent) {
+			console.log("Connection to " + subscription.channel + " server lost.  Please refresh the page.");
+		},
+		// Was thinking this would be useful, particularly when using turbo-links, but
+		// closing websockets is slow.  
+		page_reset: function() {
+			subscriptions.forEach(function(s){
+				s.client.close();
+			});
+			subscriptions = [];
 		}
 	}
-	$(document).on('page:before-change', self.page_reset); // handle turbo links
+	//$(document).on('page:before-change', self.page_reset); // handle turbo links
 
 	return self;
 }
