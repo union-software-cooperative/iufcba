@@ -22,7 +22,7 @@ x</div>
 		  <%= f.hidden_field :person_id %>
 		  <%= f.hidden_field :display_name %>
 		  <div>
-		  	<%= f.submit "Send", class: 'btn btn-default', style: 'margin-top:5px;' %>
+		  	<%= f.submit "Send", id: 'message_submit', class: 'btn btn-default', style: 'margin-top:5px;' %>
 		  </div>
 		<% end %> 
 	</div>
@@ -31,7 +31,7 @@ x</div>
 <script type="text/javascript">
 	
 	function resize() {
-		$(".left").height(window.innerHeight-270 /* TODO calculate size of header and footer */ + 'px');
+		$(".left").height(window.innerHeight-$("#chatlog").offset().top - $("#post_area").height() - 15 + 'px');
 		$('#message_body').width(($('#chatlog').width())-30+'px');
 		var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
 		$('#chatlog').scrollTop(height);
@@ -54,6 +54,7 @@ x</div>
 			presence += "</ul>";
 			presence += "<small>Everyone offline will be emailed</small>";
 			$('#presence').html(presence);
+			resize();	
 	}
 
 	$('#chatlog').scroll(function(){ 
@@ -84,7 +85,6 @@ x</div>
   });
 
 	function chat_ready() {
-		resize();	
 		localise_time();
 		Secpubsub.connection_lost = function (subscription, closeEvent) {
 			if (subscription.channel == '/messages/new')
@@ -93,6 +93,7 @@ x</div>
 
 		// Application flashes_message, and turbo links prevents clean up, so unsubscribe here
 		Secpubsub.unsubscribe('/messages/new', flash_message); 
+		resize();	
 	}
 
 	$(document).ready(chat_ready);
