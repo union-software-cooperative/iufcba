@@ -96,16 +96,16 @@ x</div>
 	}
 
 	$(document).ready(chat_ready);
-  $(document).on('page:load', chat_ready);
-  $(document).on('page:before-change', function() {
+  $(document).on('page:load.chat', chat_ready);
+  $(document).on('page:before-change.chat', function() {
   	Secpubsub.unsubscribe('/messages/new', append_message);
   	Secpubsub.unsubscribe('/presence', refresh_presence);
-  	$(window).off("resize");
-  	$(document).off('page:load');
-  	$(document).off('page:before-change');
+  	$(window).off("resize.chat");
+  	$(document).off('page:load.chat');
+  	$(document).off('page:before-change.chat');
   });
 
-  $(window).resize(resize);		
+  $(window).on('resize.chat', resize);		
 </script>
 
 <%= subscribe_to "/presence", callback: 'refresh_presence' %>
