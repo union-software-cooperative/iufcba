@@ -45,10 +45,16 @@ class PeopleController < ApplicationController
   # DELETE /people/1
   # DELETE /people/1.json
   def destroy
-    @person.destroy
+    @person.destroy rescue nil
     respond_to do |format|
-      format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
-      format.json { head :no_content }
+      if @person.destroyed?
+        format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to edit_person_path(@person), notice: "Could not delete person, probably because they've posted content.  TODO Create a way to deactivate and hide people."
+        }
+        format.json { render json: @person.errors, status: :unprocessable_entity }
+      end
     end
   end
 

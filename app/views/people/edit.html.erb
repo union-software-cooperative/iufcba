@@ -1,7 +1,6 @@
 <div class="col-sm-8 col-sm-offset-2"/>
 	<p id="notice"><%= notice %></p>
-	<%= render 'recs/recs' %>
-
+	
   <% unless @person.union.nil? %>
 	  <%= link_to @person.union.short_name + " Agreements", union_path(@person.union), class: "btn btn-default pull-right" %>
 	<% end %>
