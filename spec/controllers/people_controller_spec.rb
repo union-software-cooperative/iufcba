@@ -91,7 +91,7 @@ describe PeopleController do
 
           it "will allow updating of colleagues" do
             put :update, {id: @insider.to_param, person: { first_name: "bob"} }
-            response.should redirect_to(@insider)
+            response.should redirect_to(people_path)
           end
         end
       end
@@ -163,7 +163,7 @@ describe PeopleController do
         it "redirects to the person" do
           person = Person.create! valid_attributes
           put :update, {:id => person.to_param, :person => valid_attributes}
-          response.should redirect_to(person)
+          response.should redirect_to(people_path)
         end
       end
 

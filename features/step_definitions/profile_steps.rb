@@ -14,7 +14,7 @@ Then(/^I can add a profile picture$/) do
 end
 
 Then(/^I can see my profile picture$/) do
-	page.should have_selector("img.profile_image")
+	page.should have_selector("img.profile_logo")
 end
 
 
