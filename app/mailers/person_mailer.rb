@@ -39,7 +39,7 @@ class PersonMailer < ApplicationMailer
 
 	def private_email(to, from, subject, body, request)
 		@body = body
-		headers[:bcc]= from.email
+		headers(:bcc) = from.email
 		mail(from: from.email, to: to.email, subject: subject)
 	end
 
