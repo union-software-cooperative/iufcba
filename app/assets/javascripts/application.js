@@ -16,6 +16,7 @@
 //= require turbolinks
 //= require select2
 //= require bootstrap-switch.min
+//= require jquery.playSound
 //= require secpubsub
 //= require application_helpers
 //= require_tree .

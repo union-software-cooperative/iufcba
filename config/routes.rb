@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/public/:filename', to: 'files#get'
   resources :agreements, controller: :recs, type: 'Rec'
   root "messages#index"
 
