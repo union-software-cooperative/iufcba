@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
-  before_action :set_person, only: [:show, :edit, :update, :destroy]
+  before_action :set_person, only: [:show, :edit, :update, :destroy, :compose_email, :send_email]
   before_action :forbid, only: [:show, :edit, :update, :destroy]
 
   # GET /people
@@ -57,6 +57,14 @@ class PeopleController < ApplicationController
       end
     end
   end
+
+  def compose_email
+  end
+
+  def send_email
+      PersonMailer.private_email(@person, current_person, params[:subject], params[:body], request).deliver_now     
+      redirect_to people_url, notice: "Email sent..."  
+  end  
 
   private
     # Use callbacks to share common setup or constraints between actions.

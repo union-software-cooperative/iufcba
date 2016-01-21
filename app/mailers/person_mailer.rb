@@ -37,6 +37,11 @@ class PersonMailer < ApplicationMailer
 		mail(from: from(request), to: person.email, subject: "#{message.person.display_name} is chatting")
 	end
 
+	def private_email(to, from, subject, body, request)
+		@body = body
+		mail(from: from.email, to: to.email, bcc: from.email, subject: subject)
+	end
+
 private
 	def from(request)
 		"noreply@#{request.host}".gsub("www.", "")

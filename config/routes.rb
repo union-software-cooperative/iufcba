@@ -16,7 +16,13 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :people, except: [:new] # people can only be invited
+  resources :people, except: [:new] do # people can only be invited
+    member do 
+      get 'compose_email'
+      patch 'send_email'
+    end
+  end 
+
   resources :recs do
     member do
       get 'follow'
