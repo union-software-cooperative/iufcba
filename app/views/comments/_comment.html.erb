@@ -1,6 +1,6 @@
 <div class="comment">
   <%="#{comment.person.display_name} @ #{comment.created_at}" %>  
-  <% if current_person == comment.person %>
+  <% if current_person == comment.person || owner? || (comment.post.parent.type == 'Union' && can_edit_union?(comment.post.parent)) %>
 		<small><%=link_to "<span class=\"glyphicon glyphicon-trash\"></span>".html_safe, comment, method: :delete, data: { confirm: 'Are you sure?' }, class: "pull-right delete" %></small>
 	<% end %> 
   <p class="comment_body">

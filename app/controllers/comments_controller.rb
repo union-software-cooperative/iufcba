@@ -23,7 +23,7 @@ class CommentsController < ApplicationController
   def destroy
     parent = @comment.post.parent
     # TODO Can the CanCan gem clean this up.  Because there is no current_person acess in model so can't use before_destroy
-    if @comment.person == current_person
+    if @comment.person == current_person || owner? || (parent.type == 'Union' && can_edit_union?(parent))
       @comment.destroy
       notice = 'Comment was successfully destroyed.'
     else
