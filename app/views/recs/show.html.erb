@@ -11,8 +11,9 @@
         <%= link_to '<span class="glyphicon glyphicon-pencil"/>'.html_safe, edit_rec_path(@rec), class: "btn btn-small" %>
         <%= link_to '<span class="glyphicon glyphicon-trash"/>'.html_safe, @rec, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-small" %>
     </span>
-    <h1><%=render @rec.company if @rec.company%>
-      and <%=render @rec.union if @rec.union %>
+    <h1>
+      <%=render @rec.union if @rec.union %>
+      <%=render @rec.company if @rec.company%>
     </h1>
     <p>
       <%= link_to "<span class='glyphicon glyphicon-paperclip'/>".html_safe, @rec.attachment_url if @rec.attachment_url%>
