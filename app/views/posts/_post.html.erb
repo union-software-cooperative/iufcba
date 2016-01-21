@@ -18,9 +18,11 @@
 				<% end %>
 			</div>
 		<% end %>
-		<p class="post_body">
-			<%= post.body %>
-		</p>
+		<% unless post.body.blank? %>
+			<p class="post_body">
+				<%= post.body %>
+			</p>
+		<% end %>
 		<%= render post.comments %>
 		<% @comment = Comment.new(post: post) %>
 		<%= render partial: "comments/form" %>

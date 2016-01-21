@@ -24,7 +24,7 @@ Then(/^I can comment "(.*?)" beneath "(.*?)"$/) do |comment_body, post_body|
 	p = find("p.post_body", text: post_body).find(:xpath, '..')
 	within p do
 		fill_in "comment_body", with: comment_body
-		click_button "post"
+		click_button "Post"
 		current_url.should eq(starting_url)
 	end
 
