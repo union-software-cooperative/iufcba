@@ -1,4 +1,7 @@
 app_helper_ready = ->
+	
+	localise_time()
+
 	$('input[type=file]').bind 'change', ->
 	  size_in_megabytes = Math.round(@files[0].size / 1024 / 1024)
 	  upload_time = Math.round(@files[0].size / 1024 / (1024/8))

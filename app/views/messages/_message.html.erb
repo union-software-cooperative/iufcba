@@ -10,7 +10,7 @@
 			</span>
 			<small>
 				<span class="message_timestamp"  style="color: #aaa;">
-					<%=  content_tag(:span, I18n.l(message.created_at, format: :long), data: { time: message.created_at.iso8601 }) %>
+					<%=local_time_tag(message.created_at) %>
 				</span>
 			</small>
 		</div>

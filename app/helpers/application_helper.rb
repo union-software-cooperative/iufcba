@@ -63,4 +63,7 @@ module ApplicationHelper
     Person.where(["not (invitation_accepted_at is null or id in (?))", Secpubsub.presence.keys])
   end
 
+  def local_time_tag(t)
+  	content_tag(:span, I18n.l(t, format: :long), data: { time: t.iso8601 })
+  end
 end

@@ -3,7 +3,7 @@
 		<h3>
 				<%=profile_thumb(post.person)%>
 				<%=post.person.display_name%>
-				<small><%=I18n.l post.created_at, format: :long%></small>
+				<small><%=local_time_tag post.created_at %></small>
 				<% if current_person == post.person %>
 					<small><%=link_to "<span class=\"glyphicon glyphicon-trash\"></span>".html_safe, post, method: :delete, data: { confirm: 'Are you sure?' }, class: "pull-right delete" %></small>
 				<% end %>
