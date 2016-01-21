@@ -5,7 +5,10 @@
       <a class="navbar-brand" href="/">
         <img src="<%=image_path('iuf_logo.png')%>">
         <img src="<%=image_path('iuf_dairy_logo.jpg')%>">
-        agreements
+        chat 
+        <% if person_signed_in? %>
+          <span class='chat-badge badge'>1</span>
+        <% end %>
       </a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -20,6 +23,9 @@
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
           <li>
+            <%= link_to "agreements", recs_path %>
+          </li>
+          <li>
             <%= link_to "unions", unions_path %>
           </li>
           <li>
@@ -27,9 +33,6 @@
           </li>
           <li>
             <%= link_to "people", people_path %>
-          </li>
-          <li>
-            <%= link_to "chat <span class='chat-badge badge'>1</span>".html_safe, messages_path %>
           </li>
           <li class="dropdown">
             <a class="dropdown-toggle" aria-expanded="false" area-haspopup="true" role="button" data-toggle="dropdown" href="#">

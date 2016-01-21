@@ -1,13 +1,12 @@
 
-<div id="presence" class="col-sm-2" style="padding-top: 25px;">
+<div id="presence" class="col-sm-2" style="margin-top: 5px; border-bottom: 1px solid #aaa;">
 	<strong>Currently Online</strong>
 
-x</div>
+	<hr/>
+</div>
 
 <div class="col-sm-8"/>
-	<h1 style="margin-left:0px">Chat</h1>
-	
-	<div id="chatlog" class="left" style="overflow-y:auto;border-top: 1px solid #aaa;">
+	<div id="chatlog" class="left" style="overflow-y:auto;margin-top: 5px; ">
 		<div id="chat">
 			<div id="load_here"></div>
 		  <%= render @messages %>
@@ -31,7 +30,7 @@ x</div>
 <script type="text/javascript">
 	
 	function resize() {
-		$(".left").height(window.innerHeight-$("#chatlog").offset().top - $("#post_area").height() - 15 + 'px');
+		$(".left").height(window.innerHeight-$("#chatlog").offset().top - $("#post_area").height() - 5 + 'px');
 		$('#message_body').width(($('#chatlog').width())-30+'px');
 		var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
 		$('#chatlog').scrollTop(height);
