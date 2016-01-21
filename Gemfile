@@ -82,3 +82,5 @@ gem "socialization", :git => 'https://github.com/union-software-cooperative/soci
 
 gem "faye-websocket"
 gem "puma"
+
+gem "exception_notification"
