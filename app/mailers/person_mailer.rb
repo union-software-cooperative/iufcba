@@ -30,11 +30,11 @@ class PersonMailer < ApplicationMailer
 		mail(from: from(request), to: person.email, subject: "Thanks for sharing an agreement")
 	end
 
-	def message_notice(person, message, request)
+	def message_notice(person, message, url, from_email)
 		@person = person
 		@message = message
-		@request = request
-		mail(from: from(request), to: person.email, subject: "#{message.person.display_name} is chatting")
+		@url = url
+		mail(from: from_email, to: person.email, subject: "#{message.person.display_name} is chatting")
 	end
 
 	def private_email(to, from, subject, body, request)

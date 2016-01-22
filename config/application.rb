@@ -25,5 +25,6 @@ module Iufad
     config.after_initialize do
         config.owner_union = Union.find_by_short_name(ENV['OWNER_UNION']) rescue nil
     end
+    config.active_job.queue_adapter = :sucker_punch
   end
 end
