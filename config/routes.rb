@@ -31,8 +31,8 @@ Rails.application.routes.draw do
 
   get '/public/:filename', to: 'files#get'
   resources :agreements, controller: :recs, type: 'Rec'
-  root "messages#index"
-
+  #root "messages#index"
+  root "recs#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
