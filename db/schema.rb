@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160117064400) do
+ActiveRecord::Schema.define(version: 20160304071631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,10 +148,10 @@ ActiveRecord::Schema.define(version: 20160117064400) do
     t.boolean  "specific_rights"
     t.text     "specific_rights_clause"
     t.integer  "followers_count",           default: 0
-    t.integer  "grievance_handling_page"
-    t.integer  "union_mandate_page"
-    t.integer  "anti_precariat_page"
-    t.integer  "specific_rights_page"
+    t.string   "grievance_handling_page"
+    t.string   "union_mandate_page"
+    t.string   "anti_precariat_page"
+    t.string   "specific_rights_page"
   end
 
   add_index "recs", ["company_id"], name: "index_recs_on_company_id", using: :btree
