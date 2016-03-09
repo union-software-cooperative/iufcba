@@ -15,6 +15,23 @@ class MessagesController < ApplicationController
 		@message = Message.create!(message_params)
 	end
 
+	# DELETE /comments/1.json
+  def destroy
+    @message = Message.find(params[:id])
+
+    respond_to do |format|
+    	if @message.person == current_person || owner? 
+      	if @message.destroy
+      		format.js { render :destroy }
+      	else 
+      		format.js { render js: "alert('Whoops!  Something went wrong...');" } # unprocessible 
+    		end
+    	else
+    		format.js { render js: "alert('You are forbidden');" } # forbidden 
+    	end
+    end
+  end
+
  private
  	def message_params
  		  params.require(:message).permit(:body, :person_id, :display_name)
