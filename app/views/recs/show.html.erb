@@ -53,7 +53,7 @@
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.grievance_handling")%></h2>
           <%= check_box_tag "rec_greivance_handling", 1, @rec.grievance_handling, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
           <p>
-            <%= @rec.grievance_handling == false || @rec.grievance_handling.blank? ? "" : "Page #{@rec.grievance_handling_page}:" %>
+            <%= @rec.grievance_handling == false || @rec.grievance_handling.blank? ? "" : "#{@rec.grievance_handling_page}:" %>
             <%= @rec.grievance_handling == false || @rec.grievance_handling_clause.blank? ? "No notes" : @rec.grievance_handling_clause %>
           </p>
         </div>
@@ -64,7 +64,7 @@
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.union_mandate")%></h2>
           <%= check_box_tag "rec_union_mandate", 1, @rec.union_mandate, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
           <p>
-            <%= @rec.union_mandate == false || @rec.union_mandate_page.blank? ? "" : "Page #{@rec.union_mandate_page}:" %>
+            <%= @rec.union_mandate == false || @rec.union_mandate_page.blank? ? "" : "#{@rec.union_mandate_page}:" %>
             <%= @rec.union_mandate == false  || @rec.union_mandate_clause.blank? ? "No notes" : @rec.union_mandate_clause %>
           </p>
       </div>
@@ -79,7 +79,7 @@
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.anti_precariat")%></h2>
           <%= check_box_tag "rec_anti_precariat", 1, @rec.anti_precariat, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
           <p>
-            <%= @rec.anti_precariat == false || @rec.anti_precariat_page.blank? ? "" : "Page #{@rec.anti_precariat_page}:" %>
+            <%= @rec.anti_precariat == false || @rec.anti_precariat_page.blank? ? "" : "#{@rec.anti_precariat_page}:" %>
             <%= @rec.anti_precariat == false || @rec.anti_precariat_clause.blank? ? "No notes" : @rec.anti_precariat_clause %>
           </p>
         </div>
@@ -89,7 +89,7 @@
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.specific_rights")%></h2>
           <%= check_box_tag "rec_specific_rights", 1, @rec.specific_rights, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
           <p>
-            <%= @rec.specific_rights == false || @rec.specific_rights_page.blank? ? "" : "Page #{@rec.specific_rights_page}:" %>
+            <%= @rec.specific_rights == false || @rec.specific_rights_page.blank? ? "" : "#{@rec.specific_rights_page}:" %>
             <%= @rec.specific_rights == false || @rec.specific_rights_clause.blank? ? "No notes" : @rec.specific_rights_clause %>
           </p>
         </div>

@@ -14,11 +14,15 @@
     <%= f.label :logo, "Logo" %><br>
     <%=logo_image%>
     <%= f.file_field :logo, class: "form-control", accept: 'image/jpeg,image/gif,image/png'  %>
+    <%= f.check_box :remove_logo %>
+    <small><%= f.label :remove_logo, "Remove Logo" %></small>
   </div>
   <div class="form-group">
     <%= f.label :banner, "Banner" %><br>
     <%=banner_image%>
     <%= f.file_field :banner, class: "form-control", accept: 'image/jpeg,image/gif,image/png'  %>
+    <%= f.check_box :remove_banner %>
+    <small><%= f.label :remove_banner, "Remove Banner" %></small>
   </div>
   <div class="field">
     <%= f.label :name %><br>
@@ -33,6 +37,6 @@
     <%= f.text_field :www, class: "form-control" %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn' %>
   </div>
 <% end %>

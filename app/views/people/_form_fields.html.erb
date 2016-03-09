@@ -2,6 +2,8 @@
     <%= f.label :attachment, "Profile picture" %><br>
     <%=profile_image%>
     <%= f.file_field :attachment, accept: 'image/jpeg,image/gif,image/png'  %>
+    <%= f.check_box :remove_attachment %>
+    <small><%= f.label :remove_attachment, "Remove Profile Picture" %></small>
   </div>
   <div class="form-group">
     <%= f.label :first_name %><br>

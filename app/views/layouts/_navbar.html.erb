@@ -4,8 +4,7 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
         <img src="<%=image_path('iuf_logo.png')%>">
-        <img src="<%=image_path('iuf_dairy_logo.jpg')%>">
-        agreements 
+        <img src="<%=image_path('iuf_dairy_logo.jpg')%>"> 
       </a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -19,6 +18,9 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
+          <li>
+            <%= link_to "agreements", root_path %>
+          </li>
           <li>
             <%= link_to "chat <span class='chat-badge badge'>1</span>".html_safe, messages_path %>
           <li>
