@@ -1,0 +1,18 @@
+Hi <%=@person.first_name%>
+
+The following person is requesting an invitation
+
+<% @params.except(:message).each do |k,v| %>
+<%="#{k}: #{v}"%>
+<% end %>
+	
+<% if @params[:message].present? %>
+-- MESSAGE --
+<%= @params[:message] %>
+-- END OF MESSAGE --
+<% end %> 
+
+Create a new invitation from the following link
+
+<%=URI::join(root_url, new_person_invitation_path, @query_string) %>
+
