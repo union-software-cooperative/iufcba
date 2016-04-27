@@ -31,10 +31,12 @@ Rails.application.routes.draw do
 
   get '/public/:filename', to: 'files#get'
   resources :agreements, controller: :recs, type: 'Rec'
-  resources :help, only: :index
-  
+  resource :help, only: [:show] do
+    resource :request_invite, only: [:new, :create], module: :help
+  end
+
   #root "messages#index"
-  root "help#index"
+  root "help#show"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

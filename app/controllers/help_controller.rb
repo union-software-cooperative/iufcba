@@ -1,7 +1,7 @@
 class HelpController < ApplicationController
-	before_action :authenticate_person!, except: [:index]
+	before_action :authenticate_person!, except: [:show]
 
-	def index
+	def show
 	end
 
 end

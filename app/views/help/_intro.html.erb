@@ -1,3 +1,5 @@
+<p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
+
 <div class="jumbotron text-center" style="padding-left:0px; padding-right:0px">
 	<div class="container" style="padding-left:0px; padding-right:0px;">
 		<div class="col-sm-2 hidden-xs">
@@ -6,11 +8,13 @@
 		<div class="col-sm-10">
 			<h1 class="no-left-margin no-right-margin text-right">dairyworker.org</h1>
 			<p class="no-left-margin text-right no-right-margin">Bringing the affiliates of the IUF dairy division closer together</p>
+			<p>
+				<%=link_to "Request An Invitation", new_help_request_invite_path, class: "btn btn-large btn-default pull-right" %>
+			</p>
 		</div>
 		
 	</div>
 </div>
-<hr/>
 <div class="container">
 	<div class="row">
 		<div class="col-sm-4">
@@ -32,7 +36,5 @@
 	</div>
 </div>
 <hr/>
-<footer>
-	<p class="text-center">© 2016 International Union of Food, Agricultural, Hotel, Restaurant, Catering, Tobacco and Allied Workers' Association</p>
-</footer>
+
 
