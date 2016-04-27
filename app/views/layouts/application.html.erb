@@ -13,10 +13,19 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <%= render "layouts/navbar" %>
-	<div class="container-fluid content-area">
-		<%= yield %>
+	<div id="wrap">
+	  <%= render "layouts/navbar" %>
+		<div class="container-fluid content-area">
+			<%= yield %>
+		</div>
+		<div id="push"></div>
 	</div>
+	<footer>
+		<div class="container">
+			<p class="text-center muted credit">© 2016 International Union of Food, Agricultural, Hotel, Restaurant, Catering, Tobacco and Allied Workers' Association</p>
+		</div>
+	</footer>
+
 
 	<% if person_signed_in? %>
 		<script type="text/javascript">
@@ -33,5 +42,4 @@
 		<%= subscribe_to "/presence", person_id: current_person.id, person_handle: current_person.display_name, callback: 'refresh_chat_icon' %>
 		<%= subscribe_to "/messages/new", person_id: current_person.id, person_handle: current_person.display_name, callback: 'flash_message' unless params[:controller] == 'messages'%>
 	<% end %>
-</body>
-</html>
+
