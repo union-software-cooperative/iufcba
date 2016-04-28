@@ -7,7 +7,6 @@ module ApplicationHelper
 		end
 	end
 
-
 	def profile_logo(person)		
 		unless person.attachment.blank?
 			image_tag person.attachment.quote.url, class: "profile_logo"
@@ -39,6 +38,26 @@ module ApplicationHelper
 		return false unless current_person.present?
 		return false unless owner_union.present?
 		current_person.union.id == owner_union.id 
+	end
+
+	def iso_languages
+		Rails.application.config.iso_languages
+	end
+
+	def language_options(selected_options)
+		# put selected languages first to preserve selection order
+		selected_options = selected_options.collect(&:to_sym)
+
+		options_hash = iso_languages.slice(selected_options)
+		options_hash.merge!(iso_languages.except(selected_options))
+
+		options = options_hash.collect do |k,v|
+			display_value = v[:nativeName] || v[:name]
+			display_value += " (#{v[:name]})" unless v[:nativeName] == v[:name]
+			[display_value,k]
+		end
+
+		options_for_select options, selected_options
 	end
 
 	def can_edit_union?(union)

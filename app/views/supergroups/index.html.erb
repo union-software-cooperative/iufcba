@@ -10,7 +10,8 @@
           <tr>
             <th>Logo</th>
             <th><%= supergroup.titlecase %></th>
-            <th>www</th>
+            <th>Country</th>
+            <th>WWW</th>
             <th>Agreements</th>
           </tr>
         </thead>
@@ -26,6 +27,7 @@
               <% end %>
               </td>
               <td style="vertical-align: middle"><%=link_to supergroup.name, polymorphic_path(supergroup) %></td>
+              <td style="vertical-align: middle"><%=ISO3166::Country(supergroup.country).name if supergroup.country%></td>
               <td style="vertical-align: middle"><%=link_to supergroup.www, "http://#{supergroup.www}"%></td>
               <td class="text-right" style="vertical-align: middle;"><%=supergroup.recs.count()%></td>
             </tr>

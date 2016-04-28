@@ -87,3 +87,5 @@ gem "puma"
 gem "exception_notification"
 
 gem 'sucker_punch'
+
+gem 'country_select'

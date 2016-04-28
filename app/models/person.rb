@@ -4,7 +4,7 @@ class Person < ActiveRecord::Base
   devise :invitable, :database_authenticatable,# :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-
+  serialize :languages, Array
 
   mount_uploader :attachment, ProfileUploader
   

@@ -45,8 +45,28 @@ ready = ->
       allowClear: false
       tags: true
     return
+
+  $('.ac-select2-multi').each ->
+    placeholder = $(this).data('placeholder')
+    $(this).select2
+      theme: "bootstrap"
+      multiple: true
+      placeholder: placeholder
+      allowClear: false
+    return
+
+  # This is a hack the preserves selection order, but its then lost when rendering!  I want selection order preserved to specify language preference
+  $('.ac-select2-multi').on 'select2:select', (evt) ->
+    element = evt.params.data.element
+    $element = $(element)
+    $element.detach()
+    $(this).append $element
+    $(this).trigger 'change'
+    return
+
   return
 
+  
 $(document).ready(ready);
 $(document).on('page:load', ready);
 

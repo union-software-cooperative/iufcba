@@ -3,7 +3,7 @@
     <%=profile_image%>
     <%= f.file_field :attachment, accept: 'image/jpeg,image/gif,image/png'  %>
 
-    <% unless @person.new_record? %> 
+    <% if @person.attachment.url.present? %> 
       <%= f.check_box :remove_attachment %>
       <small><%= f.label :remove_attachment, "Remove Profile Picture" %></small>
     <% end %> 
@@ -51,11 +51,28 @@
     <%= f.label :email %><br>
     <%= f.text_field :email, class: "form-control" %>
   </div>
-
+  
+  <div class="form-group">
+    <%= f.label :languages %><br>
+    <%= f.select :languages,
+      language_options(@person.languages), 
+      {
+          include_blank: true,
+      },
+      data: { 
+        placeholder:  "Please select your languages in order of preference",
+      }, 
+      multiple: true, 
+      class: "ac-select2-multi form-control", 
+      style: "width: 100%;"
+    %>
+  </div>
 
   <div class="form-group">
     <% if owner? %>
       <%= f.label :union_id %> <%=link_to "new union", new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
+
+
       <% if params[:affiliate_union].present? %>
         <strong style="color:red">Please set this to '<%= params[:affiliate_union] %>'</strong> <BR/>
       <% end %> 

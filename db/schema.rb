@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160304071631) do
+ActiveRecord::Schema.define(version: 20160427054404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(version: 20160304071631) do
     t.string   "attachment"
     t.string   "gender"
     t.integer  "union_id"
+    t.string   "country"
+    t.string   "languages"
   end
 
   add_index "people", ["email"], name: "index_people_on_email", unique: true, using: :btree
@@ -168,6 +170,7 @@ ActiveRecord::Schema.define(version: 20160304071631) do
     t.string   "logo"
     t.string   "short_name"
     t.integer  "followers_count", default: 0
+    t.string   "country"
   end
 
   add_foreign_key "comments", "people"
