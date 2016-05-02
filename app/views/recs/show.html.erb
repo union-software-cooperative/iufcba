@@ -1,4 +1,6 @@
-<p id="notice"><%= notice %></p>
+<% if notice.present? %>
+  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
+<% end %>
 <div class="rec">
   <div class="jumbotron">
 <!--

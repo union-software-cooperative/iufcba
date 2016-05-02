@@ -13,6 +13,16 @@ class RecsController < ApplicationController
     @rec = Rec.new
   end
 
+  # GET /recs/1
+  # GET /recs/1.json
+  def show
+    @post = Post.new(parent: @rec)
+  end
+
+  def show
+    @post = Post.new(parent: @rec)
+  end
+
   # GET /recs/1/edit
   def edit
   end

@@ -10,8 +10,8 @@ module PostsHelper
     	result += "#{assignee.display_name} is assigned with "
     end 
 
-    other_followers = post.parent.followers(Person).reject{|f| f.id == current_person.id || f.id == assignee_id}
-		result += "#{pluralize(other_followers.count, "person")} following..."
+    #other_followers = post.parent.followers(Person).reject{|f| f.id == current_person.id || f.id == assignee_id}
+		result += "#{pluralize(post.parent.followers(Person).count, "person")} following..."
 
 		result
 	end

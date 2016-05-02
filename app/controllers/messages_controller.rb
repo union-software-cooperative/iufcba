@@ -39,7 +39,7 @@ class MessagesController < ApplicationController
 
 
     def notify
-      offline_people.each do |p|
-        PersonMailer.message_notice(p, @message, "#{request.protocol}#{request.host}#{messages_path}", "noreply@#{request.host}").deliver_later      end
+    #  offline_people.each do |p|
+    #    PersonMailer.message_notice(p, @message, "#{request.protocol}#{request.host}#{messages_path}", "noreply@#{request.host}").deliver_later      end
     end
 end

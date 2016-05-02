@@ -15,11 +15,6 @@ class PeopleController < ApplicationController
     end
   end
 
-  # GET /people/1
-  # GET /people/1.json
-  def show
-  end
-
   # GET /people/1/edit
   def edit
   end
