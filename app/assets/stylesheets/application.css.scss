@@ -119,6 +119,18 @@ $a-tags-hover: 'a:active, a:hover';
   margin-right: 0px;
 }
 
+/*  THIS IS CRAZY.  I NEED TO REVIEW MY BOOTSTRAPPING */
+.outer-row {
+ margin-left: 0px;
+ margin-right: 0px;
+}
+
+.col-sm-8 {
+  padding-left: 0px;
+  padding-right: 0px;
+} 
+
+
 
 
       /* Sticky footer styles

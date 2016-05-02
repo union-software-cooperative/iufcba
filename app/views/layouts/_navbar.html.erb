@@ -19,7 +19,7 @@
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
           <li>
-            <%= link_to "agreements", root_path %>
+            <%= link_to "agreements", recs_path %>
           </li>
           <li>
             <%= link_to "chat <span class='chat-badge badge'>1</span>".html_safe, messages_path %>
