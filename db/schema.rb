@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427054404) do
+ActiveRecord::Schema.define(version: 20160502015109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,9 @@ ActiveRecord::Schema.define(version: 20160427054404) do
     t.string   "union_mandate_page"
     t.string   "anti_precariat_page"
     t.string   "specific_rights_page"
+    t.boolean  "health_and_safety"
+    t.string   "health_and_safety_page"
+    t.text     "health_and_safety_clause"
   end
 
   add_index "recs", ["company_id"], name: "index_recs_on_company_id", using: :btree

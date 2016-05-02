@@ -31,10 +31,10 @@ en:
         anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
         anti_precariat_page: Limits to casual work page/clause number(s)
         anti_precariat_clause:  Limits to casual work notes
-        union_mandate: Non-descrimination (all forms)
-        union_mandate_description:  Which unions are recognised-in or party-to the agreement
-        union_mandate_page: Union recognition page/clause number(s)
-        union_mandate_clause:  Union recognition notes
+        health_and_safety: Health and Safety
+        health_and_safety_description:  ""
+        health_and_safety_page: Health and Safety page/clause number(s)
+        health_and_safety_clause:  Heath and Safety notes
         grievance_handling: Grievance handling / Dispute resolution
         grievance_handling_description:  Describe the dispute resolution procedure
         grievance_handling_page: Grievance handling page/clause number(s)

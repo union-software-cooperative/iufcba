@@ -131,16 +131,16 @@
     <%= f.text_area :grievance_handling_clause, class: "form-control", placeholder:  t("helpers.label.rec.grievance_handling_description")%>
   </div>
   <div class="form-group">
-    <%= f.label :union_mandate %><br>
-    <%= f.check_box :union_mandate, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.label :health_and_safety %><br>
+    <%= f.check_box :health_and_safety, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
   </div>
   <div class="form-group">
-    <%= f.label :union_mandate_page %><br>
-    <%= f.text_field :union_mandate_page, class: "form-control" %>
+    <%= f.label :health_and_safety_page %><br>
+    <%= f.text_field :health_and_safety_page, class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= f.label :union_mandate_clause %><br>
-    <%= f.text_area :union_mandate_clause, class: "form-control", placeholder: t("helpers.label.rec.union_mandate_description") %>
+    <%= f.label :health_and_safety_clause %><br>
+    <%= f.text_area :health_and_safety_clause, class: "form-control", placeholder: t("helpers.label.rec.health_and_safety_description") %>
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat %><br>
@@ -185,7 +185,7 @@
     });
 
 
-    <% %w[grievance_handling anti_precariat union_mandate specific_rights].each do |q| %>
+    <% %w[grievance_handling anti_precariat health_and_safety specific_rights].each do |q| %>
       function toggle_<%= q %>() {
         if ($('#rec_<%= q %>').bootstrapSwitch('state')) {
           $('#rec_<%= q %>_page').parent().slideDown();
