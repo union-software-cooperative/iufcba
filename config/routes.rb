@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :people, except: [:new] do # people can only be invited
+  resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
     member do 
       get 'compose_email'
       patch 'send_email'
