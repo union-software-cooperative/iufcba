@@ -14,7 +14,8 @@
             <th>Picture</th>
             <th>Person</th>
             <th class="hidden-xs">Country</th>
-            <th>Invited By</th>
+            <th>Languages</th>
+            <th class="hidden-xs">Invited By</th>
             <th></th>
           </tr>
         </thead>
@@ -34,10 +35,10 @@
                 <% end %>
                 </strong>
                 <%="<br/>#{person.title}".html_safe if person.title %>
-                <%="<br/>#{person.union.short_name}".html_safe if person.union.short_name %>
               </td>
-              <td class="hidden-xs" style="vertical-align: middle"><%=ISO3166::Country(person.country).name if person.country%></td>
-              <td>
+              <td  class="hidden-xs"  style="vertical-align: middle"><%=ISO3166::Country(person.country).name if person.country%></td>
+              <td style="vertical-align: middle"><%=person.languages.collect{|l| iso_languages[l.to_sym][:name]}.join(' | ') if person.languages%></td>
+              <td  class="hidden-xs" >
                 <% if person.invited_by %>
                   <%=person.invited_by.display_name  %>
                 <%="<br/><small>not yet accepted</small>".html_safe unless person.invitation_accepted_at || person.first_name == "Admin" %>
