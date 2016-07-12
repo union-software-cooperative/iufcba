@@ -3,12 +3,8 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
-        <img src="<%=image_path('iuf_logo.png')%>">
-        <img src="<%=image_path('iuf_brewery_logo.png')%>">
-        chat 
-        <% if person_signed_in? %>
-          <span class='chat-badge badge'>1</span>
-        <% end %>
+        <!--<img src="<%=image_path('iuf_logo.png')%>">-->
+        <img src="<%=image_path('iuf_brewery_logo.jpg')%>"> 
       </a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -25,6 +21,9 @@
           <li>
             <%= link_to "agreements", recs_path %>
           </li>
+          <li>
+            <%= link_to "chat <span class='chat-badge badge'>1</span>".html_safe, messages_path %>
+          <li>
           <li>
             <%= link_to "unions", unions_path %>
           </li>

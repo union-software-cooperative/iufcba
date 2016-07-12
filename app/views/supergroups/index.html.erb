@@ -1,5 +1,7 @@
-<p id="notice"><%= notice %></p>
-<div class="row">
+<% if notice.present? %>
+  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
+<% end %>
+<div class="outer-row">
   <div class="col-sm-8 col-sm-offset-2">
       <%= link_to "New #{supergroup.titlecase}", new_polymorphic_path(@klass), style: "margin-top: 15px",class: "btn btn-default pull-right" if owner? %>
     <% unless @supergroups.blank? %>
@@ -10,7 +12,8 @@
           <tr>
             <th>Logo</th>
             <th><%= supergroup.titlecase %></th>
-            <th>www</th>
+            <th class="hidden-xs">Country</th>
+            <th class="hidden-xs">WWW</th>
             <th>Agreements</th>
           </tr>
         </thead>
@@ -26,7 +29,8 @@
               <% end %>
               </td>
               <td style="vertical-align: middle"><%=link_to supergroup.name, polymorphic_path(supergroup) %></td>
-              <td style="vertical-align: middle"><%=link_to supergroup.www, "http://#{supergroup.www}"%></td>
+              <td class="hidden-xs" style="vertical-align: middle"><%=ISO3166::Country(supergroup.country).name if supergroup.country%></td>
+              <td class="hidden-xs" style="vertical-align: middle"><%=link_to supergroup.www, "http://#{supergroup.www}"%></td>
               <td class="text-right" style="vertical-align: middle;"><%=supergroup.recs.count()%></td>
             </tr>
           <% end %>

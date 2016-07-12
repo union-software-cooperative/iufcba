@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160117064400) do
+ActiveRecord::Schema.define(version: 20160502015109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(version: 20160117064400) do
     t.string   "attachment"
     t.string   "gender"
     t.integer  "union_id"
+    t.string   "country"
+    t.string   "languages"
   end
 
   add_index "people", ["email"], name: "index_people_on_email", unique: true, using: :btree
@@ -148,10 +150,13 @@ ActiveRecord::Schema.define(version: 20160117064400) do
     t.boolean  "specific_rights"
     t.text     "specific_rights_clause"
     t.integer  "followers_count",           default: 0
-    t.integer  "grievance_handling_page"
-    t.integer  "union_mandate_page"
-    t.integer  "anti_precariat_page"
-    t.integer  "specific_rights_page"
+    t.string   "grievance_handling_page"
+    t.string   "union_mandate_page"
+    t.string   "anti_precariat_page"
+    t.string   "specific_rights_page"
+    t.boolean  "health_and_safety"
+    t.string   "health_and_safety_page"
+    t.text     "health_and_safety_clause"
   end
 
   add_index "recs", ["company_id"], name: "index_recs_on_company_id", using: :btree
@@ -168,6 +173,7 @@ ActiveRecord::Schema.define(version: 20160117064400) do
     t.string   "logo"
     t.string   "short_name"
     t.integer  "followers_count", default: 0
+    t.string   "country"
   end
 
   add_foreign_key "comments", "people"

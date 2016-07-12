@@ -15,11 +15,6 @@ class PeopleController < ApplicationController
     end
   end
 
-  # GET /people/1
-  # GET /people/1.json
-  def show
-  end
-
   # GET /people/1/edit
   def edit
   end
@@ -28,7 +23,6 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1.json
   def update
     @person.authorizer = current_person
-
     respond_to do |format|
       if @person.update(person_params)
         @person.invite!(current_person) if params['resend_invite']=='true' 
@@ -74,7 +68,9 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:first_name, :last_name, :title, :address, :mobile, :fax, :email, :attachment, :union_id, :gender)
+      result = params.require(:person).permit(:first_name, :last_name, :title, :address, :mobile, :fax, :email, :attachment, :union_id, :gender, :remove_attachment, :country, :languages => [])
+      result['languages'].delete("") if result['languages']
+      result
     end
 
     def forbid

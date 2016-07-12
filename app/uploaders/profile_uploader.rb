@@ -20,6 +20,8 @@ class ProfileUploader < AttachmentUploader
   # Process files as they are uploaded:
   process resize_to_limit: [400, 10000]
   process quality: 100
+  process :fix_exif_rotation
+
 
   def quality(asdf)
     #DO NOTHING FOR PROFILE PICS
@@ -54,6 +56,12 @@ class ProfileUploader < AttachmentUploader
       end
       image.resize("#{size}x#{size}")
       image
+    end
+  end
+
+  def fix_exif_rotation
+    manipulate! do |img|
+      img.tap(&:auto_orient)
     end
   end
 end

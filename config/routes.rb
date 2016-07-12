@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :people, except: [:new] do # people can only be invited
+  resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
     member do 
       get 'compose_email'
       patch 'send_email'
@@ -31,8 +31,12 @@ Rails.application.routes.draw do
 
   get '/public/:filename', to: 'files#get'
   resources :agreements, controller: :recs, type: 'Rec'
-  root "messages#index"
+  resource :help, only: [:show] do
+    resource :request_invite, only: [:new, :create], module: :help
+  end
 
+  #root "messages#index"
+  root "help#show"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

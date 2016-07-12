@@ -6,7 +6,7 @@ Then(/^I can add an agreement titled "(.*?)" between "(.*?)" and "(.*?)" and ass
 	select2 company, label: "Company"
 	select2 union, label: "Union"
 	select2 assignee, label: "Person"
-	select2 tag, placeholder: "Please select one or more operations, or add your own."
+	select2 tag, placeholder: "Please select one or more product types, or add your own (and press enter)"
 	
 	#select2 "union", "rec[union_id]"
 	click_button "Save Agreement"

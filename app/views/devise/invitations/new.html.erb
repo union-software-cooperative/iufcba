@@ -4,7 +4,14 @@
 	<div class="margins">
 		<%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post}, class: 'form' do |f| %>
 		  <%= devise_error_messages! %>
-		  <% @person=resource %> 
+		  <% 
+		  	@person=resource 
+		  	# This should happen in the controller but I don't want to override the devise stuff
+		  	@person.first_name = params[:first_name] if params[:first_name]
+		  	@person.last_name = params[:last_name] if params[:last_name]
+		  	@person.email = params[:email] if params[:email]
+		  	@person.title = params[:title] if params[:title]
+		  %> 
 			<%=render partial: 'people/form_fields', locals: { f: f} %>
 
 		  <p><%= f.submit t("devise.invitations.new.submit_button") %>&nbsp;&nbsp;<small>you will be BCC'd the invitation email FYI</small></p>

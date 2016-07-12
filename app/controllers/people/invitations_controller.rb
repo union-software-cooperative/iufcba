@@ -30,8 +30,9 @@ class People::InvitationsController < Devise::InvitationsController
   end
 
   def invite_params
-   	result = params.permit(person: [:authorizer, :gender, :email,:invitation_token, :union_id, :first_name, :last_name,  :title, :address, :mobile, :fax
+   	result = params.permit(person: [:authorizer, :gender, :email,:invitation_token, :union_id, :first_name, :last_name,  :title, :address, :mobile, :fax, :country, :languages => []
 ])[:person].merge(authorizer: current_person)
+    result[:languages].delete("") if result[:languages]
     result
    end
 

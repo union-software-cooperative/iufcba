@@ -14,11 +14,19 @@
     <%= f.label :logo, "Logo" %><br>
     <%=logo_image%>
     <%= f.file_field :logo, class: "form-control", accept: 'image/jpeg,image/gif,image/png'  %>
+    <% if @supergroup.logo.url.present? %>
+      <%= f.check_box :remove_logo %>
+      <small><%= f.label :remove_logo, "Remove Logo" %></small>
+    <% end %>
   </div>
   <div class="form-group">
     <%= f.label :banner, "Banner" %><br>
     <%=banner_image%>
     <%= f.file_field :banner, class: "form-control", accept: 'image/jpeg,image/gif,image/png'  %>
+    <% if @supergroup.banner.url.present? %>
+      <%= f.check_box :remove_banner %>
+      <small><%= f.label :remove_banner, "Remove Banner" %></small>
+    <% end %>
   </div>
   <div class="field">
     <%= f.label :name %><br>
@@ -32,7 +40,11 @@
     <%= f.label :www %><br>
     <%= f.text_field :www, class: "form-control" %>
   </div>
+  <div class="form-group">
+    <%= f.label :country %><br>
+    <%= f.country_select :country, {}, { class: 'form-control', style: "width: 100%" } %>
+  </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn' %>
   </div>
 <% end %>

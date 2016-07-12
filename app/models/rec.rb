@@ -8,7 +8,7 @@ class Rec < ActiveRecord::Base
 	
 	validates :name, :company, :union, :person, :end_date, presence: true
 	validate :is_authorized?
-	validates :union_mandate_page, :anti_precariat_page, :specific_rights_page, :grievance_handling_page, numericality: { allow_blank: true }
+	#validates :union_mandate_page, :anti_precariat_page, :specific_rights_page, :grievance_handling_page, numericality: { allow_blank: true }
 
 	serialize :nature_of_operation, Array
 

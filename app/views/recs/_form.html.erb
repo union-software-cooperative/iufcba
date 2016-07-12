@@ -12,7 +12,7 @@
   <% end %>
   <div class="form-group">
     <%= f.label :attachment %><br>
-    <%= f.file_field :attachment, accept: 'image/jpeg,image/gif,image/png' %>
+    <%= f.file_field :attachment %>
   </div>
   <div class="form-group">
     <%= f.label :company_id %> <%=link_to "new company", new_polymorphic_path(Company), placeholder: "Please select a company.",
@@ -101,7 +101,7 @@
   </div>
   <div class="form-group">
     <%= f.label :coverage %><br>
-    <%= f.text_area :coverage, class: "form-control", placeholder: "please detail the plant/sites and members being covered" %>
+    <%= f.text_area :coverage, class: "form-control", placeholder: t("helpers.label.rec.coverage_description") %>
   </div>
   <div class="form-group">
     <%= f.label :nature_of_operation %><br>
@@ -111,7 +111,7 @@
           include_blank: true,
       },
       data: { 
-        placeholder: "Please select one or more operations, or add your own.",
+        placeholder:  t("helpers.label.rec.nature_of_operation_description"),
       }, 
       multiple: true, 
       class: "ac-select2-tags form-control", 
@@ -124,23 +124,23 @@
   </div>
   <div class="form-group">
     <%= f.label :grievance_handling_page %><br>
-    <%= f.number_field :grievance_handling_page, class: "form-control" %>
+    <%= f.text_field :grievance_handling_page, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :grievance_handling_clause %><br>
-    <%= f.text_area :grievance_handling_clause, class: "form-control" %>
+    <%= f.text_area :grievance_handling_clause, class: "form-control", placeholder:  t("helpers.label.rec.grievance_handling_description")%>
   </div>
   <div class="form-group">
-    <%= f.label :union_mandate %><br>
-    <%= f.check_box :union_mandate, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.label :health_and_safety %><br>
+    <%= f.check_box :health_and_safety, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
   </div>
   <div class="form-group">
-    <%= f.label :union_mandate_page %><br>
-    <%= f.number_field :union_mandate_page, class: "form-control" %>
+    <%= f.label :health_and_safety_page %><br>
+    <%= f.text_field :health_and_safety_page, class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= f.label :union_mandate_clause %><br>
-    <%= f.text_area :union_mandate_clause, class: "form-control" %>
+    <%= f.label :health_and_safety_clause %><br>
+    <%= f.text_area :health_and_safety_clause, class: "form-control", placeholder: t("helpers.label.rec.health_and_safety_description") %>
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat %><br>
@@ -148,11 +148,11 @@
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat_page %><br>
-    <%= f.number_field :anti_precariat_page, class: "form-control" %>
+    <%= f.text_field :anti_precariat_page, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat_clause %><br>
-    <%= f.text_area :anti_precariat_clause, class: "form-control" %>
+    <%= f.text_area :anti_precariat_clause, class: "form-control", placeholder: t("helpers.label.rec.anti_precariat_description") %>
   </div>
   <div class="form-group">
     <%= f.label :specific_rights %><br>
@@ -160,15 +160,15 @@
   </div>
   <div class="form-group">
     <%= f.label :specific_rights_page %><br>
-    <%= f.number_field :specific_rights_page, class: "form-control" %>
+    <%= f.text_field :specific_rights_page, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :specific_rights_clause %><br>
-    <%= f.text_area :specific_rights_clause, class: "form-control" %>
+    <%= f.text_area :specific_rights_clause, class: "form-control", placeholder: t("helpers.label.rec.specific_rights_description") %>
   </div>
   <div class="form-group">
     <%= f.label :other_provisions %><br>
-    <%= f.text_area :other_provisions, class: "form-control" %>
+    <%= f.text_area :other_provisions, class: "form-control", placeholder: t("helpers.label.rec.other_provisions_description") %>
   </div>
   <div class="actions">
     <%= f.submit value: "Save Agreement", class: "btn btn-default"%>
@@ -185,7 +185,7 @@
     });
 
 
-    <% %w[grievance_handling anti_precariat union_mandate specific_rights].each do |q| %>
+    <% %w[grievance_handling anti_precariat health_and_safety specific_rights].each do |q| %>
       function toggle_<%= q %>() {
         if ($('#rec_<%= q %>').bootstrapSwitch('state')) {
           $('#rec_<%= q %>_page').parent().slideDown();

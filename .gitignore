@@ -12,7 +12,7 @@
 !/log/.keep
 /tmp
 
-/config/database.yml
+#/config/database.yml
 #/config/secrets.yml
 /public/uploads
 .DS_Store

@@ -1,13 +1,19 @@
-<div style="position:relative; float:right">
-<%= link_to current_person.follows?(@supergroup) ? "unfollow" : "follow", follow_polymorphic_path, class: "btn btn-primary supergroup-follow" %>	
-</div>
-<% if @supergroup.banner.present? %>
-	<div class="banner-placeholder">
-		<%=banner_image %>
-		<%=render 'show' %>
-	</div>
-
-<% else %>
-	<%=render 'show' %>
+<% if notice.present? %>
+	<p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
 <% end %>
+<div class="outer-row">
+	<div class="col-sm-8 col-sm-offset-2">
+		<div style="position:relative; float:right">
+		<%= link_to current_person.follows?(@supergroup) ? "unfollow" : "follow", follow_polymorphic_path, class: "btn btn-primary supergroup-follow" %>	
+		</div>
+		<% if @supergroup.banner.present? %>
+			<div class="banner-placeholder">
+				<%=banner_image %>
+				<%=render 'show' %>
+			</div>
 
+		<% else %>
+			<%=render 'show' %>
+		<% end %>
+	</div>
+</div>
