@@ -1,11 +1,280 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+-- NEW HEROKU APPLICATION -- breweryworker
+
+git clone git@github.com:union-software-cooperative/iufad breweryworker
+cd breweryworker
+git remote set-url origin git@github.com:union-software-cooperative/breweryworker
+git push origin master
+
+cp ../iufad/config/application.yml config/
+cp ../iufad/config/database.yml config/
+
+# replaced iufad with brewery_worker
+# replaced Iufad with BreweryWorker
+# replaced IUFAD with BREWERYWORKER
+# replaced iufdb with brewery_worker except for aws config which needs brewery-worker
+
+# updated gemfile to 2.3.1
+bundle install
+
+# fixed migration and seeding so it works with authorization
+
+bundle exec rake db:create
+bundle exec rake db:migrate
+bundle exec rake db:seed
+
+heroku create lhisa
+# setup AWS buckets lhisa-us-east-1 & lhisa-us-east-1-dev and updated application.yml
+
+# https://devcenter.heroku.com/articles/ssl-
+mkdir keys
+openssl genrsa -des3 -out keys/breweryworker.pass.key 2048
+openssl rsa -in keys/breweryworker.pass.key -out keys/breweryworker.key
+rm keys/breweryworker.pass.key
+# used SA Unions details, make sure you don't put www in the hostname i.e. breweryworker.org
+openssl req -nodes -new -key keys/breweryworker.key -out keys/breweryworker.csr
+# used CH, Geneva, Petit-Lancy, IUF, Brewery Division, breweryworker.org
+echo keys >> .gitignore
+cat keys/breweryworker.csr
+
+# setup certificate with heroku before configuring dns, because the cname changes
+# purchased ssl from positive ssl when buying domain name
+# name cheap, product list, activate, paste in CSR
+# from name cheap setup mail catch all
+# email verification method for ssl, followed steps after confirming mail catch all was working
+vim keys/lhisa.crt
+# pasted in certificate
+heroku addons:create ssl:endpoint
+heroku certs:add keys/lhisa.crt keys/lhisa.key
+# got cname tokushima-61574.herokussl.com
+
+# created new mailgun domain  - lukerohde@gmail.com login
+
+# name cheap dns setup
+#	TXT	mg.breweryworker.org 		v=spf1 include:mailgun.org ~all
+#	TXT	krs._domainkey.mg.breweryworker.org		k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVLK4upPjdfkd/ollWZtMh14QULE5vjo/ke4A8/FxAO7V7p+rIck5MoM5oTQtO4iVT1JMaz+adXZU+QhumStyQKZuB5supCoOYLb5pXP7c/MlbyoxqyRzGAB1foko3SjHMUP1QrRmznnrprZt3sJn4PGy5++gzK+KY0gW0L+aDuQIDAQAB
+#	CNAME	email.mg.breweryworker.org	mailgun.org
+
+# I didn't add the following - no need to receive, happy with namecheap catch all instead.
+# MX priority 10 mxa.mailgun.org
+# MX priority 10 mxb.mailgun.org
+
+figaro heroku:set -e production
+git push heroku lhisa_master:master
+heroku run rake db:migrate
+heroku run rake db:seed
+heroku domains:add www.securejobssa.org.au
+# restart after seed so owner union works
+heroku restart 
+
+# updated app/views/devise/mailer/invitation_instructions.html
+# updated config/locales
+# TODO Update chinese disclosure statement
+# TODO Update or remove background paper
+# TODO Complete customization and translation for other languages.
+
+
+
+
+
+
+
+
+-- FAILED Digital Ocean Setup --
+
+####USE Kim's from scratch snapshot
+# Kim reenabled ssh passwords
+sudo vim /etc/ssh/sshd_config
+# Change passwordauthentication to yes
+ssh deploy@188.166.188.190
+
+sudo adduser lrohde
+sudo gpasswd -a lrohde sudo
+
+# added my ssh key to deploy and lrohde authorized_keys 
+exit # exit back to my machine
+ssh lrohde@188.166.223.168 "mkdir ~/.ssh"
+cat ~/.ssh/id_rsa.pub | ssh deploy@188.166.223.168 'cat >> ~/.ssh/authorized_keys'
+cat ~/.ssh/id_rsa.pub | ssh lrohde@188.166.223.168 'cat >> ~/.ssh/authorized_keys'
+
+# removed password access
+ssh lrohde@188.166.223.168
+sudo sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config 
+sudo service ssh restart
+
+# allowed port 80 through firewall
+sudo ufw allow 80/tcp
+
+# installed missing libpq-dev for rails postgres
+sudo apt-get install libpq-dev 
+
+# setup var www for deploy user
+sudo mkdir /var/www
+sudo chown deploy /var/www
+
+# snapshot - as basic rails/nginx with lrohde, kbuckley, deploy users
+
+cap deploy:setup_db  # I wish I could merge this
+cap deploy:initial
+
+
+
+
+
+
+FAILED DIGITAL OCEAN INSTALL FOR LHISA BECAUSE RVM was already installed and messing things up
+
+created digital ocean account for itdept@nuw.org.au
+created a droplet
+- ubuntu 14.04
+- one click app rails, unicorn, nginx, postgres
+pasted in my ssh key ~/.ssh/id_rsa.pub into ssh field (just puts it in roots /root/.ssh/authorized_keys)
+set the hostname to nuwau-lhisa (actually did this after then needed to reboot and fix /etc/hosts)
+ssh root@188.166.188.190
+kind of followed this instructions to create lrohde user and disable root login https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04
+
+Installed rbenv as per https://gorails.com/deploy/ubuntu/14.04
+
+cd
+git clone git://github.com/sstephenson/rbenv.git .rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL
+
+git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+exec $SHELL
+
+git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+
+rbenv install 2.2.3
+rbenv global 2.2.3
+ruby -v
+
+git config --global color.ui true
+git config --global user.name "luke rohde"
+git config --global user.email "lukerohde@gmail.com"
+
+mkdir /var/www 
+mkdir /var/www/lhisa
+chown deploy /var/www/lhisa 
+
+
+customized deploy.rb, and Capfile using https://www.digitalocean.com/community/tutorials/deploying-a-rails-app-on-ubuntu-14-04-with-capistrano-nginx-and-puma
+adding support for alternative branch
+
+
+-- NEW HEROKU APPLICATION -- lhiqld
+
+ git clone git@github.com:union-software-cooperative/labourhireinquiry lhiqld/
+heroku git:remote -a lhiqld
+
+git checkout -b lhiqld_master
+
+cp ../lhi/config/application.yml config/
+
+cp ../lhi/config/database.yml config/
+
+Changed database name to lhiqld in database.yml
+
+Replaced VTHC in seeds.rb with QCU 
+rake db:create
+rake db:migrate
+rake db:seed
+
+setup AWS bucket
+setup mailgun - lukerohde@gmail.com login
+
+updated application.yml
+figaro heroku:set -e production
+
+git push heroku lhiqld_master:master
+
+heroku run rake db:migrate
+heroku run rake db:seed
+heroku restart
+
+heroku addons:create ssl:endpoint
+
+heroku certs:add cert/www.securejobsqld.org.au.crt cert/www.securejobsqld.org.au.key 
+
+yamaguchi-6036.herokussl.com
+
+heroku domains:add www.securejobsqld.org.au
+
+
+openssl req -new -newkey rsa:2048 -nodes -keyout www.securejobsqld.org.au.key -out www.securejobsqld.org.au.csr
+
+order rapidssl via namecheap - order id 13148933
+
+From google analytics, added new property from admin screen, middle drop down.   Updated config.
+
+
+
+
+
+-- TODO QLD
+update authorised by
+update /recs/new heading
+buy ssl
+setup dns - namecheap - nuwitadmin login
+
+
+
+-- TODO
+DONE Order database and people list
+DONE People filter between users and everyone else
+DONE Delete submission
+DONE Publish union pages
+DONE VTHC is home union?
+Set union defaults on edit?
+DONE Notification on follow
+DONE SSL cert
+Data download
+DONE-ish Mailgun config
+DONE Change quote over submission
+DONE Gender on rec
+Youtube field
+Video transcoding
+DONE Pay for heroku
+DONE Sharing of submissions
+DONE Navbar bug
+DONE Unpublish submissions
+DONE Follow by posting not getting
+See submission and volunteer status from people list
+Source tracking
+Fix weird width issues on iphone - overflow
+DONE Jumbotron rounded corners
+Seeding social networking with organisers
+DONE Facebook share image
+Secretary send from
+VTHC page not showing all
+DONE Video narrow and ellipsis
+
+
+
+
+
+
+==== Installation
+
+You'll need to be running Ruby 2.2.3, if you don't have it already.
+
+For rbenv users, first make sure your ruby-build is up to date with 
+`cd ~/.rbenv/plugins/ruby-build` and `git pull`. Then you should be able 
+to run `rbenv install 2.2.3` without any problems.
+
+RVM instructions to come.
+
+With your version sorted, `git clone 
+https://github.com/union-software-cooperative/labourhireinquiry.git`.
+In the project directory, first set your `rbenv local 2.2.3`. Then 
+you're clear to run `bundle install`. You may need to first install
+Bundler with `gem install bundler` if yours was a fresh `ruby-2.2.3`
+installation.
 
 Things you may want to cover:
-
-* Ruby version
 
 * System dependencies
 
