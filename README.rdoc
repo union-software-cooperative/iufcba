@@ -39,19 +39,17 @@ echo keys >> .gitignore
 cat keys/breweryworker.csr
 
 # setup certificate with heroku before configuring dns, because the cname changes
-# purchased ssl from positive ssl when buying domain name
+# purchased ssl from rapid ssl when buying domain name
 # name cheap, product list, activate, paste in CSR
 # from name cheap setup mail catch all
 # email verification method for ssl, followed steps after confirming mail catch all was working
-vim keys/lhisa.crt
-# pasted in certificate
-heroku addons:create ssl:endpoint
-heroku certs:add keys/lhisa.crt keys/lhisa.key
-# got cname tokushima-61574.herokussl.com
+
+# rapid ssl decided to have a human review my certificate - defered this config
 
 # created new mailgun domain  - lukerohde@gmail.com login
 
 # name cheap dns setup
+# CNAME www.breweryworker.org breweryworker.herokuapp.com.
 #	TXT	mg.breweryworker.org 		v=spf1 include:mailgun.org ~all
 #	TXT	krs._domainkey.mg.breweryworker.org		k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVLK4upPjdfkd/ollWZtMh14QULE5vjo/ke4A8/FxAO7V7p+rIck5MoM5oTQtO4iVT1JMaz+adXZU+QhumStyQKZuB5supCoOYLb5pXP7c/MlbyoxqyRzGAB1foko3SjHMUP1QrRmznnrprZt3sJn4PGy5++gzK+KY0gW0L+aDuQIDAQAB
 #	CNAME	email.mg.breweryworker.org	mailgun.org
@@ -61,12 +59,19 @@ heroku certs:add keys/lhisa.crt keys/lhisa.key
 # MX priority 10 mxb.mailgun.org
 
 figaro heroku:set -e production
-git push heroku lhisa_master:master
+git push heroku breweryworker master
 heroku run rake db:migrate
 heroku run rake db:seed
-heroku domains:add www.securejobssa.org.au
+heroku domains:add www.breweryworker.org
 # restart after seed so owner union works
 heroku restart 
+
+# after rapidssl approves?
+vim keys/breweryworker.crt
+# pasted in certificate
+heroku addons:create ssl:endpoint
+heroku certs:add keys/breweryworker.crt keys/breweryworker.key
+# got cname tokushima-61574.herokussl.com
 
 # updated app/views/devise/mailer/invitation_instructions.html
 # updated config/locales
