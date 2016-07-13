@@ -14,6 +14,8 @@ cp ../iufad/config/database.yml config/
 # replaced Iufad with BreweryWorker
 # replaced IUFAD with BREWERYWORKER
 # replaced iufdb with brewery_worker except for aws config which needs brewery-worker
+# replaced dairy with brewery
+# replaced Dairy with Brewery
 
 # updated gemfile to 2.3.1
 bundle install
@@ -71,13 +73,11 @@ vim keys/breweryworker.crt
 # pasted in certificate
 heroku addons:create ssl:endpoint
 heroku certs:add keys/breweryworker.crt keys/breweryworker.key
-# got cname tokushima-61574.herokussl.com
+# got cname fukui-60213.herokussl.com
 
-# updated app/views/devise/mailer/invitation_instructions.html
-# updated config/locales
-# TODO Update chinese disclosure statement
-# TODO Update or remove background paper
-# TODO Complete customization and translation for other languages.
+# updated logo and colour scheme
+# TODO invite ron & paul
+
 
 
 
