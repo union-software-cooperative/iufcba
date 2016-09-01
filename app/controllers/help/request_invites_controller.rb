@@ -13,9 +13,13 @@ class Help::RequestInvitesController < ApplicationController
     @errors << "Please provide an affiliate union" if params[:affiliate_union].blank?
     
 		if @errors.blank? 
-			owner_union.people.each do |p| 
-				HelpMailer.request_invite(p, request_invitation_params, request.host).deliver_later     
+			#owner_union.people.each do |p| 
+			#	HelpMailer.request_invite(p, request_invitation_params, request.host).deliver_later     
+    	#end
+    	if p = Person.find_by_email(ENV['admin_email'])
+    		HelpMailer.request_invite(p, request_invitation_params, request.host).deliver_later     
     	end
+
     	redirect_to "/", notice: "Thanks for your interest.  Your request will be reviewed soon."
     else
     	render "new"
