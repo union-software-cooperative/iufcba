@@ -1,116 +1,115 @@
 
 <div id="presence" class="col-sm-2" style="margin-top: 5px; border-bottom: 1px solid #aaa;">
-	<strong>Currently Online</strong>
+  <strong><%= t('.currently_online') %></strong>
 
-	<hr/>
+  <hr/>
 </div>
 
 <div class="col-sm-8"/>
-	<div id="chatlog" class="left" style="overflow-y:auto;margin-top: 5px; ">
-		<div id="chat">
-			<div id="load_here"></div>
-		  <%= render @messages %>
-		</div>
-	</div>
-	
-	<div id="post_area">
-		<%= form_for Message.new(person_id: current_person.id, display_name: current_person.display_name), remote: true do |f| %>
-			<div>
-		  	<%= f.text_area :body, class: 'form-control', style: 'border: 1px solid #aaa' %>
-			</div>
-		  <%= f.hidden_field :person_id %>
-		  <%= f.hidden_field :display_name %>
-		  <div>
-		  	<%= f.submit "Send", id: 'message_submit', class: 'btn btn-default', style: 'margin-top:5px;' %>
-		  </div>
-		<% end %> 
-	</div>
+  <div id="chatlog" class="left" style="overflow-y:auto;margin-top: 5px; ">
+    <div id="chat">
+      <div id="load_here"></div>
+      <%= render @messages %>
+    </div>
+  </div>
+  
+  <div id="post_area">
+    <%= form_for Message.new(person_id: current_person.id, display_name: current_person.display_name), remote: true do |f| %>
+      <div>
+        <%= f.text_area :body, class: 'form-control', style: 'border: 1px solid #aaa' %>
+      </div>
+      <%= f.hidden_field :person_id %>
+      <%= f.hidden_field :display_name %>
+      <div>
+        <%= f.submit t('.send'), id: 'message_submit', class: 'btn btn-default', style: 'margin-top:5px;' %>
+      </div>
+    <% end %> 
+  </div>
 </div>
 
 <script type="text/javascript">
-	
-	function resize() {
-		$(".left").height(window.innerHeight-$("#chatlog").offset().top - $("#post_area").height() - 5 + 'px');
-		$('#message_body').width(($('#chatlog').width())-30+'px');
-		var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
-		$('#chatlog').scrollTop(height);
-	}
+  
+  function resize() {
+    $(".left").height(window.innerHeight-$("#chatlog").offset().top - $("#post_area").height() - 5 + 'px');
+    $('#message_body').width(($('#chatlog').width())-30+'px');
+    var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
+    $('#chatlog').scrollTop(height);
+  }
 
-	function append_message(message)
-	{
-		$("#chat").append(message.eval);
-		var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
-		$('#chatlog').animate({scrollTop: height}, 'slow');
-		localise_time();
-		if (message.person_id != <%= current_person.id %>) /* TODO this erb interpolation will prevent this going into a js file %> */
-			$.playSound('/public/bleep');
+  function append_message(message)
+  {
+    $("#chat").append(message.eval);
+    var height = document.getElementById("chatlog").scrollHeight - $('#chatlog').height(); 
+    $('#chatlog').animate({scrollTop: height}, 'slow');
+    localise_time();
+    if (message.person_id != <%= current_person.id %>) /* TODO this erb interpolation will prevent this going into a js file %> */
+      $.playSound('/public/bleep');
 
-	}
+  }
 
-	function refresh_presence(message) {
-		presence = "<strong>Currently Online</strong>";
-			presence += "<ul style='padding-left:20px;'>";
-			for (k in message['data']) {
-				presence += "<li>" + message['data'][k]['handle'] + "</li>";
-			}
-			presence += "</ul>";
-			//presence += "<small>Everyone offline will be emailed</small>";
-			$('#presence').html(presence);
-			resize();	
-	}
+  function refresh_presence(message) {
+    presence = "<strong>Currently Online</strong>";
+    presence += "<ul style='padding-left:20px;'>";
+    for (k in message['data']) {
+      presence += "<li>" + message['data'][k]['handle'] + "</li>";
+    }
+    presence += "</ul>";
+    //presence += "<small>Everyone offline will be emailed</small>";
+    $('#presence').html(presence);
+    resize();  
+  }
 
-	$('#chatlog').scroll(function(){ 
-  	
-  	if ($(this).scrollTop()==0) {
-  		last_message_time = $("span[data-time]").first().data('time');
+  $('#chatlog').scroll(function(){ 
+    
+    if ($(this).scrollTop()==0) {
+      last_message_time = $("span[data-time]").first().data('time');
 
-  		//$('#load_here').html("Loading...");
-  			
-  		if ($('#load_here').text() != "Loading...") {
-  			$('#load_here').text('Loading...');
-  			
-	  		$.ajax({ 
-	  			url: "messages.json",
-	  			data:  {last_message_time: last_message_time}, 
-	  			dataType: 'html',
-	  			success: function(data) {
-			  		$('#load_here').text('');
-			  		$('#load_here').after(data);
-			  		localise_time();
-					}, 
-					error: function(data) {
-						$('#load_here').text('an error occurred loading more messages');
-					}
-				});
-			}
-  	};
+      //$('#load_here').html("Loading...");
+        
+      if ($('#load_here').text() != "Loading...") {
+        $('#load_here').text('Loading...');
+        
+        $.ajax({ 
+          url: "messages.json",
+          data:  {last_message_time: last_message_time}, 
+          dataType: 'html',
+          success: function(data) {
+            $('#load_here').text('');
+            $('#load_here').after(data);
+            localise_time();
+          }, 
+          error: function(data) {
+            $('#load_here').text('an error occurred loading more messages');
+          }
+        });
+      }
+    };
   });
 
-	function chat_ready() {
-		localise_time();
-		Secpubsub.connection_lost = function (subscription, closeEvent) {
-			if (subscription.channel == '/messages/new')
-				$('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
-		}
+  function chat_ready() {
+    localise_time();
+    Secpubsub.connection_lost = function (subscription, closeEvent) {
+      if (subscription.channel == '/messages/new')
+        $('#post_area').html('<strong>CONNECTION LOST! Please refresh the page.</strong>');
+    }
 
-		// Application flashes_message, and turbo links prevents clean up, so unsubscribe here
-		Secpubsub.unsubscribe('/messages/new', flash_message); 
-		resize();	
-	}
+    // Application flashes_message, and turbo links prevents clean up, so unsubscribe here
+    Secpubsub.unsubscribe('/messages/new', flash_message); 
+    resize();  
+  }
 
-	$(document).ready(chat_ready);
+  $(document).ready(chat_ready);
   $(document).on('page:load.chat', chat_ready);
   $(document).on('page:before-change.chat', function() {
-  	Secpubsub.unsubscribe('/messages/new', append_message);
-  	Secpubsub.unsubscribe('/presence', refresh_presence);
-  	$(window).off("resize.chat");
-  	$(document).off('page:load.chat');
-  	$(document).off('page:before-change.chat');
+    Secpubsub.unsubscribe('/messages/new', append_message);
+    Secpubsub.unsubscribe('/presence', refresh_presence);
+    $(window).off("resize.chat");
+    $(document).off('page:load.chat');
+    $(document).off('page:before-change.chat');
   });
 
-  $(window).on('resize.chat', resize);		
+  $(window).on('resize.chat', resize);    
 </script>
 
 <%= subscribe_to "/presence", callback: 'refresh_presence' %>
 <%= subscribe_to "/messages/new", callback: 'append_message', person_id: current_person.id, person_handle: current_person.display_name %>
-

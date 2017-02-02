@@ -30,6 +30,10 @@ es:
       chat_text: Podemos intercambiar con compañeros/as de otros sindicatos información reservada de organización sindical sin estar a merced de quienes, básicamente, no respetan la privacidad.
       organise_heading: Organiza mundialmente
       organise_text: Las compañías transnacionales actúan globalmente para atacar los derechos y las condiciones laborales. Es fundamental que nos organicemos mundialmente para contrarrestar estos ataques y mejorar las condiciones laborales en todo el mundo.
+  messages:
+    index:
+      currently_online: En línea
+      send: Enviar
   people:
     form_fields:
       gender: Género
@@ -124,21 +128,28 @@ es:
 
     attributes:
       comment:
-      company:
+        # these fields are unlabelled, so translations go unused
+        body: Body
+      # company:
       message:
+        # these fields are unlabelled, so translations go unused
+        body: Body
       person:
         first_name: Nombre
         last_name: Apellido
         title: Title
         gender: Gender
         address: Dirección
-        mobile: Mobile
+        mobile: Celular
         fax: Fax
         email: Correo electrónico
         languages: Idiomas
         country: País
         union_id: Sindicato
       post:
+        # these fields are unlabelled, so translations go unused
+        attachment: Attachment
+        body: Body
       rec:
         attachment: Documento del convenio
         company_id: Company
@@ -178,7 +189,7 @@ es:
         short_name: Nombre de usuario
         www: WWW
         country: País
-      union:
+      # union:
 
     # Access to this system is by invite only: Se accede al sistema exclusivamente por invitación
     # Browse: Navegar
@@ -186,7 +197,6 @@ es:
     # Create Company: Crear compañía
     # Create Post: Crear publicación
     # Create union: Crear sindicato
-    # Currently Online: En línea
     # Editing my profile: Editando mi perfil
     # Forgot your password?: ¿Olvidó su contraseña?
     # Get Started: Cómo empezar

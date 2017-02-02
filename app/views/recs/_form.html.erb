@@ -21,7 +21,7 @@
       selected_option(@rec.company),
       #options_for_select(Union.all.collect {|u| [u.name, u.id ]}, @rec.union_id) , 
       {
-          include_blank: false,
+        include_blank: false,
       },
       data: { 
         url: companies_path
@@ -37,7 +37,7 @@
       <%= f.select :union_id, 
         selected_option(@rec.union),  
         {
-            include_blank: false,
+          include_blank: false,
         },
         data: { 
           placeholder: "Please select a union.",
@@ -70,7 +70,7 @@
     <%= f.select :person_id,
       selected_option(@rec.person),
       {
-          include_blank: false,
+        include_blank: false,
       },
       data: { 
         placeholder: "Please nominate a contact person.",
@@ -108,7 +108,7 @@
     <%= f.select :nature_of_operation,
       nature_of_operation_options, 
       {
-          include_blank: true,
+        include_blank: true,
       },
       data: { 
         placeholder:  t("helpers.label.rec.nature_of_operation_description"),

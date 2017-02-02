@@ -12,7 +12,7 @@ end
 Then(/^I can post "(.*?)"$/) do |post_body|
 	starting_url = current_url
 	fill_in "post_body", with: post_body
-  click_button "Create Post"
+  click_button "Create post"
   page.should have_content("Post was successfully created.")
   current_url.should eq(starting_url)
   page.should have_content(post_body)
@@ -121,4 +121,3 @@ end
 def find_post(post_body)
 	find("p.post_body", text: post_body).find(:xpath, '..')
 end
-

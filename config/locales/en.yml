@@ -30,6 +30,10 @@ en:
       chat_text: Chat with officials from other unions about sensitive organising information without being at the mercy of organisations that fundamentally don't respect privacy.
       organise_heading: Organise globally
       organise_text: Transnational corporations act globally to attack worker's rights and conditions.  It is crucial we organise globally to counter these attacks and raise labour standards throughout the world.
+  messages:
+    index:
+      currently_online: Currently Online
+      send: Send
   people:
     form_fields:
       gender: Gender
@@ -74,7 +78,7 @@ en:
       www: WWW
       agreements: Agreements
     new:
-      new_supergroup: New %{entity}
+      new_supergroup: Create %{entity}
       union: Union
       company: Company
   helpers:
@@ -121,11 +125,14 @@ en:
       rec: agreement
       supergroup: organisation
       union: union
-
     attributes:
       comment:
-      company:
+        # these fields are unlabelled, so translations go unused
+        body: Body
+      # company:
       message:
+        # these fields are unlabelled, so translations go unused
+        body: Body
       person:
         first_name: First name
         last_name: Last name
@@ -139,6 +146,9 @@ en:
         country: Country
         union_id: Union
       post:
+        # these fields are unlabelled, so translations go unused
+        attachment: Attachment
+        body: Body
       rec:
         attachment: Agreement Document
         company_id: Company
@@ -178,4 +188,4 @@ en:
         short_name: Short name
         www: WWW
         country: Country
-      union:
+      # union:
