@@ -1,8 +1,8 @@
 
 <div class="col-sm-8 col-sm-offset-2"/>
   <h1 class="no-left-margin">
-    Request An Invitation
-    <br><small>Please tell us about yourself so we can get you setup</small>
+    <%= t('.request_invitation') %>
+    <br><small><%= t('.introduce_yourself') %></small>
   </h1>
 
   <% unless @errors.blank? %> 
@@ -41,7 +41,7 @@
         <%= text_area_tag :message, nil, class: 'form-control', style: 'border: 1px solid #aaa; width: 100%', rows: 10 %>
         </div>
       <div>
-        <%= submit_tag "Send Request", class: 'btn btn-default', style: 'margin-top:5px;' %>
+        <%= submit_tag t('.send_request'), class: 'btn btn-default', style: 'margin-top:5px;' %>
         <!--  <small>You will be BCC'd</small> -->
       </div>
     <% end %> 

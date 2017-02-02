@@ -1,25 +1,82 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
+  layouts:
+    application:
+      title: IUF Agreements
+    navbar:
+      agreements: agreements
+      chat: chat
+      unions: unions
+      companies: companies
+      people: people
+      my_profile: my profile
+      invite: invite someone
+      sign_out: sign out
+      sign_in: sign in
+  help:
+    request_invites:
+      new:
+        request_invitation: Request An Invitation
+        introduce_yourself: Please tell us about yourself so we can get you setup
+        send_request: Send Request
+    get_started:
+      lets_get_started: Let's get started
+      videos_might_help: The system is pretty simple but these videos might help.
+    intro:
+      bringing_together: Bringing the affiliates of the IUF brewery division closer together
+      request_invitation: Request An Invitation
+      share_info_heading: Share organising info
+      share_info_text: Upload and share collective bargaining agreements and company research. Get in touch with key comrades from other unions, when agreements are expiring.
+      chat_heading: Chat securely and privately
+      chat_text: Chat with officials from other unions about sensitive organising information without being at the mercy of organisations that fundamentally don't respect privacy.
+      organise_heading: Organise globally
+      organise_text: Transnational corporations act globally to attack worker's rights and conditions.  It is crucial we organise globally to counter these attacks and raise labour standards throughout the world.
+  people:
+    form_fields:
+      gender: Gender
+      select_language: Please select your languages in order of preference
+      new_union: new union
+      select_union: Please select a union.
+      resend_invite: Resend Invite
+      bcc_notice: you will be BCC'd the invitation email FYI
+    form:
+      save_profile: Save Profile
+    edit:
+      only_visible_to: These details will only be visible to %{organisation} employees
+      permanently_delete: Permanently Delete This Person
+    index:
+      invite_someone: Invite someone
+      listing_people: Listing People
+      union: Union
+      picture: Picture
+      person: Person
+      country: Country
+      languages: Languages
+      invited_by: Invited By
+  posts:
+    index:
+      listing_posts: Listing Posts
+      body: Body
+      attachment: Attachment
+      person: Person
+      parent: Parent
+  recs:
+    recs:
+      agreement_or_expiry: Agreement / Expiry
+      company: Company
+      union: Union
+  supergroups:
+    index:
+      listing_supergroup: Listing %{entity}
+      unions: Unions
+      companies: Companies
+      logo: Logo
+      country: Country
+      www: WWW
+      agreements: Agreements
+    new:
+      new_supergroup: New %{entity}
+      union: Union
+      company: Company
   helpers:
     label:
       rec:
@@ -27,7 +84,7 @@ en:
         coverage: Coverage
         coverage_description:  Please detail the plant/sites and types of work covered
         anti_precariat: Limit to casual work
-        anti_precariat_description: "What limits are their to non-standard/precarious employment."
+        anti_precariat_description: "What limits are there to non-standard/precarious employment."
         anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
         anti_precariat_page: Limits to casual work page/clause number(s)
         anti_precariat_clause:  Limits to casual work notes
@@ -49,8 +106,76 @@ en:
         nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
         start_date: Agreement/Contract start date 
         end_date: Agreement/Contract end date
-  hello: "Hello world"
   gender:
     male: male
     female: female
     other: it's complicated
+
+  activerecord:
+    models:
+      comment: comment
+      company: company
+      message: message
+      person: person
+      post: post
+      rec: agreement
+      supergroup: organisation
+      union: union
+
+    attributes:
+      comment:
+      company:
+      message:
+      person:
+        first_name: First name
+        last_name: Last name
+        title: Title
+        gender: Gender
+        address: Address
+        mobile: Mobile
+        fax: Fax
+        email: Email
+        languages: Languages
+        country: Country
+        union_id: Union
+      post:
+      rec:
+        attachment: Agreement Document
+        company_id: Company
+        union_id: Union
+        name: Name
+        person_id: Person
+        start_date: Agreement/contract start date
+        end_date: Agreement/contract end date
+        multi_site: Multi-site
+        coverage: Coverage
+        # coverage_description:  Please detail the plant/sites and types of work covered
+        anti_precariat: Limit to casual work
+        # anti_precariat_description: "What limits are there to non-standard/precarious employment."
+        anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
+        anti_precariat_page: Limits to casual work page/clause number(s)
+        anti_precariat_clause:  Limits to casual work notes
+        health_and_safety: Health and Safety
+        # health_and_safety_description:  ""
+        health_and_safety_page: Health and Safety page/clause number(s)
+        health_and_safety_clause:  Heath and Safety notes
+        grievance_handling: Grievance handling / Dispute resolution
+        # grievance_handling_description:  Describe the dispute resolution procedure
+        grievance_handling_page: Grievance handling page/clause number(s)
+        grievance_handling_clause: Grievance handling notes
+        specific_rights: Specific union rights
+        # specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
+        specific_rights_page: Specific union rights page/clause number(s)
+        specific_rights_clause: Specific union rights notes
+        other_provisions: Other provisions and comments
+        # other_provisions_description:  "i.e.  How hostile is the company, are their any other interesting clause"
+        nature_of_operation: Nature of products
+        # nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
+      supergroup:
+        logo: Logo
+        banner: Banner
+        name: Name
+        short_name: Short name
+        www: WWW
+        country: Country
+      union:

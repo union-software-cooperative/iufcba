@@ -1,0 +1,234 @@
+es:
+  layouts:
+    application:
+      title: Convenios de la UITA
+    navbar:
+      agreements: convenios
+      chat: chat
+      unions: sindicatos
+      companies: compañías
+      people: personas
+      my_profile: mi perfil
+      invite: invitar a alguien
+      sign_out: cerrar sesión
+      sign_in: iniciar sesión
+  help:
+    request_invites:
+      new: # TODO model attributes?
+        request_invitation: Solicite invitación
+        introduce_yourself: Please tell us about yourself so we can get you setup
+        send_request: Send Request
+    get_started:
+      lets_get_started: Comencemos
+      videos_might_help: El sistema es muy sencillo, pero estos videos pueden ayudar
+    intro:
+      bringing_together: Donde se aúnan las afiliadas del sector lácteo de la UITA
+      request_invitation: Solicite invitación
+      share_info_heading: Compartir información sobre organización
+      share_info_text: Publicar y compartir convenios colectivos e información sobre la compañía. Ponerse en contacto con compañeros y compañeras de otros sindicatos, cuando los convenios están por vencer.
+      chat_heading: Chatear en forma segura y privada
+      chat_text: Podemos intercambiar con compañeros/as de otros sindicatos información reservada de organización sindical sin estar a merced de quienes, básicamente, no respetan la privacidad.
+      organise_heading: Organiza mundialmente
+      organise_text: Las compañías transnacionales actúan globalmente para atacar los derechos y las condiciones laborales. Es fundamental que nos organicemos mundialmente para contrarrestar estos ataques y mejorar las condiciones laborales en todo el mundo.
+  people:
+    form_fields:
+      gender: Género
+      select_language: Seleccione sus idiomas en orden de preferencia
+      new_union: nuevo sindicato
+      select_union: Seleccione un sindicato
+      resend_invite: Reenvíe invitación
+      bcc_notice: Recibirá copia oculta de la invitación para información.
+    form:
+      save_profile: Guardar perfil
+    edit:
+      only_visible_to: Estos datos solamente son visibles para los empleados de la UITA
+      permanently_delete: Borrar a esta persona en forma permanente
+    index:
+      invite_someone: Invitar a alguien
+      listing_people: Listado de personas
+      union: Sindicato
+      picture: Foto
+      person: Persona
+      country: País
+      languages: Idiomas
+      invited_by: Invitado/a por
+  posts:
+    index:
+      listing_posts: Listing Posts
+      body: Body
+      attachment: Attachment
+      person: Person
+      parent: Parent
+  recs:
+    recs:
+      agreement_or_expiry: Convenio / Vencimiento
+      union: Sindicato
+      company: Compañía
+  supergroups:
+    index:
+      listing_supergroup: Listado de %{entity}
+      unions: sindicatos
+      companies: compañías
+      logo: Logo
+      country: País
+      www: WWW
+      agreements: Convenios
+    new:
+      new_supergroup: Nueva %{entity}
+      union: Sindicato
+      company: Compañía
+  helpers:
+    label:
+      rec:
+        attachment: Documento del convenio
+        coverage: Alcance
+        coverage_description: Indique planta o centros y tipos de trabajo que abarca
+        anti_precariat: Limita el trabajo eventual
+        anti_precariat_description: "What limits are there to non-standard/precarious employment."
+        anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
+        anti_precariat_page: Limits to casual work page/clause number(s)
+        anti_precariat_clause:  Limits to casual work notes
+        health_and_safety: Salud y seguridad
+        health_and_safety_description: ""
+        health_and_safety_page: Health and Safety page/clause number(s)
+        health_and_safety_clause:  Heath and Safety notes
+        grievance_handling: Gestión de reclamos / Solución de conflictos
+        grievance_handling_description:  Describe the dispute resolution procedure
+        grievance_handling_page: Grievance handling page/clause number(s)
+        grievance_handling_clause: Grievance handling notes
+        specific_rights: Especifique derechos sindicales
+        specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
+        specific_rights_page: Specific union rights page/clause number(s)
+        specific_rights_clause: Specific union rights notes
+        other_provisions: Otras cláusulas y comentarios
+        other_provisions_description:  "i.e. How hostile is the company, are their any other interesting clause"
+        nature_of_operation: Naturaleza de los productos
+        nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
+        start_date: Fecha inicial del convenio
+        end_date: Agreement/Contract end date
+  gender: #Género
+    male: male
+    female: female
+    other: it's complicated
+    
+  activerecord:
+    models:
+      comment: comment
+      company: compañía
+      message: message
+      person: persona
+      post: publicación
+      rec: convenio
+      supergroup: organización
+      union: sindicato
+
+    attributes:
+      comment:
+      company:
+      message:
+      person:
+        first_name: Nombre
+        last_name: Apellido
+        title: Title
+        gender: Gender
+        address: Dirección
+        mobile: Mobile
+        fax: Fax
+        email: Correo electrónico
+        languages: Idiomas
+        country: País
+        union_id: Sindicato
+      post:
+      rec:
+        attachment: Documento del convenio
+        company_id: Company
+        union_id: Union
+        name: Name
+        person_id: Person
+        start_date: Fecha inicial del convenio
+        end_date: Agreement/Contract end date
+        multi_site: Más de una planta
+        coverage: Alcance
+        coverage_description: Indique planta o centros y tipos de trabajo que abarca
+        anti_precariat: Limita el trabajo eventual
+        anti_precariat_description: "What limits are there to non-standard/precarious employment."
+        anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
+        anti_precariat_page: Limits to casual work page/clause number(s)
+        anti_precariat_clause:  Limits to casual work notes
+        health_and_safety: Salud y seguridad
+        health_and_safety_description: ""
+        health_and_safety_page: Health and Safety page/clause number(s)
+        health_and_safety_clause:  Heath and Safety notes
+        grievance_handling: Gestión de reclamos / Solución de conflictos
+        grievance_handling_description:  Describe the dispute resolution procedure
+        grievance_handling_page: Grievance handling page/clause number(s)
+        grievance_handling_clause: Grievance handling notes
+        specific_rights: Especifique derechos sindicales
+        specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
+        specific_rights_page: Specific union rights page/clause number(s)
+        specific_rights_clause: Specific union rights notes
+        other_provisions: Otras cláusulas y comentarios
+        other_provisions_description:  "i.e. How hostile is the company, are their any other interesting clause"
+        nature_of_operation: Naturaleza de los productos
+        nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
+      supergroup:
+        logo: Logo
+        banner: Banner (estandarte)
+        name: Nombre
+        short_name: Nombre de usuario
+        www: WWW
+        country: País
+      union:
+
+    # Access to this system is by invite only: Se accede al sistema exclusivamente por invitación
+    # Browse: Navegar
+    # Browse / No file selected: Examinar / No ha seleccionado un archivo 
+    # Create Company: Crear compañía
+    # Create Post: Crear publicación
+    # Create union: Crear sindicato
+    # Currently Online: En línea
+    # Editing my profile: Editando mi perfil
+    # Forgot your password?: ¿Olvidó su contraseña?
+    # Get Started: Cómo empezar
+    # i.e. How hostile is the company, are there any other interesting clause: ej:  ¿cuán hostil es la empresa, hay alguna otra cláusula interesante?
+    # Invited By: Invitado/a por
+    # IUF Agreements: Convenios de la UITA
+    # Languages: Idiomas 
+    # Listing agreements: Listado de convenios
+    # Listing Companies: Listado de compañías
+    # Listing Unions: Listado de sindicatos
+    # Logo: Logo
+    # Mobile: Celular
+    # Multi site: 
+    # New Agreement: Nuevo convenio
+    # No file selected: No ha seleccionado un archivo
+    # No/Yes: No/Sí
+    # Not yet accepted: No aceptado todavía
+    # Overview: Aspectos generales
+    # Password: Contraseña
+    # Permanently Delete This Person: Borrar a esta persona en forma permanente
+    # Person: Persona
+    # Person invite person: Persona invita a persona
+    # Picture: Foto
+    # Please describe the agreement e.g. Nestle Australia (Tongara Plant) And NUW Enterprise Agreement 2014: Describa el convenio, por ejemplo, Convenio de empresa entre Nestlé Australia (Planta de Tongara) y NUW, 2014
+    # Please nominate a contact person.: Designe a una persona de contacto
+    # Please select a union: Seleccione un sindicato
+    # Please select one or more product types, or add your own : Seleccione uno o más tipos de productos o agregue el que corresponda 
+    # Post your union pictures and status updates here: Publique fotos de su sindicato y actualizaciones aquí
+    # Profile picture: Foto de perfil
+    # Remember me: Recordarme
+    # Resend invite You will be BCC’d the invitation email FYI: Reenvíe invitación - Recibirá copia oculta de la invitación por email
+    # Save agreement: Guardar convenio
+    # Save profile: 
+    # Send: Enviar
+    # Send an invitation: Enviar invitación
+    # Send invitation: Enviar invitación
+    # Short name: Nombre de usuario
+    # Signed in successfully: Ingresó correctamente
+    # Signed out successfully: Cerró sesión correctamente
+    # Title: Cargo
+    # Unfollow / follow: No seguir/ Seguir
+    # 10 people following...: 10 personas lo siguen...
+    # Union: Sindicato
+    # Union / new union: Sindicato / nuevo sindicato
+    # You will be BCC’d the invitation email FYI: Recibirá copia oculta de la invitación para información.

@@ -9,9 +9,9 @@
 		</div>
 		<div class="col-sm-10">
 			<h1 class="no-left-margin no-right-margin text-right">breweryworker.org</h1>
-			<p class="no-left-margin text-right no-right-margin">Bringing the affiliates of the IUF brewery division closer together</p>
+			<p class="no-left-margin text-right no-right-margin"><%= t('.bringing_together') %></p>
 			<p>
-				<%=link_to "Request An Invitation", new_help_request_invite_path, class: "btn btn-large btn-default pull-right" %>
+				<%=link_to t('.request_invitation'), new_help_request_invite_path, class: "btn btn-large btn-default pull-right" %>
 			</p>
 		</div>
 		
@@ -20,23 +20,21 @@
 <div class="container">
 	<div class="row">
 		<div class="col-sm-4">
-			<h2 class="no-left-margin">Share organising info</h2>
+			<h2 class="no-left-margin"><%= t('.share_info_heading') %></h2>
 			<p>
-				Upload and share collective bargaining agreements and company research.  Get in touch with key comrades from other unions, when agreements are expiring.
+				<%= t('.share_info_text') %>
 			</p>
 		</div>
 		<div class="col-sm-4">
-			<h2  class="no-left-margin">Chat securely and privately</h2>
+			<h2  class="no-left-margin"><%= t('.chat_heading') %></h2>
 			<p>
-				Chat with officials from other unions about sensitive organising information without being at the mercy of organisations that fundamentally don't respect privacy.
+				<%= t('.chat_text') %>
 			</p>
 		</div>
 		<div class="col-sm-4">
-			<h2  class="no-left-margin">Organise globally</h2>
-			<p>Transnational corporations act globally to attack worker's rights and conditions.  It is crucial we organise globally to counter these attacks and raise labour standards throughout the world.</p>
+			<h2  class="no-left-margin"><%= t('.organise_heading') %></h2>
+			<p><%= t('.organise_text') %></p>
 		</div>
 	</div>
 </div>
 <hr/>
-
-

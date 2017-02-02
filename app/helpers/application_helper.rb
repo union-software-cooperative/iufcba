@@ -1,23 +1,23 @@
 module ApplicationHelper
-	def profile_thumb(person)		
-		unless person.attachment.blank?
-			image_tag person.attachment.thumb.url, class: "profile_thumb"
-		else
-			"<span class=\"glyphicon glyphicon-user\"></span>".html_safe
-		end
-	end
+  def profile_thumb(person)		
+    unless person.attachment.blank?
+      image_tag person.attachment.thumb.url, class: "profile_thumb"
+    else
+      "<span class=\"glyphicon glyphicon-user\"></span>".html_safe
+    end
+  end
 
-	def profile_logo(person)		
-		unless person.attachment.blank?
-			image_tag person.attachment.quote.url, class: "profile_logo"
-		end
-	end
+  def profile_logo(person)		
+    unless person.attachment.blank?
+      image_tag person.attachment.quote.url, class: "profile_logo"
+    end
+  end
 
-	def pencil_button
-		"<span class=\"small glyphicon glyphicon-pencil\"/>".html_safe 
-	end
+  def pencil_button
+    "<span class=\"small glyphicon glyphicon-pencil\"/>".html_safe 
+  end
 
-	def gender_options(person)
+  def gender_options(person)
     options_for_select(
       ([
         t('gender.male'), 
@@ -29,56 +29,56 @@ module ApplicationHelper
   end
 
   def owner_union
-  	#Rails.application.config.owner_union ||= Union.find_by_short_name(ENV['OWNER_UNION']) rescue nil # Added for tests, since I couldn't get seeds to work
-		#Rails.application.config.owner_union
-		Union.find_by_short_name(ENV['OWNER_UNION']) rescue nil
-	end
+    #Rails.application.config.owner_union ||= Union.find_by_short_name(ENV['OWNER_UNION']) rescue nil # Added for tests, since I couldn't get seeds to work
+    #Rails.application.config.owner_union
+    Union.find_by_short_name(ENV['OWNER_UNION']) rescue nil
+  end
 
-	def owner?
-		return false unless current_person.present?
-		return false unless owner_union.present?
-		current_person.union.id == owner_union.id 
-	end
+  def owner?
+    return false unless current_person.present?
+    return false unless owner_union.present?
+    current_person.union.id == owner_union.id 
+  end
 
-	def iso_languages
-		Rails.application.config.iso_languages
-	end
+  def iso_languages
+    Rails.application.config.iso_languages
+  end
 
-	def language_options(selected_options)
-		# put selected languages first to preserve selection order
-		selected_options = selected_options.collect(&:to_sym)
+  def language_options(selected_options)
+    # put selected languages first to preserve selection order
+    selected_options = selected_options.collect(&:to_sym)
 
-		options_hash = iso_languages.slice(selected_options)
-		options_hash.merge!(iso_languages.except(selected_options))
+    options_hash = iso_languages.slice(selected_options)
+    options_hash.merge!(iso_languages.except(selected_options))
 
-		options = options_hash.collect do |k,v|
-			display_value = v[:nativeName] || v[:name]
-			display_value += " (#{v[:name]})" unless v[:nativeName] == v[:name]
-			[display_value,k]
-		end
+    options = options_hash.collect do |k,v|
+      display_value = v[:nativeName] || v[:name]
+      display_value += " (#{v[:name]})" unless v[:nativeName] == v[:name]
+      [display_value,k]
+    end
 
-		options_for_select options, selected_options
-	end
+    options_for_select options, selected_options
+  end
 
-	def can_edit_union?(union)
-		if current_person.present?
-			if union.blank? || owner? || current_person.union.id == union.id
-				true
-			else
-				false
-			end 
-		else
-			false
-		end
-	end
+  def can_edit_union?(union)
+    if current_person.present?
+      if union.blank? || owner? || current_person.union.id == union.id
+        true
+      else
+        false
+      end 
+    else
+      false
+    end
+  end
 
-	def selected_option(entity)
-		entity ? 
-        options_for_select([[entity.name, entity.id]], entity.id) :
-        []
-	end
+  def selected_option(entity)
+    entity ? 
+      options_for_select([[entity.name, entity.id]], entity.id) :
+      []
+  end
 
-	def offline_people()
+  def offline_people()
     Person.where(["not (invitation_accepted_at is null or id in (?))", Secpubsub.presence.keys])
   end
 

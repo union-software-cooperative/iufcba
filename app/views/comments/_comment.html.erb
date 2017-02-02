@@ -2,8 +2,8 @@
   <%="#{comment.person.display_name} @ "%>
   <%= local_time_tag(comment.created_at) %>  
   <% if current_person == comment.person || owner? || (comment.post.parent.class.to_s == 'Union' && can_edit_union?(comment.post.parent)) %>
-		<small><%=link_to "<span class=\"glyphicon glyphicon-trash\"></span>".html_safe, comment, method: :delete, data: { confirm: 'Are you sure?' }, class: "pull-right delete" %></small>
-	<% end %> 
+  <small><%=link_to "<span class=\"glyphicon glyphicon-trash\"></span>".html_safe, comment, method: :delete, data: { confirm: 'Are you sure?' }, class: "pull-right delete" %></small>
+  <% end %> 
   <p class="comment_body">
     <%= comment.body %>
   </p>

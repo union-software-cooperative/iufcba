@@ -3,9 +3,7 @@ require 'secpubsub_adapter'
 require 'eventmachine'
 
 module Secpubsub
-  
-	class << self
-	 
+  class << self
     attr_reader :config
 
     # Resets the configuration to the default (empty hash)
@@ -14,9 +12,9 @@ module Secpubsub
     end
 
     def adapter_options
-    	{
-    		secret_token: config[:secret_token]
-    	}
+      {
+        secret_token: config[:secret_token]
+      }
     end
 
     def adapter=(adapter)
@@ -34,20 +32,20 @@ module Secpubsub
     end
 
     def server 
-    	url = URI.parse(config[:server])
-    	(url.scheme == 'https' ? "wss" : "ws") + "://#{url.host}:#{url.port}"
+      url = URI.parse(config[:server])
+      (url.scheme == 'https' ? "wss" : "ws") + "://#{url.host}:#{url.port}"
     end
 
 
- 		# Determine if the signature has expired given a timestamp.
+    # Determine if the signature has expired given a timestamp.
     def signature_expired?(timestamp)
       timestamp < ((Time.now.to_f - config[:signature_expiration])*1000).round if config[:signature_expiration]
     end
 
     def subscription(options = {})
       sub = {
-      	server: server, 
-      	timestamp: (Time.now.to_f * 1000).round, 
+        server: server,
+        timestamp: (Time.now.to_f * 1000).round,
       }.merge(options)
       sub[:auth_token] = Digest::SHA1.hexdigest([config[:secret_token], sub[:command], sub[:channel], sub[:timestamp]].join)
       sub[:auth_token] = nil if signature_expired?(sub[:timestamp])
@@ -71,18 +69,16 @@ module Secpubsub
 
     # Sends the given message hash to the Faye server using Net::HTTP.
     def publish_message(message)
-    	EM.run {
-    		ws = Faye::WebSocket::Client.new(server)
-		    ws.on :open do |event|
-		    	ws.send message.to_json
-		    end	
-    	}
+      EM.run do
+        ws = Faye::WebSocket::Client.new(server)
+        ws.on(:open) { |event| ws.send message.to_json }
+      end
     end
-	end
+  end
 
-	module ViewHelpers
+  module ViewHelpers
     def subscribe_to(channel, data = {})
-    	subscription = Secpubsub.subscription(data.merge(channel: channel, command: 'subscribe'))
+      subscription = Secpubsub.subscription(data.merge(channel: channel, command: 'subscribe'))
       content_tag "script", :type => "text/javascript" do
         raw("Secpubsub.subscribe(#{subscription.to_json}, #{data[:callback]||'undefined'});")
       end
@@ -90,6 +86,6 @@ module Secpubsub
 
   end
 
-	reset_config 
-	ActionView::Base.send :include, ViewHelpers
+  reset_config 
+  ActionView::Base.send :include, ViewHelpers
 end

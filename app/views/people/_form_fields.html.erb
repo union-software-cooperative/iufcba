@@ -26,10 +26,10 @@
     <%= f.select :gender,
       gender_options(@person), 
       {
-          include_blank: true,
+        include_blank: true,
       },
-      data: { 
-        placeholder: "Gender",
+      data: {
+        placeholder: t('.gender'),
       }, 
       class: "form-control", 
       style: "width: 100%;"
@@ -57,10 +57,10 @@
     <%= f.select :languages,
       language_options(@person.languages), 
       {
-          include_blank: true,
+        include_blank: true,
       },
       data: { 
-        placeholder:  "Please select your languages in order of preference",
+        placeholder: t('.select_language'),
       }, 
       multiple: true, 
       class: "ac-select2-multi form-control", 
@@ -75,7 +75,7 @@
 
   <div class="form-group">
     <% if owner? %>
-      <%= f.label :union_id %> <%=link_to "new union", new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
+      <%= f.label :union_id %> <%= link_to t('.new_union'), new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
 
 
       <% if params[:affiliate_union].present? %>
@@ -85,10 +85,10 @@
       <%= f.select :union_id, 
         selected_option(@person.union || current_person.union),  
         {
-            include_blank: false,
+          include_blank: false,
         },
         data: { 
-          placeholder: "Please select a union.",
+          placeholder: t('.select_union'),
           url: unions_path
         }, 
         class: "ac-select2 form-control", 
@@ -104,7 +104,7 @@
 
   <% unless params[:action] == "new" %>
     <div class="form-group">
-      <%= label_tag "Resend Invite" %>&nbsp;&nbsp;<small>you will be BCC'd the invitation email FYI</small><br>
+      <%= label_tag t('.resend_invite') %>&nbsp;&nbsp;<small><%= t('.bcc_notice') %></small><br>
       <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %> 
     </div>
   <% end %>

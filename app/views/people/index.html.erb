@@ -4,18 +4,18 @@
 <div class="outer-row">
 
   <div class="col-sm-8 col-sm-offset-2">
-    <%= link_to 'Invite someone', new_person_invitation_path, style: "margin-top: 15px" , class: "btn btn-default pull-right" %>
-      <h2 class="no-left-margin">Listing People</h2>
+    <%= link_to t('.invite_someone'), new_person_invitation_path, style: "margin-top: 15px" , class: "btn btn-default pull-right" %>
+      <h2 class="no-left-margin"><%= t('.listing_people') %></h2>
       
       <table class="table table-condensed table-striped box-shadow">
         <thead>
           <tr>
-            <th>Union</th>
-            <th>Picture</th>
-            <th>Person</th>
-            <th class="hidden-xs">Country</th>
-            <th>Languages</th>
-            <th class="hidden-xs">Invited By</th>
+            <th><%= t('.union') %></th>
+            <th><%= t('.picture') %></th>
+            <th><%= t('.person') %></th>
+            <th class="hidden-xs"><%= t('.country') %></th>
+            <th><%= t('.languages') %></th>
+            <th class="hidden-xs"><%= t('.invited_by') %></th>
             <th></th>
           </tr>
         </thead>
@@ -36,7 +36,7 @@
                 </strong>
                 <%="<br/>#{person.title}".html_safe if person.title %>
               </td>
-              <td  class="hidden-xs"  style="vertical-align: middle"><%=ISO3166::Country(person.country).name if person.country%></td>
+              <td  class="hidden-xs" style="vertical-align: middle"><%=ISO3166::Country(person.country).name if person.country%></td>
               <td style="vertical-align: middle"><%=person.languages.collect{|l| iso_languages[l.to_sym][:name]}.join(' | ') if person.languages%></td>
               <td  class="hidden-xs" >
                 <% if person.invited_by %>
