@@ -1,8 +1,13 @@
 es:
+  switch_yes: Sí
+  switch_no: "No"
+  follow: seguir
+  unfollow: no seguir
   layouts:
     application:
       title: Convenios de la UITA
     navbar:
+      divisions: divisions
       agreements: convenios
       chat: chat
       unions: sindicatos
@@ -30,6 +35,14 @@ es:
       chat_text: Podemos intercambiar con compañeros/as de otros sindicatos información reservada de organización sindical sin estar a merced de quienes, básicamente, no respetan la privacidad.
       organise_heading: Organiza mundialmente
       organise_text: Las compañías transnacionales actúan globalmente para atacar los derechos y las condiciones laborales. Es fundamental que nos organicemos mundialmente para contrarrestar estos ataques y mejorar las condiciones laborales en todo el mundo.
+  devise:
+    sessions:
+      new:
+        access_by_invite_only: Se accede al sistema exclusivamente por invitación
+        remember_me: Recordarme
+    shared:
+      links:
+        forgot_your_password: ¿Olvidó su contraseña?
   messages:
     index:
       currently_online: En línea
@@ -45,6 +58,9 @@ es:
     form:
       save_profile: Guardar perfil
     edit:
+      agreements: Convenios
+      editing: Editando
+      my_profile: mi perfil
       only_visible_to: Estos datos solamente son visibles para los empleados de la UITA
       permanently_delete: Borrar a esta persona en forma permanente
     index:
@@ -63,11 +79,29 @@ es:
       attachment: Attachment
       person: Person
       parent: Parent
+    form:
+      company_post_title: Post your questions or research here
+      union_post_title: Publique fotos de su sindicato y actualizaciones aquí
   recs:
     recs:
       agreement_or_expiry: Convenio / Vencimiento
       union: Sindicato
       company: Compañía
+    form:
+      new_company: nuevo compañía
+      new_union: nuevo sindicato
+      select_union: Seleccione un sindicato
+      name_description: Describa el convenio, por ejemplo, Convenio de empresa entre Nestlé Australia (Planta de Tongara) y NUW, 2014
+      person_description: Designe a una persona de contacto
+      coverage_description: Indique planta o centros y tipos de trabajo que abarca
+      anti_precariat_description: "What limits are there to non-standard/precarious employment."
+      anti_precariat_placeholder: e.g. Limits on indirect employment or conversion to permanent clauses
+      health_and_safety_description: ""
+      grievance_handling_description: Describe the dispute resolution procedure
+      specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
+      other_provisions_description: "ej: ¿cuán hostil es la empresa, hay alguna otra cláusula interesante?"
+      nature_of_operation_description: Seleccione uno o más tipos de productos o agregue el que corresponda
+      save_agreement: Guardar convenio
   supergroups:
     index:
       listing_supergroup: Listado de %{entity}
@@ -78,42 +112,28 @@ es:
       www: WWW
       agreements: Convenios
     new:
-      new_supergroup: Nueva %{entity}
+      create_supergroup: Crear %{entity}
       union: Sindicato
       company: Compañía
+    edit:
+      editing: Editando %{entity}
+      permanently_delete: Borrar a esta %{entity} en forma permanente
+      union: Sindicato
+      company: Compañía
+  divisions: 
+    edit:
+      editing: Editing Divisions
+      permanently_delete: Permanently Delete This Division
+      permanently_delete_confirm: Are you really really sure?
+      remove_logo: Remove logo
+    new: 
+      new_division: Create Division 
   helpers:
     label:
-      rec:
-        attachment: Documento del convenio
-        coverage: Alcance
-        coverage_description: Indique planta o centros y tipos de trabajo que abarca
-        anti_precariat: Limita el trabajo eventual
-        anti_precariat_description: "What limits are there to non-standard/precarious employment."
-        anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
-        anti_precariat_page: Limits to casual work page/clause number(s)
-        anti_precariat_clause:  Limits to casual work notes
-        health_and_safety: Salud y seguridad
-        health_and_safety_description: ""
-        health_and_safety_page: Health and Safety page/clause number(s)
-        health_and_safety_clause:  Heath and Safety notes
-        grievance_handling: Gestión de reclamos / Solución de conflictos
-        grievance_handling_description:  Describe the dispute resolution procedure
-        grievance_handling_page: Grievance handling page/clause number(s)
-        grievance_handling_clause: Grievance handling notes
-        specific_rights: Especifique derechos sindicales
-        specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
-        specific_rights_page: Specific union rights page/clause number(s)
-        specific_rights_clause: Specific union rights notes
-        other_provisions: Otras cláusulas y comentarios
-        other_provisions_description:  "i.e. How hostile is the company, are their any other interesting clause"
-        nature_of_operation: Naturaleza de los productos
-        nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
-        start_date: Fecha inicial del convenio
-        end_date: Agreement/Contract end date
   gender: #Género
-    male: male
-    female: female
-    other: it's complicated
+    male: masculino
+    female: hembra
+    other: es complicado
     
   activerecord:
     models:
@@ -125,7 +145,6 @@ es:
       rec: convenio
       supergroup: organización
       union: sindicato
-
     attributes:
       comment:
         # these fields are unlabelled, so translations go unused
@@ -135,6 +154,8 @@ es:
         # these fields are unlabelled, so translations go unused
         body: Body
       person:
+        attachment: Foto de perfil
+        remove_attachment: Eliminar foto de perfil
         first_name: Nombre
         last_name: Apellido
         title: Title
@@ -143,6 +164,7 @@ es:
         mobile: Celular
         fax: Fax
         email: Correo electrónico
+        password: Contraseña
         languages: Idiomas
         country: País
         union_id: Sindicato
@@ -160,28 +182,21 @@ es:
         end_date: Agreement/Contract end date
         multi_site: Más de una planta
         coverage: Alcance
-        coverage_description: Indique planta o centros y tipos de trabajo que abarca
         anti_precariat: Limita el trabajo eventual
-        anti_precariat_description: "What limits are there to non-standard/precarious employment."
-        anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
+        anti_precariat_placeholder: e.g. Limits on indirect employment or conversion to permanent clauses
         anti_precariat_page: Limits to casual work page/clause number(s)
         anti_precariat_clause:  Limits to casual work notes
         health_and_safety: Salud y seguridad
-        health_and_safety_description: ""
         health_and_safety_page: Health and Safety page/clause number(s)
-        health_and_safety_clause:  Heath and Safety notes
+        health_and_safety_clause: Health and Safety notes
         grievance_handling: Gestión de reclamos / Solución de conflictos
-        grievance_handling_description:  Describe the dispute resolution procedure
         grievance_handling_page: Grievance handling page/clause number(s)
         grievance_handling_clause: Grievance handling notes
         specific_rights: Especifique derechos sindicales
-        specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
         specific_rights_page: Specific union rights page/clause number(s)
         specific_rights_clause: Specific union rights notes
         other_provisions: Otras cláusulas y comentarios
-        other_provisions_description:  "i.e. How hostile is the company, are their any other interesting clause"
         nature_of_operation: Naturaleza de los productos
-        nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
       supergroup:
         logo: Logo
         banner: Banner (estandarte)
@@ -189,56 +204,28 @@ es:
         short_name: Nombre de usuario
         www: WWW
         country: País
+        remove_logo: Eliminar Logo
+        remove_banner: Eliminar Banner (estandarte)
+      division:
+        name: Nombre
+        short_name: Nombre de usuario
+        logo: Logo
+        colour1: Colour 1
+        colour2: Colour 2
       # union:
 
-    # Access to this system is by invite only: Se accede al sistema exclusivamente por invitación
     # Browse: Navegar
     # Browse / No file selected: Examinar / No ha seleccionado un archivo 
-    # Create Company: Crear compañía
-    # Create Post: Crear publicación
-    # Create union: Crear sindicato
-    # Editing my profile: Editando mi perfil
-    # Forgot your password?: ¿Olvidó su contraseña?
     # Get Started: Cómo empezar
-    # i.e. How hostile is the company, are there any other interesting clause: ej:  ¿cuán hostil es la empresa, hay alguna otra cláusula interesante?
     # Invited By: Invitado/a por
-    # IUF Agreements: Convenios de la UITA
-    # Languages: Idiomas 
-    # Listing agreements: Listado de convenios
-    # Listing Companies: Listado de compañías
-    # Listing Unions: Listado de sindicatos
-    # Logo: Logo
-    # Mobile: Celular
-    # Multi site: 
-    # New Agreement: Nuevo convenio
     # No file selected: No ha seleccionado un archivo
-    # No/Yes: No/Sí
     # Not yet accepted: No aceptado todavía
     # Overview: Aspectos generales
-    # Password: Contraseña
-    # Permanently Delete This Person: Borrar a esta persona en forma permanente
-    # Person: Persona
     # Person invite person: Persona invita a persona
-    # Picture: Foto
-    # Please describe the agreement e.g. Nestle Australia (Tongara Plant) And NUW Enterprise Agreement 2014: Describa el convenio, por ejemplo, Convenio de empresa entre Nestlé Australia (Planta de Tongara) y NUW, 2014
-    # Please nominate a contact person.: Designe a una persona de contacto
-    # Please select a union: Seleccione un sindicato
-    # Please select one or more product types, or add your own : Seleccione uno o más tipos de productos o agregue el que corresponda 
-    # Post your union pictures and status updates here: Publique fotos de su sindicato y actualizaciones aquí
-    # Profile picture: Foto de perfil
-    # Remember me: Recordarme
-    # Resend invite You will be BCC’d the invitation email FYI: Reenvíe invitación - Recibirá copia oculta de la invitación por email
-    # Save agreement: Guardar convenio
-    # Save profile: 
     # Send: Enviar
     # Send an invitation: Enviar invitación
     # Send invitation: Enviar invitación
-    # Short name: Nombre de usuario
     # Signed in successfully: Ingresó correctamente
     # Signed out successfully: Cerró sesión correctamente
     # Title: Cargo
-    # Unfollow / follow: No seguir/ Seguir
     # 10 people following...: 10 personas lo siguen...
-    # Union: Sindicato
-    # Union / new union: Sindicato / nuevo sindicato
-    # You will be BCC’d the invitation email FYI: Recibirá copia oculta de la invitación para información.

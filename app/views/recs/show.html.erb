@@ -8,7 +8,7 @@
     <!--
         <span class="form-group pull-right">
           <%= label_tag :check_box, "taking industrial action" %><br>
-          <%= check_box_tag "rec_taking_action", 1, @rec.taking_action, class: "switch", readonly: true, :data => { :size => 'medium', 'on-text'=>'On', 'off-text'=>'Off', 'on-color'=>'danger'} %>
+          <%= check_box_tag "rec_taking_action", 1, @rec.taking_action, class: "switch", readonly: true, :data => l10n_switch_data(size: 'medium') %>
         </span>
     -->
         <span class="actions pull-right">
@@ -33,13 +33,13 @@
         <p class="col-sm">
           <div class="form-group">
             <%= label_tag :check_box, "multi site" %><br>
-            <%= check_box_tag "rec_multi_site", 1, @rec.multi_site, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+            <%= check_box_tag "rec_multi_site", 1, @rec.multi_site, class: "switch", readonly: true, :data => l10n_switch_data %>
           </div>
         </p>
         <p><%=@rec.coverage%></p>
        
         <div style="position:relative; float:right">
-          <%= link_to current_person.follows?(@rec) ? "unfollow" : "follow", follow_rec_path(@rec), class: "btn btn-primary rec-follow" %>  
+          <%= link_to current_person.follows?(@rec) ? t("unfollow") : t("follow"), follow_rec_path(@rec), class: "btn btn-primary rec-follow" %>  
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
       <div class="col-sm-5 col-sm-offset-1">
         <div class="form-group">
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.grievance_handling")%></h2>
-          <%= check_box_tag "rec_greivance_handling", 1, @rec.grievance_handling, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+          <%= check_box_tag "rec_greivance_handling", 1, @rec.grievance_handling, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.grievance_handling == false || @rec.grievance_handling.blank? ? "" : "#{@rec.grievance_handling_page}:" %>
             <%= @rec.grievance_handling == false || @rec.grievance_handling_clause.blank? ? "No notes" : @rec.grievance_handling_clause %>
@@ -60,7 +60,7 @@
       <div class="col-sm-5">
         <div class="form-group">
           <h2 style="margin-left:0px; margin-right:0px;"><%=t("helpers.label.rec.health_and_safety")%></h2>
-          <%= check_box_tag "rec_health_and_safety", 1, @rec.health_and_safety, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+          <%= check_box_tag "rec_health_and_safety", 1, @rec.health_and_safety, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.health_and_safety == false || @rec.health_and_safety_page.blank? ? "" : "#{@rec.health_and_safety_page}:" %>
             <%= @rec.health_and_safety == false  || @rec.health_and_safety_clause.blank? ? "No notes" : @rec.health_and_safety_clause %>
@@ -72,7 +72,7 @@
       <div class="col-sm-5 col-sm-offset-1">
         <div class="form-group">
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.anti_precariat")%></h2>
-          <%= check_box_tag "rec_anti_precariat", 1, @rec.anti_precariat, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+          <%= check_box_tag "rec_anti_precariat", 1, @rec.anti_precariat, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.anti_precariat == false || @rec.anti_precariat_page.blank? ? "" : "#{@rec.anti_precariat_page}:" %>
             <%= @rec.anti_precariat == false || @rec.anti_precariat_clause.blank? ? "No notes" : @rec.anti_precariat_clause %>
@@ -82,7 +82,7 @@
       <div class="col-sm-5">
         <div class="form-group">
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.specific_rights")%></h2>
-          <%= check_box_tag "rec_specific_rights", 1, @rec.specific_rights, class: "switch", readonly: true, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+          <%= check_box_tag "rec_specific_rights", 1, @rec.specific_rights, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.specific_rights == false || @rec.specific_rights_page.blank? ? "" : "#{@rec.specific_rights_page}:" %>
             <%= @rec.specific_rights == false || @rec.specific_rights_clause.blank? ? "No notes" : @rec.specific_rights_clause %>

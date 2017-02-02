@@ -1,42 +1,54 @@
 Rails.application.routes.draw do
-  resources :messages 
-  resources :comments
-  resources :posts
+  
+
+  def declare_routes
+    resources :messages 
+    resources :comments
+    resources :posts
+      
+    resources :companies, controller: :supergroups, type: 'Company'  do
+      member do
+        get 'follow'
+      end
+    end
+
+    resources :unions, controller: :supergroups, type: 'Union' do
+      member do
+        get 'follow'
+      end
+    end
+    
+    resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
+      member do 
+        get 'compose_email'
+        patch 'send_email'
+      end
+    end 
+
+    resources :recs do
+      member do
+        get 'follow'
+      end
+    end
+
+    get '/public/:filename', to: 'files#get'
+    resources :agreements, controller: :recs, type: 'Rec'
+    resource :help, only: [:show] do
+      resource :request_invite, only: [:new, :create], module: :help
+    end
+
+  end
+
+  declare_routes
   devise_for :people, :controllers => { :invitations => 'people/invitations' }
     
-  resources :companies, controller: :supergroups, type: 'Company'  do
-    member do
-      get 'follow'
-    end
+  resources :divisions, except: [:show] do
+    declare_routes
   end
-
-  resources :unions, controller: :supergroups, type: 'Union' do
-    member do
-      get 'follow'
-    end
-  end
-  
-  resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
-    member do 
-      get 'compose_email'
-      patch 'send_email'
-    end
-  end 
-
-  resources :recs do
-    member do
-      get 'follow'
-    end
-  end
-
-  get '/public/:filename', to: 'files#get'
-  resources :agreements, controller: :recs, type: 'Rec'
-  resource :help, only: [:show] do
-    resource :request_invite, only: [:new, :create], module: :help
-  end
-
-  #root "messages#index"
+    
   root "help#show"
+  
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

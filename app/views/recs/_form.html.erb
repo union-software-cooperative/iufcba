@@ -14,8 +14,25 @@
     <%= f.label :attachment %><br>
     <%= f.file_field :attachment %>
   </div>
+  
   <div class="form-group">
-    <%= f.label :company_id %> <%=link_to "new company", new_polymorphic_path(Company), placeholder: "Please select a company.",
+    <%= f.label :divisions %>
+    <%= f.select :divisions,
+      # prefill existing divisions?
+      { 
+        include_blank: false,
+        multiple: true
+      },
+      data: {
+        url: divisions_path,
+      },
+      class: "ac-select2 form-control",
+      style: "width: 100%;"
+    %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company), placeholder: "Please select a company.",
         class: "small", :target => "_blank"%><br>
     <%= f.select :company_id, 
       selected_option(@rec.company),
@@ -33,14 +50,14 @@
 
   <div class="form-group">
     <% if owner? %>
-      <%= f.label :union_id %> <%=link_to "new union", new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
+      <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
       <%= f.select :union_id, 
         selected_option(@rec.union),  
         {
           include_blank: false,
         },
         data: { 
-          placeholder: "Please select a union.",
+          placeholder: t('.select_union'),
           url: unions_path
         }, 
         class: "ac-select2 form-control", 
@@ -62,7 +79,7 @@
 -->
   <div class="form-group">
     <%= f.label :name %><br>
-    <%= f.text_field :name, class: "form-control", placeholder: "Please describe the agreement e.g. Nestle Australia (Tongara Plant) And NUW Enterprise Agreement 2014" %>
+    <%= f.text_field :name, class: "form-control", placeholder: t('.name_description') %>
   </div>
   
   <div class="form-group">
@@ -73,7 +90,7 @@
         include_blank: false,
       },
       data: { 
-        placeholder: "Please nominate a contact person.",
+        placeholder: t('.person_description'),
         url: people_path
       }, 
       class: "ac-select2 form-control", 
@@ -97,11 +114,11 @@
   </div>
   <div class="form-group">
     <%= f.label :multi_site %><br>
-    <%= f.check_box :multi_site, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :multi_site, class: "switch", :data => l10n_switch_data %>
   </div>
   <div class="form-group">
     <%= f.label :coverage %><br>
-    <%= f.text_area :coverage, class: "form-control", placeholder: t("helpers.label.rec.coverage_description") %>
+    <%= f.text_area :coverage, class: "form-control", placeholder: t(".coverage_description") %>
   </div>
   <div class="form-group">
     <%= f.label :nature_of_operation %><br>
@@ -111,7 +128,7 @@
         include_blank: true,
       },
       data: { 
-        placeholder:  t("helpers.label.rec.nature_of_operation_description"),
+        placeholder:  t(".nature_of_operation_description"),
       }, 
       multiple: true, 
       class: "ac-select2-tags form-control", 
@@ -120,7 +137,7 @@
   </div>
   <div class="form-group">
     <%= f.label :grievance_handling %><br>
-    <%= f.check_box :grievance_handling, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :grievance_handling, :data => l10n_switch_data %>
   </div>
   <div class="form-group">
     <%= f.label :grievance_handling_page %><br>
@@ -128,11 +145,11 @@
   </div>
   <div class="form-group">
     <%= f.label :grievance_handling_clause %><br>
-    <%= f.text_area :grievance_handling_clause, class: "form-control", placeholder:  t("helpers.label.rec.grievance_handling_description")%>
+    <%= f.text_area :grievance_handling_clause, class: "form-control", placeholder:  t(".grievance_handling_description")%>
   </div>
   <div class="form-group">
     <%= f.label :health_and_safety %><br>
-    <%= f.check_box :health_and_safety, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :health_and_safety, :data => l10n_switch_data %>
   </div>
   <div class="form-group">
     <%= f.label :health_and_safety_page %><br>
@@ -140,11 +157,11 @@
   </div>
   <div class="form-group">
     <%= f.label :health_and_safety_clause %><br>
-    <%= f.text_area :health_and_safety_clause, class: "form-control", placeholder: t("helpers.label.rec.health_and_safety_description") %>
+    <%= f.text_area :health_and_safety_clause, class: "form-control", placeholder: t(".health_and_safety_description") %>
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat %><br>
-    <%= f.check_box :anti_precariat, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :anti_precariat, :data => l10n_switch_data %>
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat_page %><br>
@@ -152,11 +169,11 @@
   </div>
   <div class="form-group">
     <%= f.label :anti_precariat_clause %><br>
-    <%= f.text_area :anti_precariat_clause, class: "form-control", placeholder: t("helpers.label.rec.anti_precariat_description") %>
+    <%= f.text_area :anti_precariat_clause, class: "form-control", placeholder: t(".anti_precariat_description") %>
   </div>
   <div class="form-group">
     <%= f.label :specific_rights %><br>
-    <%= f.check_box :specific_rights, :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %>
+    <%= f.check_box :specific_rights, :data => l10n_switch_data %>
   </div>
   <div class="form-group">
     <%= f.label :specific_rights_page %><br>
@@ -164,14 +181,14 @@
   </div>
   <div class="form-group">
     <%= f.label :specific_rights_clause %><br>
-    <%= f.text_area :specific_rights_clause, class: "form-control", placeholder: t("helpers.label.rec.specific_rights_description") %>
+    <%= f.text_area :specific_rights_clause, class: "form-control", placeholder: t(".specific_rights_description") %>
   </div>
   <div class="form-group">
     <%= f.label :other_provisions %><br>
-    <%= f.text_area :other_provisions, class: "form-control", placeholder: t("helpers.label.rec.other_provisions_description") %>
+    <%= f.text_area :other_provisions, class: "form-control", placeholder: t(".other_provisions_description") %>
   </div>
   <div class="actions">
-    <%= f.submit value: "Save Agreement", class: "btn btn-default"%>
+    <%= f.submit value: t('.save_agreement'), class: "btn btn-default"%>
   </div>
 <% end %>
 

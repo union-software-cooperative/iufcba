@@ -1,10 +1,55 @@
 module ApplicationHelper
+
+  def navbar_logo
+    if @division && @division.logo.url
+      @division.logo.url
+    else
+      image_path('iuf_logo.png')
+    end
+  end
+
+  def page_title
+    # Can only be called from application layout
+    if @division
+      "#{t('.title')} - #{@division.name}"
+    else
+      "#{t('.title')}"
+    end
+  end
+
+  def page_colours
+    bg = ENV["background_color"]
+    bg = @division.colour1 if @division && @division.colour1
+
+    fg = ENV["foreground_color"]
+    fg = @division.colour2 if @division && @division.colour2
+    
+    <<~CSS.html_safe
+      <style>
+        body {
+          background: #{bg};
+          color: #{fg};
+        }
+        h1,h2,h3 {
+          color: #{fg};
+        }
+        a,a:hover,a:focus,a:visited,a:active {
+          color: #{fg}
+        }
+      </style>
+    CSS
+  end
+
   def profile_thumb(person)		
     unless person.attachment.blank?
       image_tag person.attachment.thumb.url, class: "profile_thumb"
     else
       "<span class=\"glyphicon glyphicon-user\"></span>".html_safe
     end
+  end
+  
+  def l10n_switch_data(size: 'small', on_color: 'success')
+    { :size => size, 'on-color' => on_color, 'on-text' => t('switch_yes'), 'off-text' => t('switch_no') }
   end
 
   def profile_logo(person)		

@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<div class="col-sm-8 col-sm-offset-2"/>
+  <h1 class="row">Listing Divisions</h1>
+
+  <br/>
+
+  <%= link_to t('.new_division'), new_division_path, class: "btn btn-default pull-right" if owner? %>
+
+  <br/>
+
+  <% @divisions.each do |division| %>
+    <div class="row">
+      <h2>
+        <%= image_tag division.logo.url || image_path('iuf_logo.png'), class: "division-landing-logo-image" %>
+        <%= link_to division.name, division_agreements_path(division), class: "division-landing-link" %>
+        <%= link_to '', edit_division_path(division), class: "glyphicon glyphicon-pencil division-landing-edit-link" if owner? %>
+      </h2>
+      <hr/>
+    </div>
+  <% end %>
+</div>

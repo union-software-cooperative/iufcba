@@ -1,11 +1,10 @@
 <div class="col-sm-6 col-sm-offset-3">
   <h2 class="no-left-margin">
-    Sign in
-    <br/><small>Access to this system is by invite only</small>
+    <%= t('.sign_in') %>
+    <br/><small><%= t('.access_by_invite_only') %></small>
   </h2>
 
   <div class="margins">
-
     <%= form_for(resource, as: resource_name, url: session_path(resource_name, class: "form")) do |f| %>
       <div class="field">
         <%= f.label :email %><br />
@@ -25,7 +24,7 @@
       <% end -%>
 
       <div class="actions">
-        <%= f.submit "Sign in", class: "btn btn-default" %>
+        <%= f.submit t('.sign_in'), class: "btn btn-default" %>
       </div>
     <% end %>
   </div>
