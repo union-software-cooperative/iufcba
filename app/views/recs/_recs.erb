@@ -1,4 +1,3 @@
-
 <% unless @recs.blank? %>
   <table class="table table-condensed table-striped box-shadow">
     <thead>
@@ -14,7 +13,7 @@
       <% @recs.each do |rec| %>
         <tr class="">
           <td> <%= link_to "<span class='glyphicon glyphicon-paperclip'/>".html_safe, rec.attachment_url if rec.attachment_url%></td>
-          <td  class="">
+          <td class="">
             <strong><%= I18n.l rec.end_date, :format => :long %></strong>
             <p><%= link_to rec.name, rec %></p>
           </td>

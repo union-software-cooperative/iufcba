@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502015109) do
+ActiveRecord::Schema.define(version: 20170202061942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,36 @@ ActiveRecord::Schema.define(version: 20160502015109) do
 
   add_index "comments", ["person_id"], name: "index_comments_on_person_id", using: :btree
   add_index "comments", ["post_id"], name: "index_comments_on_post_id", using: :btree
+
+  create_table "division_recs", force: :cascade do |t|
+    t.integer  "division_id"
+    t.integer  "rec_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "division_recs", ["division_id"], name: "index_division_recs_on_division_id", using: :btree
+  add_index "division_recs", ["rec_id"], name: "index_division_recs_on_rec_id", using: :btree
+
+  create_table "division_supergroups", force: :cascade do |t|
+    t.integer  "division_id"
+    t.integer  "supergroup_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "division_supergroups", ["division_id"], name: "index_division_supergroups_on_division_id", using: :btree
+  add_index "division_supergroups", ["supergroup_id"], name: "index_division_supergroups_on_supergroup_id", using: :btree
+
+  create_table "divisions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "short_name"
+    t.string   "logo"
+    t.string   "colour1"
+    t.string   "colour2"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "follows", force: :cascade do |t|
     t.string   "follower_type"
@@ -178,6 +208,10 @@ ActiveRecord::Schema.define(version: 20160502015109) do
 
   add_foreign_key "comments", "people"
   add_foreign_key "comments", "posts"
+  add_foreign_key "division_recs", "divisions"
+  add_foreign_key "division_recs", "recs"
+  add_foreign_key "division_supergroups", "divisions"
+  add_foreign_key "division_supergroups", "supergroups"
   add_foreign_key "messages", "people"
   add_foreign_key "people", "supergroups", column: "union_id"
   add_foreign_key "posts", "people"

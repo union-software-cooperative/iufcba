@@ -1,9 +1,9 @@
 <span id="company">
-	<a href="<%=polymorphic_path(company)%>">
-		<% if company.logo.url.blank? %>
-			<%= company.short_name || company.name%>
-		<% else %>
-			<%= logo_thumb(company) %>
-		<% end %>
-	</a>
+  <a href="<%=polymorphic_path(company)%>">
+    <% if company.logo.url.blank? %>
+      <%= company.short_name || company.name%>
+    <% else %>
+      <%= logo_thumb(company) %>
+    <% end %>
+  </a>
 </span>

@@ -1,8 +1,13 @@
 en:
+  switch_yes: "Yes"
+  switch_no: "No"
+  follow: follow
+  unfollow: unfollow
   layouts:
     application:
       title: IUF Agreements
     navbar:
+      divisions: divisions
       agreements: agreements
       chat: chat
       unions: unions
@@ -30,6 +35,18 @@ en:
       chat_text: Chat with officials from other unions about sensitive organising information without being at the mercy of organisations that fundamentally don't respect privacy.
       organise_heading: Organise globally
       organise_text: Transnational corporations act globally to attack worker's rights and conditions.  It is crucial we organise globally to counter these attacks and raise labour standards throughout the world.
+  devise:
+    sessions:
+      new:
+        access_by_invite_only: Access to this system is by invite only
+        remember_me: Remember me
+    shared:
+      links:
+        forgot_your_password: Forgot your password?
+  messages:
+    index:
+      currently_online: Currently Online
+      send: Send
   people:
     form_fields:
       gender: Gender
@@ -41,6 +58,9 @@ en:
     form:
       save_profile: Save Profile
     edit:
+      agreements: Agreements
+      editing: Editing
+      my_profile: My Profile
       only_visible_to: These details will only be visible to %{organisation} employees
       permanently_delete: Permanently Delete This Person
     index:
@@ -59,11 +79,30 @@ en:
       attachment: Attachment
       person: Person
       parent: Parent
+    form:
+      company_post_title: Post your questions or research here
+      union_post_title: Post your union pictures and status updates here
+      rec_post_title: Post your questions or industrial action pics here
   recs:
     recs:
       agreement_or_expiry: Agreement / Expiry
       company: Company
       union: Union
+    form:
+      new_company: new company
+      new_union: new union
+      select_union: Please select a union
+      name_description: Please describe the agreement e.g. Nestle Australia (Tongara Plant) And NUW Enterprise Agreement 2014
+      person_description: Please nominate a contact person.
+      coverage_description: Please detail the plant/sites and types of work covered
+      anti_precariat_description: "What limits are there to non-standard/precarious employment."
+      anti_precariat_placeholder: e.g. Limits on indirect employment or conversion to permanent clauses
+      health_and_safety_description:  ""
+      grievance_handling_description:  Describe the dispute resolution procedure
+      specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
+      other_provisions_description:  "i.e.  How hostile is the company, are their any other interesting clause"
+      nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
+      save_agreement: Save Agreement
   supergroups:
     index:
       listing_supergroup: Listing %{entity}
@@ -74,38 +113,24 @@ en:
       www: WWW
       agreements: Agreements
     new:
-      new_supergroup: New %{entity}
+      create_supergroup: Create %{entity}
       union: Union
       company: Company
+    edit:
+      editing: Editing %{entity}
+      permanently_delete: Permanently Delete This %{entity}
+      union: Union
+      company: Company
+  divisions: 
+    edit:
+      editing: Editing Divisions
+      permanently_delete: Permanently Delete This Division
+      permanently_delete_confirm: Are you really really sure?
+      remove_logo: Remove logo
+    new: 
+      new_division: Create Division 
   helpers:
     label:
-      rec:
-        attachment: Agreement Document
-        coverage: Coverage
-        coverage_description:  Please detail the plant/sites and types of work covered
-        anti_precariat: Limit to casual work
-        anti_precariat_description: "What limits are there to non-standard/precarious employment."
-        anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
-        anti_precariat_page: Limits to casual work page/clause number(s)
-        anti_precariat_clause:  Limits to casual work notes
-        health_and_safety: Health and Safety
-        health_and_safety_description:  ""
-        health_and_safety_page: Health and Safety page/clause number(s)
-        health_and_safety_clause:  Heath and Safety notes
-        grievance_handling: Grievance handling / Dispute resolution
-        grievance_handling_description:  Describe the dispute resolution procedure
-        grievance_handling_page: Grievance handling page/clause number(s)
-        grievance_handling_clause: Grievance handling notes
-        specific_rights: Specific union rights
-        specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
-        specific_rights_page: Specific union rights page/clause number(s)
-        specific_rights_clause: Specific union rights notes
-        other_provisions: Other provisions and comments
-        other_provisions_description:  "i.e.  How hostile is the company, are their any other interesting clause"
-        nature_of_operation: Nature of products
-        nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
-        start_date: Agreement/Contract start date 
-        end_date: Agreement/Contract end date
   gender:
     male: male
     female: female
@@ -121,12 +146,17 @@ en:
       rec: agreement
       supergroup: organisation
       union: union
-
     attributes:
       comment:
-      company:
+        # these fields are unlabelled, so translations go unused
+        body: Body
+      # company:
       message:
+        # these fields are unlabelled, so translations go unused
+        body: Body
       person:
+        attachment: Profile picture
+        remove_attachment: Remove Profile Picture
         first_name: First name
         last_name: Last name
         title: Title
@@ -135,10 +165,14 @@ en:
         mobile: Mobile
         fax: Fax
         email: Email
+        password: Password
         languages: Languages
         country: Country
         union_id: Union
       post:
+        # these fields are unlabelled, so translations go unused
+        attachment: Attachment
+        body: Body
       rec:
         attachment: Agreement Document
         company_id: Company
@@ -149,28 +183,21 @@ en:
         end_date: Agreement/contract end date
         multi_site: Multi-site
         coverage: Coverage
-        # coverage_description:  Please detail the plant/sites and types of work covered
         anti_precariat: Limit to casual work
-        # anti_precariat_description: "What limits are there to non-standard/precarious employment."
-        anti_precariat_placeholder:  e.g. Limits on indirect employment or conversion to permanent clauses
+        anti_precariat_placeholder: e.g. Limits on indirect employment or conversion to permanent clauses
         anti_precariat_page: Limits to casual work page/clause number(s)
-        anti_precariat_clause:  Limits to casual work notes
+        anti_precariat_clause: Limits to casual work notes
         health_and_safety: Health and Safety
-        # health_and_safety_description:  ""
         health_and_safety_page: Health and Safety page/clause number(s)
-        health_and_safety_clause:  Heath and Safety notes
+        health_and_safety_clause: Health and Safety notes
         grievance_handling: Grievance handling / Dispute resolution
-        # grievance_handling_description:  Describe the dispute resolution procedure
         grievance_handling_page: Grievance handling page/clause number(s)
         grievance_handling_clause: Grievance handling notes
         specific_rights: Specific union rights
-        # specific_rights_description: "e.g. Union delegate training, paid union meetings, access to site/right or entry"
         specific_rights_page: Specific union rights page/clause number(s)
         specific_rights_clause: Specific union rights notes
         other_provisions: Other provisions and comments
-        # other_provisions_description:  "i.e.  How hostile is the company, are their any other interesting clause"
         nature_of_operation: Nature of products
-        # nature_of_operation_description: Please select one or more product types, or add your own (and press enter)
       supergroup:
         logo: Logo
         banner: Banner
@@ -178,4 +205,12 @@ en:
         short_name: Short name
         www: WWW
         country: Country
-      union:
+        remove_logo: Remove Logo
+        remove_banner: Remove Banner
+      division:
+        name: Name
+        short_name: Short name
+        logo: Logo
+        colour1: Colour 1
+        colour2: Colour 2
+      # union:

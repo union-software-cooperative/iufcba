@@ -27,9 +27,13 @@ describe PeopleController do
   let(:invalid_attributes) do
     { email: "invalid.email.com" }
   end
+  
+  before(:all) do
+    @division = FactoryGirl.create(:division)
+  end
 
   describe "Security" do
-    describe "low priviledge" do
+    describe "low privilege" do
       login_person
 
       describe "Get JSON index" do
@@ -37,7 +41,7 @@ describe PeopleController do
           # User should only be able to choose people from their own union
           outsider = Person.create! valid_attributes
           insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)
-          get :index, {format: 'json'}
+          get :index, {format: 'json', division_id: @division.id}
           assigns(:people).should eq([subject.current_person]+[insider])
         end
       end
@@ -72,7 +76,7 @@ describe PeopleController do
           
           it "won't allow deleting of people" do
             expect {
-              delete :destroy, {:id => @insider.to_param}
+              delete :destroy, {:id => @insider.to_param, division_id: @division.id}
               expect(response).to be_forbidden
             }.to change(Person, :count).by(0)
           end
@@ -90,14 +94,14 @@ describe PeopleController do
           end
 
           it "will allow updating of colleagues" do
-            put :update, {id: @insider.to_param, person: { first_name: "bob"} }
+            put :update, {id: @insider.to_param, person: { first_name: "bob"}, division_id: @division.id }
             response.should redirect_to(people_path)
           end
         end
       end
     end 
 
-    describe "High priviledge access" do
+    describe "High privilege access" do
       login_admin
 
       describe "Get JSON index" do
@@ -105,7 +109,7 @@ describe PeopleController do
           # User should only be able to choose people from their own union
           outsider = Person.create! valid_attributes
           insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)
-          get :index, {format: 'json'}
+          get :index, {format: 'json', division_id: @division.id}
           assigns(:people).should eq([subject.current_person]+[outsider]+[insider])
         end
       end
@@ -118,7 +122,7 @@ describe PeopleController do
     describe "GET index" do
       it "assigns all people as @people" do
         person = Person.create! valid_attributes
-        get :index, {}
+        get :index, {division_id: @division.id}
         assigns(:people).should eq([subject.current_person]+[person])
       end
     end
@@ -149,20 +153,20 @@ describe PeopleController do
           # submitted in the request.
           #Person.any_instance.should_receive(:update).with({ "firstname" => "MyString" })
           #expect_any_instance_of(Person).to receive(:update).with({ "firstname" => "MyString" })
-          put :update, {:id => person.to_param, :person => { "first_name" => "MyString" }}
+          put :update, {:id => person.to_param, :person => { "first_name" => "MyString" }, division_id: @division.id}
           person.reload
           person.first_name.should eq("MyString")
         end
 
         it "assigns the requested person as @person" do
           person = Person.create! valid_attributes
-          put :update, {:id => person.to_param, :person => valid_attributes}
+          put :update, {:id => person.to_param, :person => valid_attributes, division_id: @division.id}
           assigns(:person).should eq(person)
         end
 
         it "redirects to the person" do
           person = Person.create! valid_attributes
-          put :update, {:id => person.to_param, :person => valid_attributes}
+          put :update, {:id => person.to_param, :person => valid_attributes, division_id: @division.id}
           response.should redirect_to(people_path)
         end
       end
@@ -196,13 +200,13 @@ describe PeopleController do
       it "destroys the requested person" do
         person = Person.create! valid_attributes
         expect {
-          delete :destroy, {:id => person.to_param}
+          delete :destroy, {:id => person.to_param, division_id: @division.id}
         }.to change(Person, :count).by(-1)
       end
 
       it "redirects to the people list" do
         person = Person.create! valid_attributes
-        delete :destroy, {:id => person.to_param}
+        delete :destroy, {:id => person.to_param, division_id: @division.id}
         response.should redirect_to(people_url)
       end
     end

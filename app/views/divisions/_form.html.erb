@@ -1,0 +1,44 @@
+<%= form_for(@division) do |f| %>
+  <% if @division.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@division.errors.count, "error") %> prohibited this division from being saved:</h2>
+
+      <ul>
+      <% @division.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :short_name %><br>
+    <%= f.text_field :short_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :logo, "Logo" %><br>
+    <%= division_logo_image %>
+    <%= f.file_field :logo, class: "form-control", accept: 'image/jpeg,image/gif,image/png'  %>
+    <% if @division.logo.url.present? %>
+      <%= f.check_box :remove_logo %>
+      <small><%= f.label :remove_logo, t(".remove_logo") %></small>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <%= f.label :colour1 %><br>
+    <%= f.text_field :colour1, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :colour2 %><br>
+    <%= f.text_field :colour2, class: "form-control" %>
+  </div>
+  <div class="actions">
+    <%= f.submit class: "btn btn-default" %>
+  </div>
+<% end %>
+
+   

@@ -56,7 +56,7 @@ class CommentsController < ApplicationController
       end
       recipients.uniq.each do |p|
         if p.id != current_person.id
-          PersonMailer.comment_notice(p, @comment, request).deliver_now      
+          PersonMailer.comment_notice(p, @comment, @division).deliver_now      
         end
       end
     end

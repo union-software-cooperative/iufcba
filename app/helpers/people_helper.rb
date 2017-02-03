@@ -1,7 +1,7 @@
 module PeopleHelper
   def profile_heading 
     if current_person == @person
-      "My Profile"
+      t('.my_profile')
     else
       @person.display_name
     end

@@ -21,6 +21,7 @@ require 'spec_helper'
 describe PostsController do
 
   before(:all) do
+    @division = FactoryGirl.create(:division)
     @union = FactoryGirl.create(:union)
     @owner_union = owner_union
     @company = FactoryGirl.create(:company)
@@ -40,18 +41,18 @@ describe PostsController do
     describe "with valid params" do
       it "creates a new Post" do
         expect {
-          post :create, {:post => valid_attributes}
+          post :create, {:post => valid_attributes, division_id: @division.id}
         }.to change(Post, :count).by(1)
       end
 
       it "assigns a newly created post as @post" do
-        post :create, {:post => valid_attributes}
+        post :create, {:post => valid_attributes, division_id: @division.id}
         assigns(:post).should be_a(Post)
         assigns(:post).should be_persisted
       end
 
       it "redirects to the created post" do
-        post :create, {:post => valid_attributes}
+        post :create, {:post => valid_attributes, division_id: @division.id}
         response.should redirect_to(@agreement)
       end
     end
@@ -91,7 +92,7 @@ describe PostsController do
       subject.current_person.follow! parent
 
       expect {
-        post :create, {:post => valid_attributes}
+        post :create, {:post => valid_attributes, division_id: @division.id}
         messages = ActionMailer::Base.deliveries
 
         # notification should be sent to admin because admin is the rec assignee
@@ -113,14 +114,14 @@ describe PostsController do
     it "destroys the requested post when user created post" do
       post = Post.create! valid_attributes.merge(person: subject.current_person)
       expect {
-        delete :destroy, {:id => post.to_param}
+        delete :destroy, {:id => post.to_param, division_id: @division.id}
       }.to change(Post, :count).by(-1)
     end
 
     it "does not destroy the requested post when another user created post" do
       post = Post.create! valid_attributes.merge(person: @admin)
       expect {
-        delete :destroy, {:id => post.to_param}
+        delete :destroy, {:id => post.to_param, division_id: @division.id}
       }.to change(Post, :count).by(0)
     end
 
@@ -129,7 +130,7 @@ describe PostsController do
       post = Post.create! valid_attributes.merge(person: subject.current_person)
       parent = post.parent
 
-      delete :destroy, {:id => post.to_param}
+      delete :destroy, {:id => post.to_param, division_id: @division.id}
       response.should redirect_to(parent)
     end
   end

@@ -2,8 +2,8 @@ Given(/^there's a "(.*?)" titled "(.*?)"$/) do |entity, title|
 	FactoryGirl.create(entity.to_sym, name: title)
 end
 
-When(/^I'm on the "(.*?)" list$/) do |entity|
-	visit polymorphic_path(entity)
+When(/^I'm on the "(.*?)" division "(.*?)" list$/) do |division, entity|
+	visit polymorphic_path(entity, division_id: division)
 end
 
 Then(/^I can view the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
@@ -14,7 +14,7 @@ Then(/^I can view the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
 	click_link(title)
 	
 	page.should have_link(title)
-	page.should have_selector(:link_or_button, 'Create Post')
+	page.should have_selector(:link_or_button, "Create post")
 end
 
 Then(/^I can edit the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
@@ -25,7 +25,7 @@ Then(/^I can edit the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
 	visit edit_polymorphic_path(entity)
 
 	fill_in "#{entity_name}[name]", with: "New Company Name"
-	click_button "Update #{entity_name.titlecase}"
+	click_button "Update #{entity_name}"
 
 	page.should have_content("New Company Name")
 end
@@ -37,7 +37,7 @@ Then(/^I can add a "(.*?)" titled "(.*?)"$/) do |entity_name, title|
 
 	new_name = #{entity_name.titlecase}
 	fill_in "#{entity_name}[name]", with: new_name
-	click_button "Create #{entity_name.titlecase}"
+	click_button "Create #{entity_name}"
 
 	page.should have_content(new_name)
 end

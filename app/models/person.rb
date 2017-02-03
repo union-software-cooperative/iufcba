@@ -21,11 +21,11 @@ class Person < ActiveRecord::Base
   scope :name_like, -> (name) {where("first_name ilike ? or last_name ilike ? or email ilike ?", "%#{name}%", "%#{name}%", "%#{name}%")}
 
   def name
-  	"#{first_name} #{last_name}"
+    "#{first_name} #{last_name}"
   end
 
   def display_name
-  	"#{first_name} #{last_name}"
+    "#{first_name} #{last_name}"
   end
 
   def authorizer=(person)

@@ -13,7 +13,7 @@
     <% end %>
     <h3>
       <%=profile_thumb(current_person)%>
-      <%=@post.parent.post_title%> 
+      <%= t(".#{@post.parent.type.downcase}_post_title") %>
       <br/>
       <small>
         <%= notification_indicator(@post) %>

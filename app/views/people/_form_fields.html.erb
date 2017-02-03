@@ -1,11 +1,11 @@
   <div class="form-group">
-    <%= f.label :attachment, "Profile picture" %><br>
+    <%= f.label :attachment %><br>
     <%=profile_image%>
     <%= f.file_field :attachment, accept: 'image/jpeg,image/gif,image/png'  %>
 
     <% if @person.attachment.url.present? %> 
       <%= f.check_box :remove_attachment %>
-      <small><%= f.label :remove_attachment, "Remove Profile Picture" %></small>
+      <small><%= f.label :remove_attachment %></small>
     <% end %> 
 
   </div>
@@ -105,6 +105,6 @@
   <% unless params[:action] == "new" %>
     <div class="form-group">
       <%= label_tag t('.resend_invite') %>&nbsp;&nbsp;<small><%= t('.bcc_notice') %></small><br>
-      <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => { :size => 'small', 'on-text'=>'Yes', 'off-text'=>'No', 'on-color'=>'success'} %> 
+      <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => l10n_switch_data %> 
     </div>
   <% end %>

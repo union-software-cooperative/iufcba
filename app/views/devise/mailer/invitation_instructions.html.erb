@@ -6,14 +6,13 @@
 
 <h1>What's this for?</h1>
 <p>
-	This website has been put together by the IUF and the NUW Australia to help IUF brewery affiliates share collective bargaining information in major brewery companies and communicate more effectively amongst themselves. 
+  This website has been put together by the IUF and the NUW Australia to help IUF brewery affiliates share collective bargaining information in major brewery companies and communicate more effectively amongst themselves. 
 </p>
 
 <h1>Interested? What do I do next?</h1>
 <ol>
-	<li>Click <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %> and setup your account/contact details</li>
-	<li>To customize your union's agreement page, <%=link_to "click here", edit_union_path(locale: I18n.locale, id: @resource.union.short_name) %> or click the pencil next to you union's name</li>
-	<li>Click the follow button on companies, agreements or other unions, then keep an eye out for relevant notifications in your email inbox</li>
+  <li>Click <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %> and setup your account/contact details</li>
+  <li>Click the follow button on companies, agreements or other unions, then keep an eye out for relevant notifications in your email inbox</li>
 </ol>
 
 <h1>Not interested?</h1>

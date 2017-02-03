@@ -4,10 +4,10 @@
 <div class="outer-row">
   <div class="col-sm-8 col-sm-offset-2">
     <% unless @person.union.nil? %>
-      <%= link_to @person.union.short_name + " Agreements", union_path(@person.union), class: "btn btn-default pull-right" %>
+      <%= link_to @person.union.short_name + " #{t('.agreements')}", union_path(@person.union), class: "btn btn-default pull-right" %>
     <% end %>
     <h1>
-      Editing <%= profile_heading %>
+      <%= "#{t('.editing')} #{profile_heading}" %>
       <br/><small><%= t('.only_visible_to', organisation: "#{owner_union.short_name}#{@person.union.id == owner_union.id ? "" : " & " + @person.union.short_name}") %></small>
     </h1>
     <%= render 'form' %>

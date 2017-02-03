@@ -1,25 +1,25 @@
 <div class="message" id="message_<%=message.id%>">
-	<span class="message_text">
-		<div class="message_profile" style="float:left;">
-			<%= profile_thumb(message.person) %>
-		</div>
-		
-		<div class="message_heading" style="margin-left: 40px;">
-			<span class="message_display_name">
-				<strong><%=message.person.display_name %></strong>
-			</span>
-			<small>
-				<span class="message_timestamp"  style="color: #aaa;">
-					<%=local_time_tag(message.created_at) %>
-				</span>
-				<% if current_person == message.person || owner? %>
-					<%=link_to "<span class=\"glyphicon glyphicon-trash\"></span>".html_safe, message, method: :delete, remote: true, data: { confirm: 'Are you sure?' }, class: "delete" %>
-				<% end %> 
-			</small>
-		</div>
-		
-		<div class="body" style="margin-left: 40px;">
-			<%= message.body.split("\r\n").collect{ |i| "<p>#{h(i)}</p>".html_safe}.join("\r\n").html_safe %>
-		</div>
-	</span>
+  <span class="message_text">
+    <div class="message_profile" style="float:left;">
+      <%= profile_thumb(message.person) %>
+    </div>
+    
+    <div class="message_heading" style="margin-left: 40px;">
+      <span class="message_display_name">
+        <strong><%=message.person.display_name %></strong>
+      </span>
+      <small>
+        <span class="message_timestamp"  style="color: #aaa;">
+          <%=local_time_tag(message.created_at) %>
+        </span>
+        <% if current_person == message.person || owner? %>
+          <%=link_to "<span class=\"glyphicon glyphicon-trash\"></span>".html_safe, message, method: :delete, remote: true, data: { confirm: 'Are you sure?' }, class: "delete" %>
+        <% end %> 
+      </small>
+    </div>
+    
+    <div class="body" style="margin-left: 40px;">
+      <%= message.body.split("\r\n").collect{ |i| "<p>#{h(i)}</p>".html_safe}.join("\r\n").html_safe %>
+    </div>
+  </span>
 </div>

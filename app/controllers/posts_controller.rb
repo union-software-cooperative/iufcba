@@ -60,7 +60,7 @@ class PostsController < ApplicationController
 
     def notify
       notification_recipients(@post).each do |p|
-        PersonMailer.post_notice(p, @post, request).deliver_now
+        PersonMailer.post_notice(p, @post, @division).deliver_now
       end
     end
 
