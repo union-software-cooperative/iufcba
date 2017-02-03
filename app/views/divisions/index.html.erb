@@ -13,7 +13,7 @@
     <div class="row">
       <h2>
         <%= image_tag division.logo.url || image_path('iuf_logo.png'), class: "division-landing-logo-image" %>
-        <%= link_to division.name, division_agreements_path(division), class: "division-landing-link" %>
+        <%= link_to division.name, agreements_path(division), class: "division-landing-link" %>
         <%= link_to '', edit_division_path(division), class: "glyphicon glyphicon-pencil division-landing-edit-link" if owner? %>
       </h2>
       <hr/>

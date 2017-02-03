@@ -1,10 +1,9 @@
 FactoryGirl.define do
   factory :division do
     name "MyString"
-short_name "MyString"
-logo "MyString"
-colour1 "MyString"
-colour2 "MyString"
+		short_name "MyString"
+		logo "logo.jpg"
+		colour1 "red"
+		colour2 "white"
   end
-
 end

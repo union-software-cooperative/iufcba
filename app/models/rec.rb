@@ -17,8 +17,8 @@ class Rec < ActiveRecord::Base
 
   acts_as_followable
 
-  def post_title
-    "Post your question or industrial action pics here"
+  def type
+    self.class.to_s
   end
 
   def authorizer=(person)

@@ -17,29 +17,6 @@ module ApplicationHelper
     end
   end
 
-  def page_colours
-    bg = ENV["background_color"]
-    bg = @division.colour1 if @division && @division.colour1
-
-    fg = ENV["foreground_color"]
-    fg = @division.colour2 if @division && @division.colour2
-    
-    <<~CSS.html_safe
-      <style>
-        body {
-          background: #{bg};
-          color: #{fg};
-        }
-        h1,h2,h3 {
-          color: #{fg};
-        }
-        a,a:hover,a:focus,a:visited,a:active {
-          color: #{fg}
-        }
-      </style>
-    CSS
-  end
-
   def profile_thumb(person)		
     unless person.attachment.blank?
       image_tag person.attachment.thumb.url, class: "profile_thumb"
@@ -129,5 +106,40 @@ module ApplicationHelper
 
   def local_time_tag(t)
   	content_tag(:span, I18n.l(t, format: :long), data: { time: t.iso8601 })
+  end
+
+  # def method_missing(m, *args, &block)
+  #   m = m.to_s
+  #   if m =~ /optional_division.+_[path|url]/
+  #     if request.path =~ /\/divisions\//
+  #       m = m.gsub(/optional_division/, 'division')
+  #     else
+  #       m = m.gsub(/optional_division_/, '')
+  #     end
+  #   end
+  #   send(m, *args, &block)
+  # end
+  
+  def page_colours
+    bg = ENV["background_color"]
+    bg = @division.colour1 if @division && @division.colour1
+
+    fg = ENV["foreground_color"]
+    fg = @division.colour2 if @division && @division.colour2
+    
+    <<~CSS.html_safe
+      <style>
+        body {
+          background: #{bg};
+          color: #{fg};
+        }
+        h1,h2,h3 {
+          color: #{fg};
+        }
+        a,a:hover,a:focus,a:visited,a:active {
+          color: #{fg}
+        }
+      </style>
+    CSS
   end
 end

@@ -10,6 +10,8 @@ Then(/^I can add an agreement titled "(.*?)" between "(.*?)" and "(.*?)" and ass
 	
 	#select2 "union", "rec[union_id]"
 	click_button "Save Agreement"
+	#page.save_screenshot('asdf.jpg')
+	sleep(1)
 	page.should have_content(title)
 	page.should have_content(tag)
 end

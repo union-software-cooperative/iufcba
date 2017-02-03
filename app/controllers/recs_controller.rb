@@ -87,10 +87,22 @@ class RecsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rec_params
-      result = params.require(:rec).permit(:taking_action, :name, :tags, :start_date, :end_date, :attachment, :coverage, :union_id, :company_id, :person_id, :multi_site, :health_and_safety, :health_and_safety_page, :health_and_safety_clause, :anti_precariat, :anti_precariat_page, :anti_precariat_clause, :grievance_handling, :grievance_handling_page, :grievance_handling_clause, :other_provisions, :specific_rights, :specific_rights_page, :specific_rights_clause, :nature_of_operation => [])
+      result = params.require(:rec).permit(:taking_action, :name, :tags, 
+        :start_date, :end_date, :attachment, :coverage, :union_id, :company_id, 
+        :person_id, :multi_site, :health_and_safety, :health_and_safety_page, 
+        :health_and_safety_clause, :anti_precariat, :anti_precariat_page, 
+        :anti_precariat_clause, :grievance_handling, :grievance_handling_page, 
+        :grievance_handling_clause, :other_provisions, :specific_rights, 
+        :specific_rights_page, :specific_rights_clause, 
+        :nature_of_operation => [], :divisions => [])
       result['nature_of_operation'].delete("") if result['nature_of_operation']
+      result[:divisions] = Division.find(result[:divisions].reject(&:blank?)) if result[:divisions]
       result
     end
+    
+    # def assign_divisions
+    #   rec_params[:divisions].each { |id| @rec.divisions << Division.find(id) }
+    # end
 
     def forbid
       return forbidden unless can_edit_union?(@rec.union)

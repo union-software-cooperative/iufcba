@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   
-
-  def declare_routes
+  #scope "(:division_id)" do 
     resources :messages 
     resources :comments
     resources :posts
@@ -33,19 +32,15 @@ Rails.application.routes.draw do
 
     get '/public/:filename', to: 'files#get'
     resources :agreements, controller: :recs, type: 'Rec'
-    resource :help, only: [:show] do
-      resource :request_invite, only: [:new, :create], module: :help
-    end
+  #end
 
-  end
-
-  declare_routes
   devise_for :people, :controllers => { :invitations => 'people/invitations' }
     
-  resources :divisions, except: [:show] do
-    declare_routes
+  resources :divisions, except: [:show]
+  
+  resource :help, only: [:show] do
+    resource :request_invite, only: [:new, :create], module: :help
   end
-    
   root "help#show"
   
 

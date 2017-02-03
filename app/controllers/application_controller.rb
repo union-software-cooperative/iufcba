@@ -8,8 +8,18 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_person!
 
+  def default_url_options(options={})
+    result = {} #{ locale: I18n.locale }
+    result.merge!({ division_id: params[:division_id] }) if params[:division_id] #request.path =~ /\/divisions\//
+    result.merge! options
+  end
+
   def set_division
-    @division = Division.find(params[:division_id]) if params[:division_id]
+    if params[:division_id]
+      @division = Division.find_by_short_name(params[:division_id]) 
+      @division ||= Division.find_by_id(params[:division_id]) 
+      not_found unless @division
+    end
   end
 
   def not_found

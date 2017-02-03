@@ -227,7 +227,7 @@ describe RecsController do
   end
 
   describe "Basic Functionality" do 
-
+    # FIXME recs can be created without a start date but this breaks show action
     login_admin
 
     describe "GET index" do

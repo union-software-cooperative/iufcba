@@ -19,14 +19,15 @@
     <%= f.label :divisions %>
     <%= f.select :divisions,
       # prefill existing divisions?
-      { 
+      options_from_collection_for_select(@rec.divisions, :id, :name, @rec.divisions.map(&:id)),
+      {
         include_blank: false,
-        multiple: true
       },
+      multiple: true,
       data: {
         url: divisions_path,
       },
-      class: "ac-select2 form-control",
+      class: "ac-select2-multi form-control",
       style: "width: 100%;"
     %>
   </div>

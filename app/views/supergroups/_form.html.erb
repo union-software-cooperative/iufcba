@@ -28,6 +28,24 @@
       <small><%= f.label :remove_banner %></small>
     <% end %>
   </div>
+  
+  <div class="form-group">
+    <%= f.label :divisions %>
+    <%= f.select :divisions,
+      # prefill existing divisions?
+      options_from_collection_for_select(@supergroup.divisions, :id, :name, @supergroup.divisions.map(&:id)),
+      {
+        include_blank: false,
+      },
+      multiple: true,
+      data: {
+        url: divisions_path,
+      },
+      class: "ac-select2-multi form-control",
+      style: "width: 100%;"
+    %>
+  </div>
+  
   <div class="field">
     <%= f.label :name %><br>
     <%= f.text_field :name, class: "form-control" %>

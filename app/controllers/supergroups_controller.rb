@@ -1,5 +1,4 @@
 class SupergroupsController < ApplicationController
-  
   before_action :set_klass
   before_action :set_supergroup, only: [:show, :edit, :update, :destroy, :follow]
   before_action :forbid, only: [:new, :create, :edit, :update]
@@ -90,7 +89,12 @@ class SupergroupsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def supergroup_params
       params[supergroup]['type'] = @klass.name
-      params.require(supergroup).permit(:name, :type, :www, :banner, :logo, :short_name, :remove_banner, :remove_logo, :country)
+      result = params.require(supergroup).permit(:name, :type, :www, :banner, 
+        :logo, :short_name, :remove_banner, :remove_logo, :country, 
+        :divisions => [])
+      result[:divisions] = Division.find(result[:divisions].reject(&:blank?)) if result[:divisions]
+      
+      result
     end
 
     def forbid

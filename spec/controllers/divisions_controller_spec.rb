@@ -23,12 +23,14 @@ describe DivisionsController do
   # This should return the minimal set of attributes required to create a valid
   # Division. As you add validations to Division, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "name" => "MyString" } }
+  let(:valid_attributes) { FactoryGirl.attributes_for(:division) }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # DivisionsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+
+  login_admin
 
   describe "GET index" do
     it "assigns all divisions as @divisions" do
@@ -38,13 +40,13 @@ describe DivisionsController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested division as @division" do
-      division = Division.create! valid_attributes
-      get :show, {:id => division.to_param}, valid_session
-      assigns(:division).should eq(division)
-    end
-  end
+  # describe "GET show" do
+  #   it "assigns the requested division as @division" do
+  #     division = Division.create! valid_attributes
+  #     get :show, {:id => division.to_param}, valid_session
+  #     assigns(:division).should eq(division)
+  #   end
+  # end
 
   describe "GET new" do
     it "assigns a new division as @division" do
@@ -77,8 +79,8 @@ describe DivisionsController do
 
       it "redirects to the created division" do
         post :create, {:division => valid_attributes}, valid_session
-        response.should redirect_to(Division.last)
-      end
+        response.should redirect_to(divisions_path)
+     end
     end
 
     describe "with invalid params" do
@@ -119,7 +121,7 @@ describe DivisionsController do
       it "redirects to the division" do
         division = Division.create! valid_attributes
         put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
-        response.should redirect_to(division)
+        response.should redirect_to(divisions_path)
       end
     end
 

@@ -47,12 +47,34 @@ ready = ->
     return
 
   $('.ac-select2-multi').each ->
+    url = $(this).data('url')
     placeholder = $(this).data('placeholder')
     $(this).select2
       theme: "bootstrap"
+      minimumInputLength: 0
       multiple: true
       placeholder: placeholder
       allowClear: false
+      ajax:
+        url: url
+        dataType: 'json'
+        quietMillis: 500
+        data: (params) ->
+          { name_like: params.term }
+        processResults: (data, page) ->
+          formatted = []
+          data.forEach (item) ->
+            formatted.push
+              id: item['id']
+              text: item['name']
+            return
+          {
+            results: formatted
+          }
+        formatResult: (item, page) ->
+          item.name
+        formatSelection: (item, page) ->
+          item.name
     return
 
   # This is a hack the preserves selection order, but its then lost when rendering!  I want selection order preserved to specify language preference
@@ -69,6 +91,3 @@ ready = ->
   
 $(document).ready(ready);
 $(document).on('page:load', ready);
-
-
-
