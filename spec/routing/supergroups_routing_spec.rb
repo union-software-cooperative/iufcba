@@ -4,62 +4,59 @@ describe SupergroupsController do
   describe "routing" do
 
     it "routes to #index" do
-      get("/companies").should route_to("supergroups#index", :type=>"Company")
+      get("/1/companies").should route_to("supergroups#index", :type=>"Company", :division_id => "1")
     end
 
     it "routes to #new" do
-      get("/companies/new").should route_to("supergroups#new", :type=>"Company")
+      get("/1/companies/new").should route_to("supergroups#new", :type=>"Company", :division_id => "1")
     end
 
     it "routes to #show" do
-      get("/companies/1").should route_to("supergroups#show", :id => "1", :type=>"Company")
+      get("/1/companies/1").should route_to("supergroups#show", :id => "1", :type=>"Company", :division_id => "1")
     end
 
     it "routes to #edit" do
-      get("/companies/1/edit").should route_to("supergroups#edit", :id => "1", :type=>"Company")
+      get("/1/companies/1/edit").should route_to("supergroups#edit", :id => "1", :type=>"Company", :division_id => "1")
     end
 
     it "routes to #create" do
-      post("/companies").should route_to("supergroups#create", :type=>"Company")
+      post("/1/companies").should route_to("supergroups#create", :type=>"Company", :division_id => "1")
     end
 
     it "routes to #update" do
-      put("/companies/1").should route_to("supergroups#update", :id => "1", :type=>"Company")
+      put("/1/companies/1").should route_to("supergroups#update", :id => "1", :type=>"Company", :division_id => "1")
     end
 
     it "routes to #destroy" do
-      delete("/companies/1").should route_to("supergroups#destroy", :id => "1", :type=>"Company")
+      delete("/1/companies/1").should route_to("supergroups#destroy", :id => "1", :type=>"Company", :division_id => "1")
     end
 
     it "routes to #index" do
-      get("/unions").should route_to("supergroups#index", :type=>"Union")
+      get("/1/unions").should route_to("supergroups#index", :type=>"Union", :division_id => "1")
     end
 
     it "routes to #new" do
-      get("/unions/new").should route_to("supergroups#new", :type=>"Union")
+      get("/1/unions/new").should route_to("supergroups#new", :type=>"Union", :division_id => "1")
     end
 
     it "routes to #show" do
-      get("/unions/1").should route_to("supergroups#show", :id => "1", :type=>"Union")
+      get("/1/unions/1").should route_to("supergroups#show", :id => "1", :type=>"Union", :division_id => "1")
     end
 
     it "routes to #edit" do
-      get("/unions/1/edit").should route_to("supergroups#edit", :id => "1", :type=>"Union")
+      get("/1/unions/1/edit").should route_to("supergroups#edit", :id => "1", :type=>"Union", :division_id => "1")
     end
 
     it "routes to #create" do
-      post("/unions").should route_to("supergroups#create", :type=>"Union")
+      post("/1/unions").should route_to("supergroups#create", :type=>"Union", :division_id => "1")
     end
 
     it "routes to #update" do
-      put("/unions/1").should route_to("supergroups#update", :id => "1", :type=>"Union")
+      put("/1/unions/1").should route_to("supergroups#update", :id => "1", :type=>"Union", :division_id => "1")
     end
 
     it "routes to #destroy" do
-      delete("/unions/1").should route_to("supergroups#destroy", :id => "1", :type=>"Union")
+      delete("/1/unions/1").should route_to("supergroups#destroy", :id => "1", :type=>"Union", :division_id => "1")
     end
-
-
-
   end
 end

@@ -29,6 +29,10 @@ describe CommentsController do
     @agreement =  FactoryGirl.create(:agreement, union_id: @union.id, company_id: @company.id, person_id: @admin.id, authorizer: admin )  
     @post =  FactoryGirl.create(:post, body: "body text", parent_id: @agreement.id, parent_type: "Rec", person: @admin) 
   end
+  
+  after(:all) do
+    [@division, @union, @owner_union, @company, @admin, @agreement, @post].each(&:destroy)
+  end
 
 
   # This should return the minimal set of attributes required to create a valid

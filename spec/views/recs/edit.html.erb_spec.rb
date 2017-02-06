@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 describe "recs/edit" do
-	
-
   before(:each) do
     @rec = assign(:rec, FactoryGirl.create(:authorized_agreement))
+		@division = assign(:division, FactoryGirl.create(:division))
   end
 
   it "doesn't render warning when user can set a union" do

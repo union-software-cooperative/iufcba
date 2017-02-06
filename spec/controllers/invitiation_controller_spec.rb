@@ -27,6 +27,10 @@ describe People::InvitationsController do
     #@company = FactoryGirl.create(:company)
     #@admin = admin
   end
+  
+  after(:all) do
+    @division.destroy
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Rec. As you add validations to Rec, be sure to

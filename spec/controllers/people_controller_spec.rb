@@ -31,6 +31,10 @@ describe PeopleController do
   before(:all) do
     @division = FactoryGirl.create(:division)
   end
+  
+  after(:all) do
+    @division.destroy
+  end
 
   describe "Security" do
     describe "low privilege" do
