@@ -238,9 +238,17 @@ describe RecsController do
     describe "GET index" do
 
       it "assigns all recs as @recs" do
-        rec = Rec.create! valid_attributes
+        rec_in = Rec.create! valid_attributes
+        rec_in.divisions << @division
+
+        rec_out = Rec.create! valid_attributes.merge(name: "other agreement")
+        other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
+        rec_out.divisions << other_division
+
         get :index, {division_id: @division.id}
-        assigns(:recs).should include(rec) # Have database cleaning issues
+        assigns(:recs).should include(rec_in) # Have database cleaning issues
+        assigns(:recs).should_not include(rec_out) # Have database cleaning issues
+        other_division.destroy
       end
     end
 

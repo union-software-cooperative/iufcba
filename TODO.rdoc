@@ -6,9 +6,17 @@ DONE Scaffold Division
 
 NOT DONE filtering of agreements by division scope
 
-TESTED filtering of unions by division scope
+TODO not found if division scope is no good
 
-TESTED filtering of companies by division scope
+DONE filtering of unions by division scope
+
+DONE filtering of companies by division scope
+
+DONE unions index api, returns all if unscoped
+
+NOT TESTED division index api
+
+
 
 NOT TESTED Landing page for divisions, all shown for all unions, selecting a division changes the scope.  All divisions are accessible to all users.
 
@@ -28,7 +36,6 @@ NOT TESTED unions can have one or more divisions
 
 NOT TESTED agreements can have one or more divisions
 
-NOT TESTED division index api
 
 NOT TESTED Anyone can choose any existing division when creating a union, company or agreement 
 

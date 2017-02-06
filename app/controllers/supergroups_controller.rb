@@ -1,6 +1,5 @@
 class SupergroupsController < ApplicationController
   before_action :set_klass
-  before_action :set_division
   before_action :set_supergroup, only: [:show, :edit, :update, :destroy, :follow]
   before_action :forbid, only: [:new, :create, :edit, :update]
 
@@ -10,7 +9,13 @@ class SupergroupsController < ApplicationController
   # GET /supergroups.json
   def index
     klass = (params[:type] || "Supergroup").downcase.pluralize
-    @supergroups = @division.send(klass).filter(params.slice(:name_like)).order(:name, :id)
+    
+    if @division
+      @supergroups = @division.send(klass).filter(params.slice(:name_like)).order(:name, :id)
+    else
+      @supergroups = Supergroup.all
+    end
+
     # @supergroups = @klass.filter(params.slice(:name_like)).order(:name, :id)
     respond_to do |format|
       format.html
@@ -87,10 +92,6 @@ class SupergroupsController < ApplicationController
 
     def set_supergroup
       @supergroup = @klass.find(params[:id])
-    end
-    
-    def set_division
-      @division = Division.find(params[:division_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

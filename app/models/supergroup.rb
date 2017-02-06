@@ -7,7 +7,7 @@ class Supergroup < ActiveRecord::Base
   
   has_many :posts, as: :parent
   
-  has_many :division_supergroups
+  has_many :division_supergroups, dependent: :destroy
   has_many :divisions, through: :division_supergroups
   
   validates :name, :short_name, presence: true

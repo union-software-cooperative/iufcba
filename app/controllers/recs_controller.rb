@@ -5,7 +5,7 @@ class RecsController < ApplicationController
   # GET /recs
   # GET /recs.json
   def index
-    @recs = Rec.all
+    @recs = @division.recs
   end
 
   # GET /recs/new

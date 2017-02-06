@@ -96,6 +96,24 @@ shared_examples "a supergroup type" do |type|
       end
     end
 
+    describe "GET index api" do
+      it "returns all #{type.pluralize} (unfiltered)" do
+        if type == "Union"
+          supergroup_in = Supergroup.create! valid_attributes
+          supergroup_in.divisions << @division
+
+          supergroup_out = Supergroup.create! valid_attributes
+          other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
+          supergroup_out.divisions << other_division
+
+          get :index, {type: type, format: "json"}
+
+          assigns(:supergroups).should include(supergroup_in) 
+          assigns(:supergroups).should include(supergroup_out) 
+        end
+      end
+    end
+
     describe "GET show" do
       it "assigns the requested supergroup as @supergroup" do
         supergroup = Supergroup.create! valid_attributes
