@@ -81,20 +81,18 @@ shared_examples "a supergroup type" do |type|
     login_admin
 
     describe "GET index" do
-      it "assigns all supergroups as @supergroups" do
-        supergroup = Supergroup.create! valid_attributes
+      it "assigns division's supergroups as @supergroups" do
+        supergroup_in = Supergroup.create! valid_attributes
+        supergroup_in.divisions << @division
+
+        supergroup_out = Supergroup.create! valid_attributes
+        other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
+        supergroup_out.divisions << other_division
+
         get :index, {type: type, division_id: @division.id}
         
-        assigns(:supergroups).should include(supergroup) 
-        
-        ## Was failing because of database cleaning issues
-        #if type == "Union"
-        #  binding.pry
-        #  expected_list = ([owner_union]+[supergroup]).sort_by{|x| [x.name.downcase, x.id]}
-        #  assigns(:supergroups).should eq(expected_list) 
-        #else
-        #  assigns(:supergroups).should eq([supergroup])
-        #end
+        assigns(:supergroups).should include(supergroup_in) 
+        assigns(:supergroups).should_not include(supergroup_out) 
       end
     end
 
