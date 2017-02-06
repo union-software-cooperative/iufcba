@@ -15,7 +15,7 @@
           <td> <%= link_to "<span class='glyphicon glyphicon-paperclip'/>".html_safe, rec.attachment_url if rec.attachment_url%></td>
           <td class="">
             <strong><%= I18n.l rec.end_date, :format => :long %></strong>
-            <p><%= link_to rec.name, rec %></p>
+            <p><%= link_to rec.name, rec_path(rec, division_id: @division.id) %></p>
           </td>
           <td><%= render rec.company if rec.company %></td>
           <td><%= render rec.union if rec.union%></td>

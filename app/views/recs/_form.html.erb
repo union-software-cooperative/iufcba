@@ -33,7 +33,7 @@
   </div>
   
   <div class="form-group">
-    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company, division_id: @division.id), placeholder: "Please select a company.",
+    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path([@division, Company]), placeholder: "Please select a company.",
         class: "small", :target => "_blank"%><br>
     <%= f.select :company_id, 
       selected_option(@rec.company),
@@ -42,7 +42,7 @@
         include_blank: false,
       },
       data: { 
-        url: companies_path(division_id: @division.id)
+        url: companies_path(@division)
       }, 
       class: "ac-select2 form-control", 
       style: "width: 100%;"

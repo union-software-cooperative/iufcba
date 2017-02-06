@@ -253,7 +253,7 @@ describe RecsController do
 
       it "returns not found if division is missing" do
         get :index, {division_id: "junk"}
-        assert response.code.should eq(404)
+        assert response.status.should eq(404)
       end
     end
 

@@ -68,7 +68,7 @@ RSpec.configure do |config|
 end
 
 def owner_union
-   Union.find_by_short_name("IUF") || FactoryGirl.create(:owner)
+  Union.find_by_short_name("IUF") || FactoryGirl.create(:owner)
 end
 
 def admin

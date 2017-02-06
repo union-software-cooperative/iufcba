@@ -4,9 +4,9 @@ DONE Scaffold Division
 - name
 - primary/secondary colors (secondary)
 
-NOT DONE filtering of agreements by division scope
+DONE filtering of agreements by division scope
 
-TODO not found if division scope is no good
+DONE not found if division scope is no good
 
 DONE filtering of unions by division scope
 
@@ -14,15 +14,17 @@ DONE filtering of companies by division scope
 
 DONE unions index api, returns all if unscoped
 
-NOT TESTED division index api
+DONE division index api
 
+DONE Landing page for divisions, 
 
+DONE all divisions are shown for all users
 
-NOT TESTED Landing page for divisions, all shown for all unions, selecting a division changes the scope.  All divisions are accessible to all users.
+DONE selecting a division changes the scope.  
 
-NOT TESTED Only IUF can create, edit and delete division
+DONE Only IUF can create, edit and delete division
 
-NOT TESTED hide division edit buttons for non-iuf
+DONE hide division edit buttons for non-iuf
 
 NOT TESTED division brand
 
@@ -35,7 +37,6 @@ NOT TESTED companies can one or more divisions
 NOT TESTED unions can have one or more divisions
 
 NOT TESTED agreements can have one or more divisions
-
 
 NOT TESTED Anyone can choose any existing division when creating a union, company or agreement 
 

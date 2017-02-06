@@ -3,7 +3,6 @@
 <% end %>
 <h1>Listing Agreements</h1>
 
-<%= link_to 'New Agreement', new_rec_path, class: "btn btn-default new-button" %>
+<%= link_to 'New Agreement', new_rec_path(division_id: @division.id), class: "btn btn-default new-button" %>
 <%= render 'recs' %>
 <br>
-
