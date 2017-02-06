@@ -4,7 +4,7 @@ describe PeopleController do
   describe "routing" do
 
     it "routes to #index" do
-      get("/people").should route_to("people#index")
+      get("/1/people").should route_to("people#index", :division_id => "1")
     end
 
     #it "routes to #new" do
@@ -28,7 +28,7 @@ describe PeopleController do
     end
 
     it "routes to #destroy" do
-      delete("/people/1").should route_to("people#destroy", :id => "1")
+      delete("/1/people/1").should route_to("people#destroy", :id => "1", :division_id => "1")
     end
 
   end

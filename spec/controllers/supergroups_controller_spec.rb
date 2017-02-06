@@ -29,6 +29,10 @@ shared_examples "a supergroup type" do |type|
     @division = FactoryGirl.create(:division)
   end
   
+  after(:all) do
+    @division.destroy
+  end
+  
   describe "Security" do 
 
     before(:all) do 

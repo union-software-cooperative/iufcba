@@ -1,4 +1,4 @@
-<%= form_for(@rec, :html => { class: "form"}) do |f| %>
+<%= form_for(@rec, url: recs_path(division_id: @division.id), :html => { class: "form"}) do |f| %>
   <% if @rec.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@rec.errors.count, "error") %> prohibited this rec from being saved:</h2>
@@ -32,8 +32,8 @@
     %>
   </div>
   
-  <div id="company_id_select2" class="form-group">
-    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company), placeholder: "Please select a company.",
+  <div class="form-group">
+    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company, division_id: @division.id), placeholder: "Please select a company.",
         class: "small", :target => "_blank"%><br>
     <%= f.select :company_id, 
       selected_option(@rec.company),
@@ -42,16 +42,16 @@
         include_blank: false,
       },
       data: { 
-        url: companies_path
+        url: companies_path(division_id: @division.id)
       }, 
       class: "ac-select2 form-control", 
       style: "width: 100%;"
     %>
   </div>
 
-  <div id="union_id_select2" class="form-group">
+  <div class="form-group">
     <% if owner? %>
-      <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
+      <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union, division_id: @division.id), class: "small", :target => "_blank"%><br>
       <%= f.select :union_id, 
         selected_option(@rec.union),  
         {
@@ -59,7 +59,7 @@
         },
         data: { 
           placeholder: t('.select_union'),
-          url: unions_path
+          url: unions_path(division_id: @division.id)
         }, 
         class: "ac-select2 form-control", 
         style: "width: 100%;"
@@ -92,7 +92,7 @@
       },
       data: { 
         placeholder: t('.person_description'),
-        url: people_path
+        url: people_path(division_id: @division.id)
       }, 
       class: "ac-select2 form-control", 
       style: "width: 100%;"

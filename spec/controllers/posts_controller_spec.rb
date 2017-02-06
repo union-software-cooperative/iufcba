@@ -28,6 +28,10 @@ describe PostsController do
     @admin = admin
     @agreement =  FactoryGirl.create(:agreement, union_id: @union.id, company_id: @company.id, person_id: @admin.id, authorizer: admin )  
   end
+  
+  after(:all) do
+    [@division, @union, @owner_union, @company, @admin, @agreement].each(&:destroy)
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Post. As you add validations to Post, be sure to

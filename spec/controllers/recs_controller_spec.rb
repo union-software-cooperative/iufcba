@@ -27,6 +27,10 @@ describe RecsController do
     @company = FactoryGirl.create(:company)
     @admin = admin
   end
+  
+  after(:all) do
+    [@division, @union, @owner_union, @company, @admin].each(&:destroy)
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Rec. As you add validations to Rec, be sure to

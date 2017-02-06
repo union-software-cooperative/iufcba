@@ -36,7 +36,7 @@ describe DivisionsController do
     it "assigns all divisions as @divisions" do
       division = Division.create! valid_attributes
       get :index, {}, valid_session
-      assigns(:divisions).should eq([division])
+      assigns(:divisions).should include(division)
     end
   end
 

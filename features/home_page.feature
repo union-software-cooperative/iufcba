@@ -1,14 +1,13 @@
 Feature: Home Page
 	Scenario: View application's home page
 	Given I am a new, authenticated person
-	Given there's a "dairy" division
-  Given there's an agreement titled "UFCW LOCAL 700/ConAgra Foods - Indianapolis, Indiana, USA" expiring "4 March 2017"
-  Given 
-	When I am on the homepage
+	Given there's a "wombat" division
+  	Given there's an agreement titled "UFCW LOCAL 700/ConAgra Foods - Indianapolis, Indiana, USA" expiring "4 March 2017"
+  	When I am on the homepage
 	Then I should see the link "divisions"
 	When I click the "divisions" link
 	Then I see a list of "divisions"
-	When I click the "diary" link
+	When I click the "wombat" link
 	Then I should see the link "chat"
 	Then I should see the link "agreements"
 	Then I should see the link "people"
