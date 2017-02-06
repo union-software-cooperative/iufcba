@@ -237,7 +237,7 @@ describe RecsController do
 
     describe "GET index" do
 
-      it "assigns all recs as @recs" do
+      it "assigns division's recs as @recs" do
         rec_in = Rec.create! valid_attributes
         rec_in.divisions << @division
 
@@ -249,6 +249,11 @@ describe RecsController do
         assigns(:recs).should include(rec_in) # Have database cleaning issues
         assigns(:recs).should_not include(rec_out) # Have database cleaning issues
         other_division.destroy
+      end
+
+      it "returns not found if division is missing" do
+        get :index, {division_id: "junk"}
+        assert response.code.should eq(404)
       end
     end
 
