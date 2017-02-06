@@ -2,8 +2,8 @@ Given(/^there's a "(.*?)" titled "(.*?)"$/) do |entity, title|
 	FactoryGirl.create(entity.to_sym, name: title)
 end
 
-When(/^I'm on the "(.*?)" list$/) do |entity|
-	visit polymorphic_path(entity)
+When(/^I'm on the "(.*?)" division "(.*?)" list$/) do |division, entity|
+	visit polymorphic_path(entity, division_id: division)
 end
 
 Then(/^I can view the "(.*?)" titled "(.*?)"$/) do |entity_name, title|

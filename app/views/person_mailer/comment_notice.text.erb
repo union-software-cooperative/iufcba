@@ -8,10 +8,9 @@ Hi <%=@person.first_name%>
 "<%= @comment.post.body %>" - <%= @comment.post.person.display_name %> 
 
 <% @comment.post.comments.each do |c| %>
-	<% if @comment.id != c.id %>
-	"<%= c.body %>" - <%= c.person.display_name %>
-	 
-	<% end %>
+  <% if @comment.id != c.id %>
+  "<%= c.body %>" - <%= c.person.display_name %>
+   
+  <% end %>
 <% end %>
-
-<%="#{@request.protocol}#{@request.host}#{polymorphic_path(@comment.post.parent)}"%>
+<%=polymorphic_url(@comment.post.parent, division_id: @division.id)%>

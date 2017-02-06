@@ -1,8 +1,9 @@
-Then(/^I can add an agreement titled "(.*?)" between "(.*?)" and "(.*?)" and assigned to "(.*?)" with tag "(.*?)"$/) do |title, company, union, assignee, tag|
-	page.should have_link("New Agreement", href: new_rec_path)
-	visit new_rec_path
-
+Then(/^I can add an agreement to the "(.*?)" division titled "(.*?)" between "(.*?)" and "(.*?)" and assigned to "(.*?)" with tag "(.*?)"$/) do |division, title, company, union, assignee, tag|
+	page.should have_link("New Agreement", href: new_rec_path(division_id: division))
+	
+	visit new_rec_path(division_id: division)
 	fill_in "rec[name]", with: title
+	select2 division, div: "division-select2"
 	select2 company, label: "Company"
 	select2 union, label: "Union"
 	select2 assignee, label: "Person"

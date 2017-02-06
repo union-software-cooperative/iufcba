@@ -21,6 +21,7 @@ require 'spec_helper'
 describe CommentsController do
 
   before(:all) do
+    @division = FactoryGirl.create(:division)
     @union = FactoryGirl.create(:union)
     @owner_union = owner_union
     @company = FactoryGirl.create(:company)
@@ -43,18 +44,18 @@ describe CommentsController do
     describe "with valid params" do
       it "creates a new Comment" do
         expect {
-          post :create, {:comment => valid_attributes}
+          post :create, {:comment => valid_attributes, division_id: @division.id}
         }.to change(Comment, :count).by(1)
       end
 
       it "assigns a newly created comment as @comment" do
-        post :create, {:comment => valid_attributes}
+        post :create, {:comment => valid_attributes, division_id: @division.id}
         assigns(:comment).should be_a(Comment)
         assigns(:comment).should be_persisted
       end
 
       it "redirects to the created comment" do
-        post :create, {:comment => valid_attributes}
+        post :create, {:comment => valid_attributes, division_id: @division.id}
         response.should redirect_to(@agreement)
       end
     end
@@ -72,7 +73,7 @@ describe CommentsController do
       comment1 = Comment.create! valid_attributes.merge(person: commenter1)
       
       expect {
-        post :create, {:comment => valid_attributes}
+        post :create, {:comment => valid_attributes, division_id: @division.id}
         messages = ActionMailer::Base.deliveries
         
         # notification should be sent to admin because admin was the original poster
@@ -94,20 +95,20 @@ describe CommentsController do
     it "destroys the requested comment when the user created it" do
       comment = Comment.create! valid_attributes.merge(person: subject.current_person)
       expect {
-        delete :destroy, {:id => comment.to_param}
+        delete :destroy, {:id => comment.to_param, division_id: @division.id}
       }.to change(Comment, :count).by(-1)
     end
 
     it "does not destroy the requested comment when someone else created it" do
       comment = Comment.create! valid_attributes.merge(person: @admin)
       expect {
-        delete :destroy, {:id => comment.to_param}
+        delete :destroy, {:id => comment.to_param, division_id: @division.id}
       }.to change(Comment, :count).by(0)
     end
 
     it "redirects to the comments list" do
       comment = Comment.create! valid_attributes
-      delete :destroy, {:id => comment.to_param}
+      delete :destroy, {:id => comment.to_param, division_id: @division.id}
       response.should redirect_to(@agreement)
     end
   end

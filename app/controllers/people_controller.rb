@@ -27,7 +27,9 @@ class PeopleController < ApplicationController
       if @person.update(person_params)
         @person.invite!(current_person) if params['resend_invite']=='true' 
         
-        format.html { redirect_to :people, notice: 'Profile successfully updated.' }
+        destination = @division ? people_path(division_id: @division.id) : divisions_path
+        
+        format.html { redirect_to destination, notice: 'Profile successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
         format.html { render :edit }

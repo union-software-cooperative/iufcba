@@ -4,4 +4,4 @@ Hi <%=@person.first_name%>
 
 "<%= @post.body %>"
 
-<%="#{@request.protocol}#{@request.host}#{polymorphic_path(@post.parent)}"%>
+<%=polymorphic_url(@post.parent, division_id: @division.id)%>

@@ -15,7 +15,7 @@
     <%= f.file_field :attachment %>
   </div>
   
-  <div class="form-group">
+  <div id="division-select2" class="form-group">
     <%= f.label :divisions %>
     <%= f.select :divisions,
       # prefill existing divisions?
@@ -32,7 +32,7 @@
     %>
   </div>
   
-  <div class="form-group">
+  <div id="company_id_select2" class="form-group">
     <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company), placeholder: "Please select a company.",
         class: "small", :target => "_blank"%><br>
     <%= f.select :company_id, 
@@ -49,7 +49,7 @@
     %>
   </div>
 
-  <div class="form-group">
+  <div id="union_id_select2" class="form-group">
     <% if owner? %>
       <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
       <%= f.select :union_id, 

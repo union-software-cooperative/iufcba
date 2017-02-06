@@ -75,7 +75,7 @@
 
   <div class="form-group">
     <% if owner? %>
-      <%= f.label :union_id %> <%= link_to t('.new_union'), new_polymorphic_path(Union), class: "small", :target => "_blank"%><br>
+      <%= f.label :union_id %> <%= link_to t('.new_union'), new_polymorphic_path(Union, division_id: (@division || owner_union.divisions.first).id), class: "small", :target => "_blank"%><br>
 
 
       <% if params[:affiliate_union].present? %>
@@ -89,7 +89,7 @@
         },
         data: { 
           placeholder: t('.select_union'),
-          url: unions_path
+          url: union_api_index_path
         }, 
         class: "ac-select2 form-control", 
         style: "width: 100%;"

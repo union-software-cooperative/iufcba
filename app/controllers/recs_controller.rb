@@ -123,11 +123,11 @@ class RecsController < ApplicationController
 
     def notify
       notification_recipients(@rec).each do |p|
-        PersonMailer.rec_notice(p, @rec, request).deliver_now
+        PersonMailer.rec_notice(p, @rec, @division).deliver_now
       end
     end
 
     def thank
-      PersonMailer.thanks(current_person, @rec, request, notification_recipients(@rec)).deliver_now
+      PersonMailer.thanks(current_person, @rec, @division, notification_recipients(@rec)).deliver_now
     end
 end

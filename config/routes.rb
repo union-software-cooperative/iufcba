@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   
-  #scope "(:division_id)" do 
+  devise_for :people, :controllers => { :invitations => 'people/invitations' }
+  resources :people, only: [:edit, :update]
+  
+  scope ":division_id" do 
     resources :messages 
     resources :comments
     resources :posts
@@ -32,10 +35,10 @@ Rails.application.routes.draw do
 
     get '/public/:filename', to: 'files#get'
     resources :agreements, controller: :recs, type: 'Rec'
-  #end
+  end
 
-  devise_for :people, :controllers => { :invitations => 'people/invitations' }
-    
+  resources :unions, only: [:index], controller: :supergroups, type: 'Union', constraints: {:format => 'json'}, as: 'union_api'
+
   resources :divisions, except: [:show]
   
   resource :help, only: [:show] do

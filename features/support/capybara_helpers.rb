@@ -8,6 +8,11 @@ module CapybaraHelpers
 	  #fill_in placeholder, with: value # was working??
 
 	  #page.execute_script(%|$("input.select2-input:visible").keyup();|)
+	  if selector[:div]
+	  	first("##{selector[:div]} .select2-selection").click
+	  	first("##{selector[:div]} .select2-search__field").set(value)
+	  end
+
 	  if selector[:label]
 	  	field_labeled(selector[:label]).click 
 			all('input').last.set(value)

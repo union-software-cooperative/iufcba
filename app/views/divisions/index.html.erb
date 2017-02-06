@@ -1,7 +1,9 @@
-<p id="notice"><%= notice %></p>
+<% if notice.present? %>
+  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
+<% end %>
 
 <div class="col-sm-8 col-sm-offset-2"/>
-  <h1 class="row">Listing Divisions</h1>
+  <h1 class="row">Listing divisions</h1>
 
   <br/>
 

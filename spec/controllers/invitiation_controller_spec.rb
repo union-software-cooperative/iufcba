@@ -21,6 +21,7 @@ require 'spec_helper'
 describe People::InvitationsController do
   
   before(:all) do
+    @division = FactoryGirl.create(:division)
     #@union = FactoryGirl.create(:union)
     #@owner_union = owner_union
     #@company = FactoryGirl.create(:company)
@@ -32,13 +33,13 @@ describe People::InvitationsController do
   # adjust the attributes here as well.
   let(:insider_attributes) { FactoryGirl.attributes_for(:person, union_id: subject.current_person.union.id ) }  
   let(:outsider_attributes) { FactoryGirl.attributes_for(:person, union_id: FactoryGirl.create(:union).id ) } 
-  let(:invalid_attributes) { FactoryGirl.attributes_for(:person, email: "" ) } 
+  let(:invalid_attributes) { FactoryGirl.attributes_for(:person, email: "") } 
   
   describe "Security" do
-    describe "Low priviledge access" do
+    describe "Low privilege access" do
       login_person
 
-      describe "POST create" do       
+      describe "POST create" do
         it "won't allow invitation to other union" do
           post :create, {:person => outsider_attributes}
           assigns(:person).errors.count.should eq(1)
@@ -46,8 +47,8 @@ describe People::InvitationsController do
           response.should render_template("new")
         end
 
-         it "will allow invitation to my union" do
-          post :create, {:person => insider_attributes}
+        it "will allow invitation to my union" do
+          post :create, {:person => insider_attributes, division_id: @division.id}
           assigns(:person).errors.count.should eq(0)
           response.should render_template("devise/mailer/invitation_instructions")
           response.should redirect_to(edit_person_path(assigns(:person)))
@@ -123,7 +124,7 @@ describe People::InvitationsController do
       invitee = FactoryGirl.create(:person, authorizer: @admin)
       invitee.invite! @admin
 
-      # remove invite priviledges from inviter, by moving them to a different union
+      # remove invite privileges from inviter, by moving them to a different union
       @admin.update!(union: FactoryGirl.create(:union), authorizer: FactoryGirl.create(:admin, authorizer: @admin))
 
       @request.env["devise.mapping"] = Devise.mappings[:person]

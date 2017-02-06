@@ -21,6 +21,7 @@ require 'spec_helper'
 describe RecsController do
   
   before(:all) do
+    @division = FactoryGirl.create(:division)
     @union = FactoryGirl.create(:union)
     @owner_union = owner_union
     @company = FactoryGirl.create(:company)
@@ -35,19 +36,19 @@ describe RecsController do
   let(:invalid_union) { FactoryGirl.attributes_for(:agreement, union_id: @owner_union.id, company_id: @company.id, person_id: subject.current_person.id, authorizer: subject.current_person ) } 
 
   describe "Security" do
-    describe "Low priviledge access" do
+    describe "Low privilege access" do
       login_person
 
       describe "POST create" do
         it "won't allow assignment to non-collegue" do
-          post :create, {:rec => invalid_person}
+          post :create, {:rec => invalid_person, division_id: @division.id}
           assigns(:rec).errors.count.should eq(1)
           assigns(:rec).errors[:person].should include('is not a colleague from your union so this assignment is not authorized.')
           response.should render_template("new")
         end
         
         it "won't allow assignment to other union" do
-          post :create, {:rec => invalid_union}
+          post :create, {:rec => invalid_union, division_id: @division.id}
           assigns(:rec).errors.count.should eq(1)
           assigns(:rec).errors[:union].should include('is not your union so this assignment is not authorized.')
           response.should render_template("new")
@@ -59,20 +60,20 @@ describe RecsController do
       describe "update/edit" do
         it "won't allow edit of other union's agreement" do
           rec = Rec.create! invalid_union.merge(authorizer: @admin)
-          get :edit, {:id => rec.to_param }
+          get :edit, {:id => rec.to_param, division_id: @division.id }
           expect(response).to be_forbidden
         end
 
         it "won't allow update of other union's agreement" do
           rec = Rec.create! invalid_union.merge(authorizer: @admin)
-          put :update, {:id => rec.to_param, :rec => { name: "blah" } }
+          put :update, {:id => rec.to_param, :rec => { name: "blah" }, division_id: @division.id }
           expect(response).to be_forbidden
         end
 
         it "won't allow assignment to non-collegue" do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { person_id: invalid_person[:person_id] } }
+          put :update, {:id => rec.to_param, :rec => { person_id: invalid_person[:person_id] }, division_id: @division.id }
           assigns(:rec).errors.count.should eq(1)
           assigns(:rec).errors[:person].should include('is not a colleague from your union so this assignment is not authorized.')
           response.should render_template("edit")
@@ -81,7 +82,7 @@ describe RecsController do
         it "won't allow assignment to other union" do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { union_id: invalid_union[:union_id] } }
+          put :update, {:id => rec.to_param, :rec => { union_id: invalid_union[:union_id] }, division_id: @division.id }
           assigns(:rec).errors.count.should eq(1)
           assigns(:rec).errors[:union].should include('is not your union so this assignment is not authorized.')
           response.should render_template("edit")
@@ -89,15 +90,15 @@ describe RecsController do
       end
     end
 
-    describe "High priviledge access" do
+    describe "High privilege access" do
       login_admin
 
       describe "POST create" do
-        it "allows assignment to non-collegue" do
+        it "allows assignment to non-colleague" do
           person = FactoryGirl.create(:authorized_person)
           person.union_id.should_not eq(subject.current_person.union_id)
           
-          post :create, {:rec => valid_attributes.merge({person_id: person.id})}
+          post :create, {:rec => valid_attributes.merge({person_id: person.id}), division_id: @division.id}
           assigns(:rec).errors[:person].should be_empty
           response.should_not render_template("new")
         end
@@ -106,7 +107,7 @@ describe RecsController do
           union = FactoryGirl.create(:union)
           union.id.should_not eq(subject.current_person.union_id)
           
-          post :create, {:rec => valid_attributes.merge({union_id: union.id})}
+          post :create, {:rec => valid_attributes.merge({union_id: union.id}), division_id: @division.id}
           assigns(:rec).errors[:union].should be_empty
           response.should_not render_template("new")
         end
@@ -115,14 +116,14 @@ describe RecsController do
       describe "edit/update" do
         it "allows edit of other union's agreement" do
           rec = Rec.create! valid_attributes.merge(union_id: @union.id)
-          get :edit, {:id => rec.to_param }
+          get :edit, {:id => rec.to_param, division_id: @division.id }
           response.should be_successful
           response.should render_template("edit")
         end
 
         it "allows update of other union's agreement" do
           rec = Rec.create! valid_attributes.merge(union_id: @union.id)
-          put :update, {:id => rec.to_param, :rec => { name: "blah" } }
+          put :update, {:id => rec.to_param, :rec => { name: "blah" }, division_id: @division.id }
           response.should redirect_to(assigns(:rec))
         end
 
@@ -132,7 +133,7 @@ describe RecsController do
           union.id.should_not eq(subject.current_person.union_id)
           
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { union_id: union.id } }
+          put :update, {:id => rec.to_param, :rec => { union_id: union.id }, division_id: @division.id }
           assigns(:rec).errors[:person].should be_empty
           response.should_not render_template("edit")
         end
@@ -143,7 +144,7 @@ describe RecsController do
           person.union_id.should_not eq(subject.current_person.union_id)
           
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { person_id: person.id } }
+          put :update, {:id => rec.to_param, :rec => { person_id: person.id }, division_id: @division.id }
           assigns(:rec).errors[:person].should be_empty
           response.should_not render_template("edit")
         end
@@ -156,7 +157,7 @@ describe RecsController do
 
     it "will send thank you email" do
       expect {
-        post :create, {:rec => valid_attributes}
+        post :create, {:rec => valid_attributes, division_id: @division.id}
         ActionMailer::Base.deliveries.last.subject.should include("Thanks")
         ActionMailer::Base.deliveries.last.to.should include(@admin.email)
       }.to change { ActionMailer::Base.deliveries.count }.by(1)
@@ -182,7 +183,7 @@ describe RecsController do
       follower4.follow! FactoryGirl.create(:company) # Shouldn't be notified
 
       expect {
-        post :create, {:rec => valid_attributes}
+        post :create, {:rec => valid_attributes, division_id: @division.id}
         messages = ActionMailer::Base.deliveries
 
         # these should probably be separate tests
@@ -221,7 +222,7 @@ describe RecsController do
     # end
 
     it "person assigned is made to follow new rec" do
-      post :create, {:rec => valid_attributes}
+      post :create, {:rec => valid_attributes, division_id: @division.id}
       assigns(:rec).followers(Person).should include(subject.current_person)
     end
   end
@@ -234,7 +235,7 @@ describe RecsController do
 
       it "assigns all recs as @recs" do
         rec = Rec.create! valid_attributes
-        get :index, {}
+        get :index, {division_id: @division.id}
         assigns(:recs).should include(rec) # Have database cleaning issues
       end
     end
@@ -242,14 +243,14 @@ describe RecsController do
     describe "GET show" do
       it "assigns the requested rec as @rec" do
         rec = Rec.create! valid_attributes
-        get :show, {:id => rec.to_param}
+        get :show, {:id => rec.to_param, division_id: @division.id}
         assigns(:rec).should eq(rec)
       end
     end
 
     describe "GET new" do
       it "assigns a new rec as @rec" do
-        get :new, {}
+        get :new, {division_id: @division.id}
         assigns(:rec).should be_a_new(Rec)
       end
     end
@@ -257,7 +258,7 @@ describe RecsController do
     describe "GET edit" do
       it "assigns the requested rec as @rec" do
         rec = Rec.create! valid_attributes
-        get :edit, {:id => rec.to_param}
+        get :edit, {:id => rec.to_param, division_id: @division.id}
         assigns(:rec).should eq(rec)
       end
     end
@@ -266,18 +267,18 @@ describe RecsController do
       describe "with valid params" do
         it "creates a new Rec" do
           expect {
-            post :create, {:rec => valid_attributes}
+            post :create, {:rec => valid_attributes, division_id: @division.id}
           }.to change(Rec, :count).by(1)
         end
 
         it "assigns a newly created rec as @rec" do
-          post :create, {:rec => valid_attributes}
+          post :create, {:rec => valid_attributes, division_id: @division.id}
           assigns(:rec).should be_a(Rec)
           assigns(:rec).should be_persisted
         end
 
         it "redirects to the created rec" do
-          post :create, {:rec => valid_attributes}
+          post :create, {:rec => valid_attributes, division_id: @division.id}
           response.should redirect_to(Rec.last)
         end
       end
@@ -286,14 +287,14 @@ describe RecsController do
         it "assigns a newly created but unsaved rec as @rec" do
           # Trigger the behavior that occurs when invalid params are submitted
           Rec.any_instance.stub(:save).and_return(false)
-          post :create, {:rec => { "name" => "invalid value" }}
+          post :create, {:rec => { "name" => "invalid value" }, division_id: @division.id}
           assigns(:rec).should be_a_new(Rec)
         end
 
         it "re-renders the 'new' template" do
           # Trigger the behavior that occurs when invalid params are submitted
           Rec.any_instance.stub(:save).and_return(false)
-          post :create, {:rec => { "name" => "invalid value" }}
+          post :create, {:rec => { "name" => "invalid value" }, division_id: @division.id}
           response.should render_template("new")
         end
       end
@@ -309,18 +310,18 @@ describe RecsController do
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
           Rec.any_instance.should_receive(:update).with({ "name" => "MyText" })
-          put :update, {:id => rec.to_param, :rec => { "name" => "MyText" }}
+          put :update, {:id => rec.to_param, :rec => { "name" => "MyText" }, division_id: @division.id}
         end
 
         it "assigns the requested rec as @rec" do
           rec = Rec.create! valid_attributes
-          put :update, {:id => rec.to_param, :rec => valid_attributes}
+          put :update, {:id => rec.to_param, :rec => valid_attributes, division_id: @division.id}
           assigns(:rec).should eq(rec)
         end
 
         it "redirects to the rec" do
           rec = Rec.create! valid_attributes
-          put :update, {:id => rec.to_param, :rec => valid_attributes}
+          put :update, {:id => rec.to_param, :rec => valid_attributes, division_id: @division.id}
           response.should redirect_to(rec)
         end
       end
@@ -330,7 +331,7 @@ describe RecsController do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           Rec.any_instance.stub(:save).and_return(false)
-          put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }}
+          put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }, division_id: @division.id}
           assigns(:rec).should eq(rec)
         end
 
@@ -338,7 +339,7 @@ describe RecsController do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           Rec.any_instance.stub(:save).and_return(false)
-          put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }}
+          put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }, division_id: @division.id}
           response.should render_template("edit")
         end
       end
@@ -348,13 +349,13 @@ describe RecsController do
       it "destroys the requested rec" do
         rec = Rec.create! valid_attributes
         expect {
-          delete :destroy, {:id => rec.to_param}
+          delete :destroy, {:id => rec.to_param, division_id: @division.id}
         }.to change(Rec, :count).by(-1)
       end
 
       it "redirects to the recs list" do
         rec = Rec.create! valid_attributes
-        delete :destroy, {:id => rec.to_param}
+        delete :destroy, {:id => rec.to_param, division_id: @division.id}
         response.should redirect_to(recs_url)
       end
     end

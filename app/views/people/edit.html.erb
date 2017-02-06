@@ -4,7 +4,9 @@
 <div class="outer-row">
   <div class="col-sm-8 col-sm-offset-2">
     <% unless @person.union.nil? %>
-      <%= link_to @person.union.short_name + " #{t('.agreements')}", union_path(@person.union), class: "btn btn-default pull-right" %>
+      <% @person.union.divisions.each do |division| %> 
+        <%= link_to @person.union.short_name + " #{t('.agreements')}", union_path(@person.union, division_id: division.id), class: "btn btn-default pull-right" %>
+      <% end %>
     <% end %>
     <h1>
       <%= "#{t('.editing')} #{profile_heading}" %>

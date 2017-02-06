@@ -9,5 +9,9 @@ FactoryGirl.define do
 		factory :authorized_agreement do |f|
 			f.authorizer {admin}
 		end
+
+		after(:create) do |agreement|
+			agreement.divisions << FactoryGirl.create(:division, name: "dairy")
+		end
 	end
 end

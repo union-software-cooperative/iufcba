@@ -25,18 +25,22 @@ shared_examples "a supergroup type" do |type|
 
   let(:valid_attributes) { { "name" => "name", "short_name" => "sn", "type"=> type } }
   
+  before(:all) do
+    @division = FactoryGirl.create(:division)
+  end
+  
   describe "Security" do 
 
     before(:all) do 
       @admin = admin
     end
 
-    describe "Low priviledge access" do
+    describe "Low privilege access" do
       login_person
 
       describe "POST create" do
         it "won't allow union or company creation" do
-          post :create, {type_sym => valid_attributes, type: type}
+          post :create, {type_sym => valid_attributes, type: type, division_id: @division.id}
           expect(response).to be_forbidden
         end
       end
@@ -44,24 +48,24 @@ shared_examples "a supergroup type" do |type|
       describe "edit/update" do
         it "won't allow edit of unions or companies unless my own" do
           supergroup = Supergroup.create! valid_attributes
-          get :edit, {:id => supergroup.to_param, type: type }
+          get :edit, {:id => supergroup.to_param, type: type, division_id: @division.id }
           response.should be_forbidden
 
           if type == "Union"
             supergroup = subject.current_person.union
-            get :edit, {:id => supergroup.to_param, type: type }
+            get :edit, {:id => supergroup.to_param, type: type, division_id: @division.id }
             response.should render_template(:edit)   
           end       
         end
 
         it "won't allow update of unions or companies unless my own" do
           supergroup = Supergroup.create! valid_attributes
-          post :edit, {:id => supergroup.to_param, name: "blah", type: type }
+          post :edit, {:id => supergroup.to_param, name: "blah", type: type, division_id: @division.id }
           response.should be_forbidden
 
           if type == "Union"
             supergroup = subject.current_person.union
-            put :update, { :id => supergroup.to_param, type_sym => {name: "blah"}, type: type }
+            put :update, { :id => supergroup.to_param, type_sym => {name: "blah"}, type: type, division_id: @division.id }
             response.should redirect_to(supergroup)  
           end        
         end
@@ -75,7 +79,7 @@ shared_examples "a supergroup type" do |type|
     describe "GET index" do
       it "assigns all supergroups as @supergroups" do
         supergroup = Supergroup.create! valid_attributes
-        get :index, {type: type}
+        get :index, {type: type, division_id: @division.id}
         
         assigns(:supergroups).should include(supergroup) 
         
@@ -93,14 +97,14 @@ shared_examples "a supergroup type" do |type|
     describe "GET show" do
       it "assigns the requested supergroup as @supergroup" do
         supergroup = Supergroup.create! valid_attributes
-        get :show, {:id => supergroup.to_param, type: type}
+        get :show, {:id => supergroup.to_param, type: type, division_id: @division.id}
         assigns(:supergroup).should eq(supergroup)
       end
     end
 
     describe "GET new" do
       it "assigns a new supergroup as @supergroup" do
-        get :new, {type: type}
+        get :new, {type: type, division_id: @division.id}
         assigns(:supergroup).should be_a_new(Supergroup)
       end
     end
@@ -108,7 +112,7 @@ shared_examples "a supergroup type" do |type|
     describe "GET edit" do
       it "assigns the requested supergroup as @supergroup" do
         supergroup = Supergroup.create! valid_attributes
-        get :edit, {:id => supergroup.to_param, type: type}
+        get :edit, {:id => supergroup.to_param, type: type, division_id: @division.id}
         assigns(:supergroup).should eq(supergroup)
       end
     end
@@ -117,18 +121,18 @@ shared_examples "a supergroup type" do |type|
       describe "with valid params" do
         it "creates a new Supergroup" do
           expect {
-            post :create, {type_sym => valid_attributes, type: type}
+            post :create, {type_sym => valid_attributes, type: type, division_id: @division.id}
           }.to change(Supergroup, :count).by(1)
         end
 
         it "assigns a newly created supergroup as @supergroup" do
-          post :create, {type_sym => valid_attributes, type: type}
+          post :create, {type_sym => valid_attributes, type: type, division_id: @division.id}
           assigns(:supergroup).should be_a(Supergroup)
           assigns(:supergroup).should be_persisted
         end
 
         it "redirects to the created supergroup" do
-          post :create, {type_sym => valid_attributes, type: type}
+          post :create, {type_sym => valid_attributes, type: type, division_id: @division.id}
           response.should redirect_to(Supergroup.last)
         end
       end
@@ -137,14 +141,14 @@ shared_examples "a supergroup type" do |type|
         it "assigns a newly created but unsaved supergroup as @supergroup" do
           # Trigger the behavior that occurs when invalid params are submitted
           Supergroup.any_instance.stub(:save).and_return(false)
-          post :create, {type_sym => { "name" => "invalid value" }, type: type}
+          post :create, {type_sym => { "name" => "invalid value" }, type: type, division_id: @division.id}
           assigns(:supergroup).should be_a_new(Supergroup)
         end
 
         it "re-renders the 'new' template" do
           # Trigger the behavior that occurs when invalid params are submitted
           Supergroup.any_instance.stub(:save).and_return(false)
-          post :create, {type_sym => { "name" => "invalid value" }, type: type}
+          post :create, {type_sym => { "name" => "invalid value" }, type: type, division_id: @division.id}
           response.should render_template("new")
         end
       end
@@ -159,18 +163,18 @@ shared_examples "a supergroup type" do |type|
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
           Supergroup.any_instance.should_receive(:update).with({ "name" => "MyString", "type" => type })
-          put :update, {:id => supergroup.to_param, type_sym => { "name" => "MyString" }, type: type}
+          put :update, {:id => supergroup.to_param, type_sym => { "name" => "MyString" }, type: type, division_id: @division.id}
         end
 
         it "assigns the requested supergroup as @supergroup" do
           supergroup = Supergroup.create! valid_attributes
-          put :update, {:id => supergroup.to_param, type_sym => valid_attributes, type: type}
+          put :update, {:id => supergroup.to_param, type_sym => valid_attributes, type: type, division_id: @division.id}
           assigns(:supergroup).should eq(supergroup)
         end
 
         it "redirects to the supergroup" do
           supergroup = Supergroup.create! valid_attributes
-          put :update, {:id => supergroup.to_param, type_sym => valid_attributes, type: type}
+          put :update, {:id => supergroup.to_param, type_sym => valid_attributes, type: type, division_id: @division.id}
           response.should redirect_to(supergroup)
         end
       end
@@ -180,7 +184,7 @@ shared_examples "a supergroup type" do |type|
           supergroup = Supergroup.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           Supergroup.any_instance.stub(:save).and_return(false)
-          put :update, {:id => supergroup.to_param, type_sym => { "name" => "invalid value" }, type: type}
+          put :update, {:id => supergroup.to_param, type_sym => { "name" => "invalid value" }, type: type, division_id: @division.id}
           assigns(:supergroup).should eq(supergroup)
         end
 
@@ -188,7 +192,7 @@ shared_examples "a supergroup type" do |type|
           supergroup = Supergroup.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           Supergroup.any_instance.stub(:save).and_return(false)
-          put :update, {:id => supergroup.to_param, type_sym => { "name" => "invalid value" }, type: type}
+          put :update, {:id => supergroup.to_param, type_sym => { "name" => "invalid value" }, type: type, division_id: @division.id}
           response.should render_template("edit")
         end
       end
@@ -198,13 +202,13 @@ shared_examples "a supergroup type" do |type|
       it "destroys the requested supergroup" do
         supergroup = Supergroup.create! valid_attributes
         expect {
-          delete :destroy, {:id => supergroup.to_param, type: type}
+          delete :destroy, {:id => supergroup.to_param, type: type, division_id: @division.id}
         }.to change(Supergroup, :count).by(-1)
       end
 
       it "redirects to the supergroups list" do
         supergroup = Supergroup.create! valid_attributes
-        delete :destroy, {:id => supergroup.to_param, type: type}
+        delete :destroy, {:id => supergroup.to_param, type: type, division_id: @division.id}
         response.should redirect_to(type.constantize)
       end
     end
