@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "recs/index.html.erb" do
   before(:each) do
-    admin = FactoryGirl.create(:admin)
+    admin = FactoryGirl.create(:admin, authorizer: Person.first)
     @division = FactoryGirl.create(:division)
     @recs = assign(:recs, [FactoryGirl.create(:agreement, authorizer: admin,  name: "my agreement"),FactoryGirl.create(:agreement, authorizer: admin, name: "my agreement")])
   end

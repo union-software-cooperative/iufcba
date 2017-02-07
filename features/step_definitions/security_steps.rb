@@ -36,7 +36,7 @@ end
 
 Then(/^I can not post my profile with union "(.*?)"$/) do |union|
 	@union = Union.find_by_name(union)
-	visit edit_person_path(@current_person)
+	visit edit_person_path(@current_person, division_id: @current_person.union.divisions.first)
 	
 	find(:xpath, "//input[@id='person_union_id']").set @union.id
   click_button "Save Profile"
@@ -48,7 +48,7 @@ Given(/^there's an administrator$/) do
 end
 
 Then(/^I am forbidden from editing the administrator$/) do
-	visit edit_person_path(admin)
+	visit edit_person_path(admin, division_id: admin.union.divisions.first)
 	page.status_code.should eq(403)
 end
 
@@ -63,7 +63,7 @@ end
 
 Then(/^I am permitted to edit "(.*?)"$/) do |name|
 	person = Person.find_by_first_name(name)
-	visit edit_person_path(person)
+	visit edit_person_path(person, division_id: person.union.divisions.first)
 	page.status_code.should eq(200)
 	page.should have_content("Editing #{name}")
 

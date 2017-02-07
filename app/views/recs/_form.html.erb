@@ -18,8 +18,9 @@
   <div id="division-select2" class="form-group">
     <%= f.label :divisions %>
     <%= f.select :divisions,
-      # prefill existing divisions?
-      options_from_collection_for_select(@rec.divisions, :id, :name, @rec.divisions.map(&:id)),
+      options_from_collection_for_select(
+        @rec.divisions, :id, :name, @rec.divisions.map(&:id)
+      ),
       {
         include_blank: false,
       },
@@ -33,7 +34,7 @@
   </div>
   
   <div class="form-group">
-    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path([@division, Company]), placeholder: "Please select a company.",
+    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company, division_id: @division.id), placeholder: "Please select a company.",
         class: "small", :target => "_blank"%><br>
     <%= f.select :company_id, 
       selected_option(@rec.company),
@@ -59,7 +60,7 @@
         },
         data: { 
           placeholder: t('.select_union'),
-          url: unions_path(division_id: @division.id)
+          url: unions_path(@division)
         }, 
         class: "ac-select2 form-control", 
         style: "width: 100%;"
@@ -92,7 +93,7 @@
       },
       data: { 
         placeholder: t('.person_description'),
-        url: people_path(division_id: @division.id)
+        url: people_path(@division)
       }, 
       class: "ac-select2 form-control", 
       style: "width: 100%;"

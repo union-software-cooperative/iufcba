@@ -1,5 +1,11 @@
+Given(/^in the "(.*?)" division, there's a "(.*?)" titled "(.*?)"$/) do |division, entity, title|
+	entity = FactoryGirl.create(entity.to_sym, name: title)
+	entity.divisions << Division.find_by_short_name(division)
+	entity.save
+end
+
 Given(/^there's a "(.*?)" titled "(.*?)"$/) do |entity, title|
-	FactoryGirl.create(entity.to_sym, name: title)
+	entity = FactoryGirl.create(entity.to_sym, name: title)
 end
 
 When(/^I'm on the "(.*?)" division "(.*?)" list$/) do |division, entity|
@@ -60,4 +66,3 @@ Then(/^I can delete the "(.*?)" titled "(.*?)"$/) do |entity_name, title|
 
 	page.should have_content("#{entity_name.titlecase} was successfully destroyed.")
 end
-

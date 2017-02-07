@@ -75,8 +75,9 @@
 
   <div class="form-group">
     <% if owner? %>
-      <%= f.label :union_id %> <%= link_to t('.new_union'), new_polymorphic_path(Union, division_id: (@division || owner_union.divisions.first).id), class: "small", :target => "_blank"%><br>
-
+      <%= f.label :union_id %> 
+      <% #link_to t('.new_union'), new_polymorphic_path(Union, division_id: (@division || owner_union.divisions.first).id), class: "small", :target => "_blank" %>
+      <br>
 
       <% if params[:affiliate_union].present? %>
         <strong style="color:red">Please set this to '<%= params[:affiliate_union] %>'</strong> <BR/>

@@ -127,6 +127,12 @@ shared_examples "a supergroup type" do |type|
         get :new, {type: type, division_id: @division.id}
         assigns(:supergroup).should be_a_new(Supergroup)
       end
+      
+      it "assigns @division into @supergroup's divisions" do
+        get :new, { type: type, division_id: @division.id }
+        
+        assigns(:supergroup).divisions.should include(@division)
+      end
     end
 
     describe "GET edit" do

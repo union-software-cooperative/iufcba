@@ -92,7 +92,7 @@ describe PeopleController do
           # end
 
           it "will allow editing colleagues" do 
-            get :edit, {id: @insider.to_param}
+            get :edit, {id: @insider.to_param, division_id: @division.id}
             expect(response).to be_successful
             response.should render_template(:edit)
           end
@@ -142,7 +142,7 @@ describe PeopleController do
     describe "GET edit" do
       it "assigns the requested person as @person" do
         person = Person.create! valid_attributes
-        get :edit, {:id => person.to_param}
+        get :edit, {:id => person.to_param, division_id: @division.id}
         assigns(:person).should eq(person)
       end
     end
@@ -180,7 +180,7 @@ describe PeopleController do
           person = Person.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           #Person.any_instance.stub(:save).and_return(false)
-          put :update, {:id => person.to_param, :person => invalid_attributes}
+          put :update, {:id => person.to_param, :person => invalid_attributes, division_id: @division.id}
           updated = Person.find(person.id)
           updated.email.should eq(person.email)
         end
@@ -189,12 +189,12 @@ describe PeopleController do
           person = Person.create! valid_attributes
 
           # test failure on invalid_params
-          put :update, {:id => person.to_param, :person => invalid_attributes}
+          put :update, {:id => person.to_param, :person => invalid_attributes, division_id: @division.id}
           response.should render_template("edit")
 
           # test other failure on save
           Person.any_instance.stub(:save).and_return(false)
-          put :update, {:id => person.to_param, :person => valid_attributes}
+          put :update, {:id => person.to_param, :person => valid_attributes, division_id: @division.id}
           response.should render_template("edit")
         end
       end

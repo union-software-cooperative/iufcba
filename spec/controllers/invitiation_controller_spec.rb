@@ -55,7 +55,7 @@ describe People::InvitationsController do
           post :create, {:person => insider_attributes, division_id: @division.id}
           assigns(:person).errors.count.should eq(0)
           response.should render_template("devise/mailer/invitation_instructions")
-          response.should redirect_to(edit_person_path(assigns(:person)))
+          response.should redirect_to(edit_profile_path(assigns(:person)))
         end
       end
 
@@ -88,7 +88,7 @@ describe People::InvitationsController do
 
       it "redirects to the created person" do
         post :create, {:person => outsider_attributes}
-        response.should redirect_to(edit_person_path(assigns(:person)))
+        response.should redirect_to(edit_profile_path(assigns(:person)))
       end
       
       describe "with invalid params" do

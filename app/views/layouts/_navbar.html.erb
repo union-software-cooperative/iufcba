@@ -3,7 +3,6 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
-        <!--<img src="<%=image_path('iuf_logo.png')%>">-->
         <img src="<%=navbar_logo%>"/> 
       </a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -25,9 +24,9 @@
             <li>
               <%= link_to t('.agreements'), recs_path %>
             </li>
-            <li>
+            <!-- li>
               <%= link_to "#{t('.chat')} <span class='chat-badge badge'>1</span>".html_safe, messages_path %>
-            <li>
+            </li -->
             <li>
               <%= link_to t('.unions'), unions_path %>
             </li>
@@ -45,7 +44,7 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <%= link_to t('.my_profile'), edit_person_path(id:current_person.id) %>
+                <%= link_to t('.my_profile'), edit_profile_path(id:current_person.id) %>
               </li>
               <li><%= link_to t('.invite'), new_person_invitation_path %></li>
               <li><%= link_to t('.sign_out'), destroy_person_session_path, :method=>'delete' %>
@@ -61,6 +60,11 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div id="message-flash-zone">
-
-</div>
+<% if @breadcrumbs %>
+  <ol class="breadcrumb">
+    <% @breadcrumbs.each do |text, href, current| %>
+      <li><%= current ? text : link_to(text, href) %></li>
+    <% end %>
+  </ol>
+<% end %>
+<div id="message-flash-zone"></div>

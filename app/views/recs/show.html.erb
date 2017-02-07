@@ -28,14 +28,15 @@
               <span class="btn btn-primary btn-sm"><%=tag%></span>
           <% end %>  
         </p>
-        </h2><%=@rec.name%> - <%="#{@rec.start_date < Time.now ? "commenced" : "commencing"} #{I18n.l @rec.start_date, :format => :long}"%>
+        <h2>
+          <%=@rec.name%> - <%="#{@rec.start_date < Time.now ? "commenced" : "commencing"} #{I18n.l @rec.start_date, :format => :long}"%>
         </h2>
-        <p class="col-sm">
+        <div class="col-sm">
           <div class="form-group">
             <%= label_tag :check_box, "multi site" %><br>
             <%= check_box_tag "rec_multi_site", 1, @rec.multi_site, class: "switch", readonly: true, :data => l10n_switch_data %>
           </div>
-        </p>
+        </div>
         <p><%=@rec.coverage%></p>
        
         <div style="position:relative; float:right">

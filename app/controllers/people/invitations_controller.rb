@@ -16,11 +16,11 @@ class People::InvitationsController < Devise::InvitationsController
   private
 
   def after_invite_path_for(resource)
-    edit_person_path @invitee
+    edit_profile_path @invitee
   end
 
   def after_accept_path_for(current_person)
-    edit_person_path current_person
+    edit_profile_path current_person
   end
 
   def invite_resource
