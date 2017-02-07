@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "recs/show.html.erb" do
   skip "add some examples to (or delete) #{__FILE__}"

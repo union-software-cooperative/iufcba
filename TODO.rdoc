@@ -30,9 +30,17 @@ Globalize division
 
 Language picker
 
-NOT TESTED division brand
+dark links on buttons
 
-NOT TESTED IUF BRAND for unscoped pages
+dark errors on validation fail
+
+dark link on footer
+
+dark link on jumbotron
+
+DONE division brand
+
+DONE IUF BRAND for unscoped pages
 
 NOT TESTED division branch when missing logo
 

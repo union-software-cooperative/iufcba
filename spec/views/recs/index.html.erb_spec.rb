@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "recs/index.html.erb" do
   before(:each) do

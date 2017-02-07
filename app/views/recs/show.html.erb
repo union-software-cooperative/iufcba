@@ -15,6 +15,12 @@
             <%= link_to '<span class="glyphicon glyphicon-pencil"/>'.html_safe, edit_rec_path(@rec), class: "btn btn-small" %>
             <%= link_to '<span class="glyphicon glyphicon-trash"/>'.html_safe, @rec, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-small" %>
         </span>
+        <small>
+          <% $break = true %>
+          <%= @rec.divisions.map{|d| content_tag(:span, class: ["label", "label-default"]) { link_to d.name, id: d.short_name, division_id: nil } }.join(' | ').html_safe %>
+          <% $break = false %>
+          
+        </small>
         <h1>
           <%=render @rec.union if @rec.union %>
           <%=render @rec.company if @rec.company%>
@@ -31,12 +37,10 @@
         <h2>
           <%=@rec.name%> - <%="#{@rec.start_date < Time.now ? "commenced" : "commencing"} #{I18n.l @rec.start_date, :format => :long}"%>
         </h2>
-        <div class="col-sm">
-          <div class="form-group">
-            <%= label_tag :check_box, "multi site" %><br>
-            <%= check_box_tag "rec_multi_site", 1, @rec.multi_site, class: "switch", readonly: true, :data => l10n_switch_data %>
-          </div>
-        </div>
+        <p class="form-group">
+          <%= label_tag :check_box, "multi site" %><br>
+          <%= check_box_tag "rec_multi_site", 1, @rec.multi_site, class: "switch", readonly: true, :data => l10n_switch_data %>
+        </p>
         <p><%=@rec.coverage%></p>
        
         <div style="position:relative; float:right">
