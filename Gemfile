@@ -47,8 +47,8 @@ group :development, :test do
 end
 
 group :test do
-	gem 'shoulda-matchers', '~> 3.0'
-	gem 'cucumber-rails', require: false
+  gem 'shoulda-matchers', '~> 3.0'
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver', '~> 3.0.5'
 end

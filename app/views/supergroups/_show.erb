@@ -1,6 +1,7 @@
 <%=render 'title' %>
 <%=render partial: 'recs/recs' if @recs %>
 <% if @supergroup.type == 'Company' || can_edit_union?(@supergroup) %>
+
 	<%=render partial: 'posts/form'%>
 <% end %>
 <%=render @supergroup.posts%>
