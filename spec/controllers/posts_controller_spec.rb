@@ -51,13 +51,13 @@ describe PostsController do
 
       it "assigns a newly created post as @post" do
         post :create, {:post => valid_attributes, division_id: @division.id}
-        assigns(:post).should be_a(Post)
-        assigns(:post).should be_persisted
+        expect(assigns(:post)).to be_a(Post)
+        expect(assigns(:post)).to be_persisted
       end
 
       it "redirects to the created post" do
         post :create, {:post => valid_attributes, division_id: @division.id}
-        response.should redirect_to(@agreement)
+        expect(response).to redirect_to(@agreement)
       end
     end
 
@@ -100,13 +100,13 @@ describe PostsController do
         messages = ActionMailer::Base.deliveries
 
         # notification should be sent to admin because admin is the rec assignee
-        messages.select{|m| m.to == [@admin.email] && m.subject.include?("has posted a message")}.count.should eq(1) 
+        expect(messages.select{|m| m.to == [@admin.email] && m.subject.include?("has posted a message")}.count).to eq(1) 
          
         # notifications should be sent to  follower1 because they are following the current rec
-        messages.select{|m| m.to == [follower1.email] && m.subject.include?("has posted a message")}.count.should eq(1) 
+        expect(messages.select{|m| m.to == [follower1.email] && m.subject.include?("has posted a message")}.count).to eq(1) 
         
         # notifications should not be sent to current_person because they are posting
-        messages.select{|m| m.to == [subject.current_person.email] && m.subject.include?("has posted a message")}.count.should eq(0) 
+        expect(messages.select{|m| m.to == [subject.current_person.email] && m.subject.include?("has posted a message")}.count).to eq(0) 
       }.to change { ActionMailer::Base.deliveries.count }.by(2) # Thanks + 3 notifications
     end
   end
@@ -135,7 +135,7 @@ describe PostsController do
       parent = post.parent
 
       delete :destroy, {:id => post.to_param, division_id: @division.id}
-      response.should redirect_to(parent)
+      expect(response).to redirect_to(parent)
     end
   end
 

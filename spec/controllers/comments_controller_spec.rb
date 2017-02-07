@@ -54,13 +54,13 @@ describe CommentsController do
 
       it "assigns a newly created comment as @comment" do
         post :create, {:comment => valid_attributes, division_id: @division.id}
-        assigns(:comment).should be_a(Comment)
-        assigns(:comment).should be_persisted
+        expect(assigns(:comment)).to be_a(Comment)
+        expect(assigns(:comment)).to be_persisted
       end
 
       it "redirects to the created comment" do
         post :create, {:comment => valid_attributes, division_id: @division.id}
-        response.should redirect_to(@agreement)
+        expect(response).to redirect_to(@agreement)
       end
     end
   end
@@ -81,13 +81,13 @@ describe CommentsController do
         messages = ActionMailer::Base.deliveries
         
         # notification should be sent to admin because admin was the original poster
-        messages.select{|m| m.to == [@admin.email] && m.subject.include?("has left a comment")}.count.should eq(1) 
+        expect(messages.select{|m| m.to == [@admin.email] && m.subject.include?("has left a comment")}.count).to eq(1) 
          
         # notifications should be sent to commenter1 because they commented on the same posting
-        messages.select{|m| m.to == [commenter1.email] && m.subject.include?("has left a comment")}.count.should eq(1) 
+        expect(messages.select{|m| m.to == [commenter1.email] && m.subject.include?("has left a comment")}.count).to eq(1) 
         
         # notifications should not be sent to current_person because they are posting
-        messages.select{|m| m.to == [subject.current_person.email] && m.subject.include?("has left a comment")}.count.should eq(0) 
+        expect(messages.select{|m| m.to == [subject.current_person.email] && m.subject.include?("has left a comment")}.count).to eq(0) 
       }.to change { ActionMailer::Base.deliveries.count }.by(2) # Thanks + 3 notifications
     end
   end
@@ -113,7 +113,7 @@ describe CommentsController do
     it "redirects to the comments list" do
       comment = Comment.create! valid_attributes
       delete :destroy, {:id => comment.to_param, division_id: @division.id}
-      response.should redirect_to(@agreement)
+      expect(response).to redirect_to(@agreement)
     end
   end
 

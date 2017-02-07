@@ -37,8 +37,8 @@ describe DivisionsController do
       division = Division.create! valid_attributes
       
       get :index, {}, valid_session
-      assigns(:divisions).count.should eq(Division.count)
-      assigns(:divisions).should include(division)
+      expect(assigns(:divisions).count).to eq(Division.count)
+      expect(assigns(:divisions)).to include(division)
       assert response.status, 200
     end
 
@@ -79,14 +79,14 @@ describe DivisionsController do
       it "assigns all divisions as @divisions" do
         division = Division.create! valid_attributes
         get :index, {}, valid_session
-        assigns(:divisions).should include(division)
+        expect(assigns(:divisions)).to include(division)
         assert response.status, 200
       end
 
       it "assigns all divisions as @divisions" do
         division = Division.create! valid_attributes
         get :index, { format: "json" }, valid_session
-        assigns(:divisions).should include(division)
+        expect(assigns(:divisions)).to include(division)
         assert JSON.parse(response.body)
       end
     end
@@ -104,7 +104,7 @@ describe DivisionsController do
     describe "GET new" do
       it "assigns a new division as @division" do
         get :new, {}, valid_session
-        assigns(:division).should be_a_new(Division)
+        expect(assigns(:division)).to be_a_new(Division)
       end
     end
 
@@ -112,7 +112,7 @@ describe DivisionsController do
       it "assigns the requested division as @division" do
         division = Division.create! valid_attributes
         get :edit, {:id => division.to_param}, valid_session
-        assigns(:division).should eq(division)
+        expect(assigns(:division)).to eq(division)
       end
     end
 
@@ -126,29 +126,29 @@ describe DivisionsController do
 
         it "assigns a newly created division as @division" do
           post :create, {:division => valid_attributes}, valid_session
-          assigns(:division).should be_a(Division)
-          assigns(:division).should be_persisted
+          expect(assigns(:division)).to be_a(Division)
+          expect(assigns(:division)).to be_persisted
         end
 
         it "redirects to the created division" do
           post :create, {:division => valid_attributes}, valid_session
-          response.should redirect_to(divisions_path)
+          expect(response).to redirect_to(divisions_path)
        end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved division as @division" do
           # Trigger the behavior that occurs when invalid params are submitted
-          Division.any_instance.stub(:save).and_return(false)
+          allow_any_instance_of(Division).to receive(:save).and_return(false)
           post :create, {:division => { "name" => "invalid value" }}, valid_session
-          assigns(:division).should be_a_new(Division)
+          expect(assigns(:division)).to be_a_new(Division)
         end
 
         it "re-renders the 'new' template" do
           # Trigger the behavior that occurs when invalid params are submitted
-          Division.any_instance.stub(:save).and_return(false)
+          allow_any_instance_of(Division).to receive(:save).and_return(false)
           post :create, {:division => { "name" => "invalid value" }}, valid_session
-          response.should render_template("new")
+          expect(response).to render_template("new")
         end
       end
     end
@@ -161,20 +161,20 @@ describe DivisionsController do
           # specifies that the Division created on the previous line
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
-          Division.any_instance.should_receive(:update).with({ "name" => "MyString" })
+          expect_any_instance_of(Division).to receive(:update).with({ "name" => "MyString" })
           put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
         end
 
         it "assigns the requested division as @division" do
           division = Division.create! valid_attributes
           put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
-          assigns(:division).should eq(division)
+          expect(assigns(:division)).to eq(division)
         end
 
         it "redirects to the division" do
           division = Division.create! valid_attributes
           put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
-          response.should redirect_to(divisions_path)
+          expect(response).to redirect_to(divisions_path)
         end
       end
 
@@ -182,17 +182,17 @@ describe DivisionsController do
         it "assigns the division as @division" do
           division = Division.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
-          Division.any_instance.stub(:save).and_return(false)
+          allow_any_instance_of(Division).to receive(:save).and_return(false)
           put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
-          assigns(:division).should eq(division)
+          expect(assigns(:division)).to eq(division)
         end
 
         it "re-renders the 'edit' template" do
           division = Division.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
-          Division.any_instance.stub(:save).and_return(false)
+          allow_any_instance_of(Division).to receive(:save).and_return(false)
           put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
-          response.should render_template("edit")
+          expect(response).to render_template("edit")
         end
       end
     end
@@ -208,7 +208,7 @@ describe DivisionsController do
       it "redirects to the divisions list" do
         division = Division.create! valid_attributes
         delete :destroy, {:id => division.to_param}, valid_session
-        response.should redirect_to(divisions_url)
+        expect(response).to redirect_to(divisions_url)
       end
     end
   end
