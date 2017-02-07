@@ -1,6 +1,6 @@
 class SupergroupsController < ApplicationController
-  before_action :set_klass
-  before_action :set_supergroup, only: [:show, :edit, :update, :destroy, :follow]
+  prepend_before_action :set_supergroup, only: [:show, :edit, :update, :destroy, :follow]
+  prepend_before_action :set_klass
   before_action :forbid, only: [:new, :create, :edit, :update]
 
   include SupergroupsHelper
@@ -8,7 +8,15 @@ class SupergroupsController < ApplicationController
   # GET /supergroups
   # GET /supergroups.json
   def index
-    @supergroups = @klass.filter(params.slice(:name_like)).order(:name, :id)
+    klass = (params[:type] || "Supergroup").downcase.pluralize
+    
+    if @division
+      @supergroups = @division.send(klass).filter(params.slice(:name_like)).order(:name, :id)
+    else
+      @supergroups = Supergroup.all
+    end
+
+    # @supergroups = @klass.filter(params.slice(:name_like)).order(:name, :id)
     respond_to do |format|
       format.html
       format.json { render json: @supergroups }
@@ -24,7 +32,7 @@ class SupergroupsController < ApplicationController
 
   # GET /supergroups/new
   def new
-    @supergroup = @klass.new
+    @supergroup = @klass.new(divisions: [@division])
   end
 
   # GET /supergroups/1/edit
@@ -99,5 +107,15 @@ class SupergroupsController < ApplicationController
 
     def forbid
       return forbidden unless (owner? || params[:id] == current_person.union.id.to_s)
+    end
+    
+    def breadcrumbs
+      plural_klass = @klass.to_s.pluralize.downcase
+      
+      super + 
+      [
+        [I18n.t("layouts.navbar.#{plural_klass}").titlecase, send("#{plural_klass}_path", @division), match_action?("supergroups", "index")], 
+        @supergroup ? [@supergroup.short_name.titlecase, send("#{@klass.to_s.downcase}_path", [@division, @supergroup]), not_action?("supergroups", "index")] : nil
+      ].compact
     end
 end

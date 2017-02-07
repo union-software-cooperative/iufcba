@@ -29,7 +29,7 @@ describe RecsController do
   end
   
   after(:all) do
-    [@division, @union, @owner_union, @company, @admin].each(&:destroy)
+    [@admin, @division, @union, @owner_union, @company].each(&:destroy)
   end
 
   # This should return the minimal set of attributes required to create a valid
@@ -44,7 +44,7 @@ describe RecsController do
       login_person
 
       describe "POST create" do
-        it "won't allow assignment to non-collegue" do
+        it "won't allow assignment to non-colleague" do
           post :create, {:rec => invalid_person, division_id: @division.id}
           assigns(:rec).errors.count.should eq(1)
           assigns(:rec).errors[:person].should include('is not a colleague from your union so this assignment is not authorized.')
@@ -57,8 +57,6 @@ describe RecsController do
           assigns(:rec).errors[:union].should include('is not your union so this assignment is not authorized.')
           response.should render_template("new")
         end
-
-
       end
 
       describe "update/edit" do
@@ -236,11 +234,23 @@ describe RecsController do
     login_admin
 
     describe "GET index" do
+      it "assigns division's recs as @recs" do
+        rec_in = Rec.create! valid_attributes
+        rec_in.divisions << @division
 
-      it "assigns all recs as @recs" do
-        rec = Rec.create! valid_attributes
+        rec_out = Rec.create! valid_attributes.merge(name: "other agreement")
+        other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
+        rec_out.divisions << other_division
+
         get :index, {division_id: @division.id}
-        assigns(:recs).should include(rec) # Have database cleaning issues
+        assigns(:recs).should include(rec_in) # Have database cleaning issues
+        assigns(:recs).should_not include(rec_out) # Have database cleaning issues
+        other_division.destroy
+      end
+
+      it "returns not found if division is missing" do
+        get :index, {division_id: "junk"}
+        assert response.status.should eq(404)
       end
     end
 
@@ -254,8 +264,14 @@ describe RecsController do
 
     describe "GET new" do
       it "assigns a new rec as @rec" do
-        get :new, {division_id: @division.id}
+        get :new, { division_id: @division.id }
         assigns(:rec).should be_a_new(Rec)
+      end
+      
+      it "assigns @division into @rec's divisions" do
+        get :new, { division_id: @division.id }
+        
+        assigns(:rec).divisions.should include(@division)
       end
     end
 

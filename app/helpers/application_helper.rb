@@ -1,12 +1,11 @@
 module ApplicationHelper
-  # Intercept URL and path helpers, and add a division_id if there's a 
-  # @division in scope. Otherwise, send the missed method on up the chain.
-  # def method_missing(m, **args)
-  #   super unless m.to_s.end_with?("_url") || m.to_s.end_with?("_path")
-    
-  #   if Rails.application.routes.url_helpers.respond_to?(m) && @division.present?
-  #     Rails.application.routes.url_helpers.send(m, { division_id: @division.id }.merge(args))
-  #   else super end
+  # (Rails.application.routes.named_routes.instance_variable_get("@path_helpers") |
+  # Rails.application.routes.named_routes.instance_variable_get("@url_helpers")).each do |name|
+  #   define_method(name) do |*args|
+  #     options = @division ? { division_id: @division.id } : nil
+  #     (options || {}).merge!(args.pop) if args.last.is_a? Hash
+  #     super self, args, options
+  #   end
   # end
 
   def navbar_logo

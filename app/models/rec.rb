@@ -6,7 +6,7 @@ class Rec < ActiveRecord::Base
   belongs_to :person
   has_many :posts, :as => :parent
   
-  has_many :division_recs
+  has_many :division_recs, dependent: :destroy
   has_many :divisions, through: :division_recs
   
   validates :name, :company, :union, :person, :end_date, presence: true

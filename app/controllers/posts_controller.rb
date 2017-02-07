@@ -63,5 +63,4 @@ class PostsController < ApplicationController
         PersonMailer.post_notice(p, @post, @division).deliver_now
       end
     end
-
 end

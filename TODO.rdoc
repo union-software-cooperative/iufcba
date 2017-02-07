@@ -1,0 +1,57 @@
+DONE Scaffold Division
+- Logo
+- short name
+- name
+- primary/secondary colors (secondary)
+
+DONE filtering of agreements by division scope
+
+DONE not found if division scope is no good
+
+DONE filtering of unions by division scope
+
+DONE filtering of companies by division scope
+
+DONE unions index api, returns all if unscoped
+
+DONE division index api
+
+DONE Landing page for divisions, 
+
+DONE all divisions are shown for all users
+
+DONE selecting a division changes the scope.  
+
+DONE Only IUF can create, edit and delete division
+
+DONE hide division edit buttons for non-iuf
+
+Globalize division
+
+Language picker
+
+NOT TESTED division brand
+
+NOT TESTED IUF BRAND for unscoped pages
+
+NOT TESTED division branch when missing logo
+
+NOT TESTED companies can one or more divisions
+
+NOT TESTED unions can have one or more divisions
+
+NOT TESTED agreements can have one or more divisions
+
+NOT TESTED Anyone can choose any existing division when creating a union, company or agreement 
+
+DONE defaults to current division when creating companies, unions and agreements
+
+NOT DONE Delete button on edit division, with prominent warning
+
+DONE hacker can't post delete division
+
+DONE breadcrumbs
+
+NOT DONE default route to divisions list, move getting started
+
+-- TODO Migration and deploy scope --

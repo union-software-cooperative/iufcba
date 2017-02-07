@@ -32,8 +32,9 @@
   <div class="form-group">
     <%= f.label :divisions %>
     <%= f.select :divisions,
-      # prefill existing divisions?
-      options_from_collection_for_select(@supergroup.divisions, :id, :name, @supergroup.divisions.map(&:id)),
+      options_from_collection_for_select(
+        @supergroup.divisions, :id, :name, @supergroup.divisions.map(&:id)
+      ),
       {
         include_blank: false,
       },

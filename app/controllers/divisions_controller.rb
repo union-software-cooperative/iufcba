@@ -6,6 +6,10 @@ class DivisionsController < ApplicationController
   # GET /divisions.json
   def index
     @divisions = Division.all
+    respond_to do |format|
+      format.html
+      format.json { render json: @divisions }
+    end
   end
 
   # GET /divisions/new

@@ -30,133 +30,186 @@ describe DivisionsController do
   # DivisionsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  login_admin
+  describe "low privilege access" do 
+    login_person
 
-  describe "GET index" do
-    it "assigns all divisions as @divisions" do
+    it "sees all divisions" do
       division = Division.create! valid_attributes
+      
       get :index, {}, valid_session
+      assigns(:divisions).count.should eq(Division.count)
       assigns(:divisions).should include(division)
+      assert response.status, 200
     end
-  end
 
-  # describe "GET show" do
-  #   it "assigns the requested division as @division" do
-  #     division = Division.create! valid_attributes
-  #     get :show, {:id => division.to_param}, valid_session
-  #     assigns(:division).should eq(division)
-  #   end
-  # end
-
-  describe "GET new" do
-    it "assigns a new division as @division" do
-      get :new, {}, valid_session
-      assigns(:division).should be_a_new(Division)
+    it "cannot create division" do
+      post :create, {:division => valid_attributes}, valid_session
+      assert response.status, 403 
     end
-  end
 
-  describe "GET edit" do
-    it "assigns the requested division as @division" do
+    it "cannot update a division" do
       division = Division.create! valid_attributes
-      get :edit, {:id => division.to_param}, valid_session
-      assigns(:division).should eq(division)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Division" do
-        expect {
-          post :create, {:division => valid_attributes}, valid_session
-        }.to change(Division, :count).by(1)
-      end
-
-      it "assigns a newly created division as @division" do
-        post :create, {:division => valid_attributes}, valid_session
-        assigns(:division).should be_a(Division)
-        assigns(:division).should be_persisted
-      end
-
-      it "redirects to the created division" do
-        post :create, {:division => valid_attributes}, valid_session
-        response.should redirect_to(divisions_path)
-     end
+      put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
+      assert response.status, 403
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved division as @division" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Division.any_instance.stub(:save).and_return(false)
-        post :create, {:division => { "name" => "invalid value" }}, valid_session
-        assigns(:division).should be_a_new(Division)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Division.any_instance.stub(:save).and_return(false)
-        post :create, {:division => { "name" => "invalid value" }}, valid_session
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested division" do
-        division = Division.create! valid_attributes
-        # Assuming there are no other divisions in the database, this
-        # specifies that the Division created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Division.any_instance.should_receive(:update).with({ "name" => "MyString" })
-        put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
-      end
-
-      it "assigns the requested division as @division" do
-        division = Division.create! valid_attributes
-        put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
-        assigns(:division).should eq(division)
-      end
-
-      it "redirects to the division" do
-        division = Division.create! valid_attributes
-        put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
-        response.should redirect_to(divisions_path)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the division as @division" do
-        division = Division.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Division.any_instance.stub(:save).and_return(false)
-        put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
-        assigns(:division).should eq(division)
-      end
-
-      it "re-renders the 'edit' template" do
-        division = Division.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Division.any_instance.stub(:save).and_return(false)
-        put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested division" do
-      division = Division.create! valid_attributes
-      expect {
-        delete :destroy, {:id => division.to_param}, valid_session
-      }.to change(Division, :count).by(-1)
-    end
-
-    it "redirects to the divisions list" do
+    it "cannot delete a division" do
       division = Division.create! valid_attributes
       delete :destroy, {:id => division.to_param}, valid_session
-      response.should redirect_to(divisions_url)
+      assert response.status, 403
     end
+
+    it "cannot view edit form for a division" do
+      division = Division.create! valid_attributes
+      get :edit, {:id => division.to_param}, valid_session
+      assert response.status, 403
+    end
+
+    it "cannot view new form for a division" do
+      get :new, {}, valid_session
+      assert response.status, 403
+    end
+
   end
 
+  describe "high privilege access" do 
+    login_admin
+
+    describe "GET index" do
+      it "assigns all divisions as @divisions" do
+        division = Division.create! valid_attributes
+        get :index, {}, valid_session
+        assigns(:divisions).should include(division)
+        assert response.status, 200
+      end
+
+      it "assigns all divisions as @divisions" do
+        division = Division.create! valid_attributes
+        get :index, { format: "json" }, valid_session
+        assigns(:divisions).should include(division)
+        assert JSON.parse(response.body)
+      end
+    end
+    
+    
+
+    # describe "GET show" do
+    #   it "assigns the requested division as @division" do
+    #     division = Division.create! valid_attributes
+    #     get :show, {:id => division.to_param}, valid_session
+    #     assigns(:division).should eq(division)
+    #   end
+    # end
+
+    describe "GET new" do
+      it "assigns a new division as @division" do
+        get :new, {}, valid_session
+        assigns(:division).should be_a_new(Division)
+      end
+    end
+
+    describe "GET edit" do
+      it "assigns the requested division as @division" do
+        division = Division.create! valid_attributes
+        get :edit, {:id => division.to_param}, valid_session
+        assigns(:division).should eq(division)
+      end
+    end
+
+    describe "POST create" do
+      describe "with valid params" do
+        it "creates a new Division" do
+          expect {
+            post :create, {:division => valid_attributes}, valid_session
+          }.to change(Division, :count).by(1)
+        end
+
+        it "assigns a newly created division as @division" do
+          post :create, {:division => valid_attributes}, valid_session
+          assigns(:division).should be_a(Division)
+          assigns(:division).should be_persisted
+        end
+
+        it "redirects to the created division" do
+          post :create, {:division => valid_attributes}, valid_session
+          response.should redirect_to(divisions_path)
+       end
+      end
+
+      describe "with invalid params" do
+        it "assigns a newly created but unsaved division as @division" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Division.any_instance.stub(:save).and_return(false)
+          post :create, {:division => { "name" => "invalid value" }}, valid_session
+          assigns(:division).should be_a_new(Division)
+        end
+
+        it "re-renders the 'new' template" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Division.any_instance.stub(:save).and_return(false)
+          post :create, {:division => { "name" => "invalid value" }}, valid_session
+          response.should render_template("new")
+        end
+      end
+    end
+
+    describe "PUT update" do
+      describe "with valid params" do
+        it "updates the requested division" do
+          division = Division.create! valid_attributes
+          # Assuming there are no other divisions in the database, this
+          # specifies that the Division created on the previous line
+          # receives the :update_attributes message with whatever params are
+          # submitted in the request.
+          Division.any_instance.should_receive(:update).with({ "name" => "MyString" })
+          put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
+        end
+
+        it "assigns the requested division as @division" do
+          division = Division.create! valid_attributes
+          put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
+          assigns(:division).should eq(division)
+        end
+
+        it "redirects to the division" do
+          division = Division.create! valid_attributes
+          put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
+          response.should redirect_to(divisions_path)
+        end
+      end
+
+      describe "with invalid params" do
+        it "assigns the division as @division" do
+          division = Division.create! valid_attributes
+          # Trigger the behavior that occurs when invalid params are submitted
+          Division.any_instance.stub(:save).and_return(false)
+          put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
+          assigns(:division).should eq(division)
+        end
+
+        it "re-renders the 'edit' template" do
+          division = Division.create! valid_attributes
+          # Trigger the behavior that occurs when invalid params are submitted
+          Division.any_instance.stub(:save).and_return(false)
+          put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
+          response.should render_template("edit")
+        end
+      end
+    end
+
+    describe "DELETE destroy" do
+      it "destroys the requested division" do
+        division = Division.create! valid_attributes
+        expect {
+          delete :destroy, {:id => division.to_param}, valid_session
+        }.to change(Division, :count).by(-1)
+      end
+
+      it "redirects to the divisions list" do
+        division = Division.create! valid_attributes
+        delete :destroy, {:id => division.to_param}, valid_session
+        response.should redirect_to(divisions_url)
+      end
+    end
+  end
 end

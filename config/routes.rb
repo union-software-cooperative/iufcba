@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   
   devise_for :people, :controllers => { :invitations => 'people/invitations' }
-  resources :people, only: [:edit, :update]
+  resources :people, only: [:edit, :update], as: 'profile'
   
   scope ":division_id" do 
     resources :messages 

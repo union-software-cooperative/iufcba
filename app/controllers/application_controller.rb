@@ -1,12 +1,13 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
 
+  before_action :authenticate_person!
   before_action :set_division
+  before_action :set_breadcrumbs, if: :format_html?, except: [:update, :create, :destroy]
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :authenticate_person!
 
   def default_url_options(options={})
     result = {} #{ locale: I18n.locale }
@@ -28,5 +29,37 @@ class ApplicationController < ActionController::Base
 
   def forbidden
     render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
+  end
+  
+  private
+  def breadcrumbs
+    [
+      [
+        I18n.t("layouts.navbar.divisions").titlecase, 
+        divisions_path, 
+        match_action?("divisions", "index")
+      ],
+      @division ? [
+        @division.short_name.titlecase, 
+        division_path(@division),
+        true # there's no Division#show action
+      ] : nil
+    ].compact
+  end
+  
+  def set_breadcrumbs
+    @breadcrumbs = breadcrumbs
+  end
+  
+  def match_action?(controller, action)
+    params[:controller] == controller && params[:action] == action
+  end
+  
+  def not_action?(controller, action)
+    params[:controller] == controller && params[:action] != action
+  end
+  
+  def format_html?
+    request.format.html?
   end
 end

@@ -1,5 +1,5 @@
 <span id="company">
-  <a href="<%=polymorphic_path(company)%>">
+  <a href="<%=polymorphic_path(company,division_id: @division.id)%>">
     <% if company.logo.url.blank? %>
       <%= company.short_name || company.name%>
     <% else %>

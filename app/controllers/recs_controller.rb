@@ -1,16 +1,17 @@
 class RecsController < ApplicationController
-  before_action :set_rec, only: [:show, :edit, :update, :destroy, :follow]
+  prepend_before_action :set_rec, only: [:show, :edit, :update, :destroy, :follow]
+  before_action :set_breadcrumbs
   before_action :forbid, only: [:edit, :update]
 
   # GET /recs
   # GET /recs.json
   def index
-    @recs = Rec.all
+    @recs = @division.recs
   end
 
   # GET /recs/new
   def new
-    @rec = Rec.new
+    @rec = Rec.new(divisions: [@division])
   end
 
   # GET /recs/1
@@ -129,5 +130,13 @@ class RecsController < ApplicationController
 
     def thank
       PersonMailer.thanks(current_person, @rec, @division, notification_recipients(@rec)).deliver_now
+    end
+    
+    def breadcrumbs
+      super + 
+      [
+        [I18n.t('layouts.navbar.agreements').titlecase, recs_path(@division), match_action?("recs", "index")], 
+        @rec ? [@rec.name.titlecase, rec_path(@division, @rec), not_action?("recs", "index")] : nil
+      ].compact
     end
 end

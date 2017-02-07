@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
-  before_action :set_person, only: [:show, :edit, :update, :destroy, :compose_email, :send_email]
-  before_action :forbid, only: [:show, :edit, :update, :destroy]
+  prepend_before_action :forbid, only: [:show, :edit, :update, :destroy]
+  prepend_before_action :set_person, only: [:show, :edit, :update, :destroy, :compose_email, :send_email]
 
   # GET /people
   # GET /people.json
@@ -11,7 +11,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json 
+      format.json
     end
   end
 
@@ -78,5 +78,19 @@ class PeopleController < ApplicationController
     def forbid
       return forbidden if params[:action] == "destroy" && !owner?
       return forbidden unless can_edit_union?(@person.union)
+    end
+    
+    def breadcrumbs
+      if @division.nil? && match_action?("people", "edit")
+        [
+          [I18n.t("layouts.navbar.my_profile").titlecase, edit_profile_path(@person), match_action?("people", "edit")]
+        ]
+      else
+        super + 
+        [
+          [I18n.t("layouts.navbar.people").titlecase, people_path(@division), match_action?("people", "index")], 
+          @person ? [@person.name, edit_person_path(@division, @person), not_action?("people", "index")] : nil
+        ].compact
+      end
     end
 end
