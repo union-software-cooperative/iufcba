@@ -7,10 +7,13 @@ Then (/^I can invite a user to the union "(.*?)"$/) do |union|
   fill_in "person_email", :with => @invitee.email
   page.should have_field("Union")
   
+  # fixed footer causes capybara to scroll insufficiently far and click in the wrong spot 
+  Capybara.current_session.driver.browser.execute_script("window.scrollTo(0,window.scrollMaxY)");
   select2_clear label: "Union"
-  field_labeled('First name').click #browse away
+  field_labeled('Email').click #browse away
   select2 union, label: "Union"
-	click_button "Send an invitation"
+
+  click_button "Send an invitation"
 end
 
 Then (/^I can not invite a user to the union "(.*?)"$/) do |union|

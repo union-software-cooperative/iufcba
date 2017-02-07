@@ -16,10 +16,7 @@
             <%= link_to '<span class="glyphicon glyphicon-trash"/>'.html_safe, @rec, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-small" %>
         </span>
         <small>
-          <% $break = true %>
-          <%= @rec.divisions.map{|d| content_tag(:span, class: ["label", "label-default"]) { link_to d.name, id: d.short_name, division_id: nil } }.join(' | ').html_safe %>
-          <% $break = false %>
-          
+          <%= @rec.divisions.map{|d| content_tag(:span, class: ["label", "label-default"]) { link_to d.name, agreements_path(division_id: d.short_name) } }.join(' | ').html_safe %>
         </small>
         <h1>
           <%=render @rec.union if @rec.union %>

@@ -9,11 +9,17 @@ Then(/^I can add an agreement to the "(.*?)" division titled "(.*?)" between "(.
   select2 tag, placeholder: "Please select one or more product types, or add your own (and press enter)"
   
   #select2 "union", "rec[union_id]"
+  #Capybara.current_session.driver.browser.execute_script("window.scrollTo(0,document.body.scrollHeight)");
+  Capybara.current_session.driver.browser.execute_script("window.scrollTo(0,window.scrollMaxY)");
+  
   click_button "Save Agreement"
-  #page.save_screenshot('asdf.jpg')
   sleep(1)
+  #page.save_screenshot('asdf.jpg')
   page.should have_content(title)
   page.should have_content(tag)
+  # has two divisions now attached
+  page.should have_link("dairy")
+  page.should have_link("dairy division")
 end
 
 Then(/^I can add an agreement with no data$/) do 
