@@ -2,6 +2,6 @@ Hi <%=@person.first_name%>
 
 -- An agreement has been posted for <%= @rec.union.short_name %> and <%= @rec.company.short_name %> --
 
-  <%=rec_url(id: @rec.id, division_id: @division.id)%>
+  <%=rec_url(id: @rec.id, division_id: @division.id, locale: I18n.locale)%>
 
   You received this because you are following either <%= @rec.union.short_name %> or <%= @rec.company.short_name %>

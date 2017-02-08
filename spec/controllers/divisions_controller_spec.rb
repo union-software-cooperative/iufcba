@@ -36,37 +36,37 @@ describe DivisionsController do
     it "sees all divisions" do
       division = Division.create! valid_attributes
       
-      get :index, {}, valid_session
+      scoped_get :index, {}, valid_session
       expect(assigns(:divisions).count).to eq(Division.count)
       expect(assigns(:divisions)).to include(division)
       assert response.status, 200
     end
 
     it "cannot create division" do
-      post :create, {:division => valid_attributes}, valid_session
+      scoped_post :create, {:division => valid_attributes}, valid_session
       assert response.status, 403 
     end
 
     it "cannot update a division" do
       division = Division.create! valid_attributes
-      put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
+      scoped_put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
       assert response.status, 403
     end
 
     it "cannot delete a division" do
       division = Division.create! valid_attributes
-      delete :destroy, {:id => division.to_param}, valid_session
+      scoped_delete :destroy, {:id => division.to_param}, valid_session
       assert response.status, 403
     end
 
     it "cannot view edit form for a division" do
       division = Division.create! valid_attributes
-      get :edit, {:id => division.to_param}, valid_session
+      scoped_get :edit, {:id => division.to_param}, valid_session
       assert response.status, 403
     end
 
     it "cannot view new form for a division" do
-      get :new, {}, valid_session
+      scoped_get :new, {}, valid_session
       assert response.status, 403
     end
 
@@ -78,14 +78,14 @@ describe DivisionsController do
     describe "GET index" do
       it "assigns all divisions as @divisions" do
         division = Division.create! valid_attributes
-        get :index, {}, valid_session
+        scoped_get :index, {}, valid_session
         expect(assigns(:divisions)).to include(division)
         assert response.status, 200
       end
 
       it "assigns all divisions as @divisions" do
         division = Division.create! valid_attributes
-        get :index, { format: "json" }, valid_session
+        scoped_get :index, { format: "json" }, valid_session
         expect(assigns(:divisions)).to include(division)
         assert JSON.parse(response.body)
       end
@@ -103,7 +103,7 @@ describe DivisionsController do
 
     describe "GET new" do
       it "assigns a new division as @division" do
-        get :new, {}, valid_session
+        scoped_get :new, {}, valid_session
         expect(assigns(:division)).to be_a_new(Division)
       end
     end
@@ -111,7 +111,7 @@ describe DivisionsController do
     describe "GET edit" do
       it "assigns the requested division as @division" do
         division = Division.create! valid_attributes
-        get :edit, {:id => division.to_param}, valid_session
+        scoped_get :edit, {:id => division.to_param}, valid_session
         expect(assigns(:division)).to eq(division)
       end
     end
@@ -120,18 +120,18 @@ describe DivisionsController do
       describe "with valid params" do
         it "creates a new Division" do
           expect {
-            post :create, {:division => valid_attributes}, valid_session
+            scoped_post :create, {:division => valid_attributes}, valid_session
           }.to change(Division, :count).by(1)
         end
 
         it "assigns a newly created division as @division" do
-          post :create, {:division => valid_attributes}, valid_session
+          scoped_post :create, {:division => valid_attributes}, valid_session
           expect(assigns(:division)).to be_a(Division)
           expect(assigns(:division)).to be_persisted
         end
 
         it "redirects to the created division" do
-          post :create, {:division => valid_attributes}, valid_session
+          scoped_post :create, {:division => valid_attributes}, valid_session
           expect(response).to redirect_to(divisions_path)
        end
       end
@@ -140,14 +140,14 @@ describe DivisionsController do
         it "assigns a newly created but unsaved division as @division" do
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Division).to receive(:save).and_return(false)
-          post :create, {:division => { "name" => "invalid value" }}, valid_session
+          scoped_post :create, {:division => { "name" => "invalid value" }}, valid_session
           expect(assigns(:division)).to be_a_new(Division)
         end
 
         it "re-renders the 'new' template" do
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Division).to receive(:save).and_return(false)
-          post :create, {:division => { "name" => "invalid value" }}, valid_session
+          scoped_post :create, {:division => { "name" => "invalid value" }}, valid_session
           expect(response).to render_template("new")
         end
       end
@@ -162,18 +162,18 @@ describe DivisionsController do
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
           expect_any_instance_of(Division).to receive(:update).with({ "name" => "MyString" })
-          put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
+          scoped_put :update, {:id => division.to_param, :division => { "name" => "MyString" }}, valid_session
         end
 
         it "assigns the requested division as @division" do
           division = Division.create! valid_attributes
-          put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
+          scoped_put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
           expect(assigns(:division)).to eq(division)
         end
 
         it "redirects to the division" do
           division = Division.create! valid_attributes
-          put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
+          scoped_put :update, {:id => division.to_param, :division => valid_attributes}, valid_session
           expect(response).to redirect_to(divisions_path)
         end
       end
@@ -183,7 +183,7 @@ describe DivisionsController do
           division = Division.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Division).to receive(:save).and_return(false)
-          put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
+          scoped_put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
           expect(assigns(:division)).to eq(division)
         end
 
@@ -191,7 +191,7 @@ describe DivisionsController do
           division = Division.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Division).to receive(:save).and_return(false)
-          put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
+          scoped_put :update, {:id => division.to_param, :division => { "name" => "invalid value" }}, valid_session
           expect(response).to render_template("edit")
         end
       end
@@ -201,13 +201,13 @@ describe DivisionsController do
       it "destroys the requested division" do
         division = Division.create! valid_attributes
         expect {
-          delete :destroy, {:id => division.to_param}, valid_session
+          scoped_delete :destroy, {:id => division.to_param}, valid_session
         }.to change(Division, :count).by(-1)
       end
 
       it "redirects to the divisions list" do
         division = Division.create! valid_attributes
-        delete :destroy, {:id => division.to_param}, valid_session
+        scoped_delete :destroy, {:id => division.to_param}, valid_session
         expect(response).to redirect_to(divisions_url)
       end
     end

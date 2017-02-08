@@ -17,6 +17,13 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+# Set locale for view specs, see https://github.com/rspec/rspec-rails/issues/255#issuecomment-2865917
+class ActionView::TestCase::TestController
+  def default_url_options(options = {})
+    { locale: I18n.default_locale }
+  end
+end
+
 RSpec.configure do |config|
 
   # ## Mock Framework
@@ -62,9 +69,8 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include Devise::Test::ControllerHelpers, :type => :controller
+  config.include ControllerExampleHelpers, type: :controller
   config.extend ControllerHelpers, :type => :controller
-
-  
 end
 
 def owner_union

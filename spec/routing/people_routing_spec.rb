@@ -4,31 +4,31 @@ describe PeopleController do
   describe "routing" do
 
     it "routes to #index" do
-      expect(get("/1/people")).to route_to("people#index", :division_id => "1")
+      expect(get("/en/1/people")).to route_to("people#index", division_id: "1", locale: "en")
     end
 
     #it "routes to #new" do
-    #  get("/people/new").should route_to("people#new")
+    #  get("/en/people/new").should route_to("people#new", locale: "en")
     #end
 
     #it "routes to #show" do
-    #  get("/people/1").should route_to("people#show", :id => "1")
+    #  get("/en/people/1").should route_to("people#show", id: "1", locale: "en")
     #end
 
     it "routes to #edit" do
-      expect(get("/people/1/edit")).to route_to("people#edit", :id => "1")
+      expect(get("/en/people/1/edit")).to route_to("people#edit", id: "1", locale: "en")
     end
 
     #it "routes to #create" do
-    #  post("/people").should route_to("people#create")
+    #  post("/en/people").should route_to("people#create", locale: "en")
     #end
 
     it "routes to #update" do
-      expect(put("/people/1")).to route_to("people#update", :id => "1")
+      expect(put("/en/people/1")).to route_to("people#update", id: "1", locale: "en")
     end
 
     it "routes to #destroy" do
-      expect(delete("/1/people/1")).to route_to("people#destroy", :id => "1", :division_id => "1")
+      expect(delete("/en/1/people/1")).to route_to("people#destroy", id: "1", division_id: "1", locale: "en")
     end
 
   end

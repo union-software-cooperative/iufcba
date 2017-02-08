@@ -1,48 +1,51 @@
 Rails.application.routes.draw do
   
-  devise_for :people, :controllers => { :invitations => 'people/invitations' }
-  resources :people, only: [:edit, :update], as: 'profile'
-  
-  scope ":division_id" do 
-    resources :messages 
-    resources :comments
-    resources :posts
-      
-    resources :companies, controller: :supergroups, type: 'Company'  do
-      member do
-        get 'follow'
-      end
-    end
-
-    resources :unions, controller: :supergroups, type: 'Union' do
-      member do
-        get 'follow'
-      end
-    end
+  scope ":locale" do
+    devise_for :people, :controllers => { :invitations => 'people/invitations' }
+    resources :people, only: [:edit, :update], as: 'profile'
     
-    resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
-      member do 
-        get 'compose_email'
-        patch 'send_email'
+    scope ":division_id" do 
+      resources :messages 
+      resources :comments
+      resources :posts
+        
+      resources :companies, controller: :supergroups, type: 'Company'  do
+        member do
+          get 'follow'
+        end
       end
-    end 
 
-    resources :recs do
-      member do
-        get 'follow'
+      resources :unions, controller: :supergroups, type: 'Union' do
+        member do
+          get 'follow'
+        end
       end
+      
+      resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
+        member do 
+          get 'compose_email'
+          patch 'send_email'
+        end
+      end 
+
+      resources :recs do
+        member do
+          get 'follow'
+        end
+      end
+
+      get '/public/:filename', to: 'files#get'
+      resources :agreements, controller: :recs, type: 'Rec'
     end
 
-    get '/public/:filename', to: 'files#get'
-    resources :agreements, controller: :recs, type: 'Rec'
-  end
 
-  resources :unions, only: [:index], controller: :supergroups, type: 'Union', constraints: {:format => 'json'}, as: 'union_api'
-
-  resources :divisions, except: [:show]
-  
-  resource :help, only: [:show] do
-    resource :request_invite, only: [:new, :create], module: :help
+    resources :divisions, except: [:show]
+    
+    resource :help, only: [:show] do
+      resource :request_invite, only: [:new, :create], module: :help
+    end
+    # root "help#show"
+    resources :unions, only: [:index], controller: :supergroups, type: 'Union', constraints: {:format => 'json'}, as: 'union_api'
   end
   root "help#show"
   

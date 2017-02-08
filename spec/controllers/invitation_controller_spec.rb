@@ -45,14 +45,14 @@ describe People::InvitationsController do
 
       describe "POST create" do
         it "won't allow invitation to other union" do
-          post :create, {:person => outsider_attributes}
+          scoped_post :create, {:person => outsider_attributes}
           expect(assigns(:person).errors.count).to eq(1)
           expect(assigns(:person).errors[:authorizer]).to include('cannot assign a person to a union other than their own.')
           expect(response).to render_template("new")
         end
 
         it "will allow invitation to my union" do
-          post :create, {:person => insider_attributes, division_id: @division.id}
+          scoped_post :create, {:person => insider_attributes, division_id: @division.id}
           expect(assigns(:person).errors.count).to eq(0)
           expect(response).to render_template("devise/mailer/invitation_instructions")
           expect(response).to redirect_to(edit_profile_path(assigns(:person)))
@@ -68,7 +68,7 @@ describe People::InvitationsController do
 
     describe "GET new" do
       it "assigns a new person as @person" do
-        get :new, {}
+        scoped_get :new, {}
         expect(assigns(:person)).to be_a_new(Person)
       end
     end
@@ -76,31 +76,31 @@ describe People::InvitationsController do
     describe "POST create" do
       it "creates a new Person" do
         expect {
-          post :create, {:person => outsider_attributes}
+          scoped_post :create, {:person => outsider_attributes}
         }.to change(Person, :count).by(1)
       end
 
       it "assigns a newly created Person as @person" do
-        post :create, {:person => outsider_attributes}
+        scoped_post :create, {:person => outsider_attributes}
         expect(assigns(:person)).to be_a(Person)
         expect(assigns(:person)).to be_persisted
       end
 
       it "redirects to the created person" do
-        post :create, {:person => outsider_attributes}
+        scoped_post :create, {:person => outsider_attributes}
         expect(response).to redirect_to(edit_profile_path(assigns(:person)))
       end
       
       describe "with invalid params" do
         it "assigns a newly created but unsaved rec as @rec" do
           # Trigger the behavior that occurs when invalid params are submitted
-          post :create, {:person => invalid_attributes}
+          scoped_post :create, {:person => invalid_attributes}
           expect(assigns(:person)).to be_a_new(Person)
         end
 
         it "re-renders the 'new' template" do
           # Trigger the behavior that occurs when invalid params are submitted
-          post :create, {:person => invalid_attributes}
+          scoped_post :create, {:person => invalid_attributes}
           expect(response).to render_template("new")
         end
       end
@@ -119,7 +119,7 @@ describe People::InvitationsController do
       invitee = FactoryGirl.create(:person, authorizer: admin)
       invitee.invite! admin
       @request.env["devise.mapping"] = Devise.mappings[:person]
-      put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
+      scoped_put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
       invitee.reload
       expect(invitee.invitation_accepted_at).not_to be_nil
     end
@@ -132,7 +132,7 @@ describe People::InvitationsController do
       @admin.update!(union: FactoryGirl.create(:union), authorizer: FactoryGirl.create(:admin, authorizer: @admin))
 
       @request.env["devise.mapping"] = Devise.mappings[:person]
-      put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
+      scoped_put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
       invitee.reload
       expect(invitee.invitation_accepted_at).to be_nil
     end
@@ -144,7 +144,7 @@ describe People::InvitationsController do
       #agreement = FactoryGirl.create(:agreement, union_id: invitee.union_id, authorizer: @admin)
       
       @request.env["devise.mapping"] = Devise.mappings[:person]
-      put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
+      scoped_put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
       
       expect(invitee.union.followers(Person)).to include(invitee)
       #agreement.followers(Person).should include(invitee)

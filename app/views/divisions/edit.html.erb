@@ -1,9 +1,9 @@
 <div class="col-sm-8 col-sm-offset-2"/>
 
-	<h1><%=t(".editing") %></h1>
+  <h1><%=t(".editing") %></h1>
 
-	<%= render 'form' %>
+  <%= render 'form' %>
 
-	<hr/>
-	<%= link_to t(".permanently_delete"),division_path(@division), method: :delete, class: "btn btn-danger ", style: "margin: 15px; color: white", data: {confirm: t(".permanently_delete_confirm")} %>
+  <hr/>
+  <%= link_to t(".permanently_delete"),division_path(@division), method: :delete, class: "btn btn-danger ", style: "margin: 15px; color: white", data: {confirm: t(".permanently_delete_confirm")} %>
 </div>

@@ -2,7 +2,9 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
 
   before_action :authenticate_person!
+  before_action :expand_navbar?
   before_action :set_division
+  before_action :set_locale
   before_action :set_breadcrumbs, if: :format_html?, except: [:update, :create, :destroy]
 
   # Prevent CSRF attacks by raising an exception.
@@ -11,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def default_url_options(options={})
     result = {} #{ locale: I18n.locale }
-    result.merge!({ division_id: params[:division_id] }) if params[:division_id] #request.path =~ /\/divisions\//
+    [:locale, :division_id].each { |p| result.merge!(p => params[p]) if params[p] }
     result.merge! options
   end
 
@@ -32,6 +34,21 @@ class ApplicationController < ActionController::Base
   end
   
   private
+  def set_locale
+    supported_locales = I18n.available_locales.map(&:to_s)
+    
+    # Returns the first, and only the first, provided_locale that is supported.
+    # Order of provided_locales array determines precedence!
+    I18n.locale = provided_locales.find(&supported_locales.method(:include?))
+    
+    params[:locale] = I18n.locale
+  end
+  
+  # 
+  def provided_locales
+    ([*params[:locale]] | [I18n.default_locale]).compact
+  end
+  
   def breadcrumbs
     [
       [
@@ -61,5 +78,9 @@ class ApplicationController < ActionController::Base
   
   def format_html?
     request.format.html?
+  end
+  
+  def expand_navbar?
+    @expand_navbar = true
   end
 end

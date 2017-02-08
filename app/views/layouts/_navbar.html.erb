@@ -20,7 +20,7 @@
           <li>
             <%= link_to t('.divisions'), divisions_path %>
           </li>
-          <% if @division %>
+          <% if @division && @expand_navbar %>
             <li>
               <%= link_to t('.agreements'), recs_path %>
             </li>

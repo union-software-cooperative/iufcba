@@ -48,18 +48,18 @@ describe CommentsController do
     describe "with valid params" do
       it "creates a new Comment" do
         expect {
-          post :create, {:comment => valid_attributes, division_id: @division.id}
+          scoped_post :create, {:comment => valid_attributes}
         }.to change(Comment, :count).by(1)
       end
 
       it "assigns a newly created comment as @comment" do
-        post :create, {:comment => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:comment => valid_attributes}
         expect(assigns(:comment)).to be_a(Comment)
         expect(assigns(:comment)).to be_persisted
       end
 
       it "redirects to the created comment" do
-        post :create, {:comment => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:comment => valid_attributes}
         expect(response).to redirect_to(@agreement)
       end
     end
@@ -77,7 +77,7 @@ describe CommentsController do
       comment1 = Comment.create! valid_attributes.merge(person: commenter1)
       
       expect {
-        post :create, {:comment => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:comment => valid_attributes}
         messages = ActionMailer::Base.deliveries
         
         # notification should be sent to admin because admin was the original poster
@@ -99,20 +99,20 @@ describe CommentsController do
     it "destroys the requested comment when the user created it" do
       comment = Comment.create! valid_attributes.merge(person: subject.current_person)
       expect {
-        delete :destroy, {:id => comment.to_param, division_id: @division.id}
+        scoped_delete :destroy, {:id => comment.to_param}
       }.to change(Comment, :count).by(-1)
     end
 
     it "does not destroy the requested comment when someone else created it" do
       comment = Comment.create! valid_attributes.merge(person: @admin)
       expect {
-        delete :destroy, {:id => comment.to_param, division_id: @division.id}
+        scoped_delete :destroy, {:id => comment.to_param}
       }.to change(Comment, :count).by(0)
     end
 
     it "redirects to the comments list" do
       comment = Comment.create! valid_attributes
-      delete :destroy, {:id => comment.to_param, division_id: @division.id}
+      scoped_delete :destroy, {:id => comment.to_param}
       expect(response).to redirect_to(@agreement)
     end
   end

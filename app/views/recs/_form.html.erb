@@ -43,7 +43,7 @@
         include_blank: false,
       },
       data: { 
-        url: companies_path(@division)
+        url: companies_path(division_id: @division.id)
       }, 
       class: "ac-select2 form-control", 
       style: "width: 100%;"
@@ -60,7 +60,7 @@
         },
         data: { 
           placeholder: t('.select_union'),
-          url: unions_path(@division)
+          url: unions_path(division_id: @division.id)
         }, 
         class: "ac-select2 form-control", 
         style: "width: 100%;"

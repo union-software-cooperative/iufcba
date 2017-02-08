@@ -13,4 +13,4 @@ Hi <%=@person.first_name%>
    
   <% end %>
 <% end %>
-<%=polymorphic_url(@comment.post.parent, division_id: @division.id)%>
+<%=polymorphic_url(@comment.post.parent, division_id: @division.id, locale: I18n.locale)%>

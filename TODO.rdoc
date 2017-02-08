@@ -28,7 +28,9 @@ DONE hide division edit buttons for non-iuf
 
 Globalize division
 
-Language picker
+NOT TESTED Language picker
+
+DONE locale in scope with default/redirect to en
 
 dark links on buttons
 
@@ -42,19 +44,17 @@ DONE division brand
 
 DONE IUF BRAND for unscoped pages
 
-NOT TESTED division branch when missing logo
-
 NOT TESTED companies can one or more divisions
 
 NOT TESTED unions can have one or more divisions
 
-NOT TESTED agreements can have one or more divisions
+DONE agreements can have one or more divisions
 
-NOT TESTED Anyone can choose any existing division when creating a union, company or agreement 
+NOT TESTED Anyone can choose any existing division when creating a union, company or agreement
 
 DONE defaults to current division when creating companies, unions and agreements
 
-NOT DONE Delete button on edit division, with prominent warning
+NOT TESTED Delete button on edit division, with prominent warning
 
 DONE hacker can't post delete division
 

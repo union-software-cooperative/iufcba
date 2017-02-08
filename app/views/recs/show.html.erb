@@ -12,19 +12,19 @@
         </span>
     -->
         <span class="actions pull-right">
-            <%= link_to '<span class="glyphicon glyphicon-pencil"/>'.html_safe, edit_rec_path(@rec), class: "btn btn-small" %>
-            <%= link_to '<span class="glyphicon glyphicon-trash"/>'.html_safe, @rec, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-small" %>
+          <%= link_to '<span class="glyphicon glyphicon-pencil"/>'.html_safe, edit_rec_path(@rec), class: "btn btn-small" %>
+          <%= link_to '<span class="glyphicon glyphicon-trash"/>'.html_safe, @rec, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-small" %>
         </span>
-        <small>
-          <%= @rec.divisions.map{|d| content_tag(:span, class: ["label", "label-default"]) { link_to d.name, agreements_path(division_id: d.short_name) } }.join(' | ').html_safe %>
-        </small>
+        <% @rec.divisions.each do |d| -%> 
+          <%= content_tag(:span, class: ["label", "label-warning"]) { link_to d.name, agreements_path(division_id: d.short_name) } %>
+        <% end -%>
         <h1>
           <%=render @rec.union if @rec.union %>
           <%=render @rec.company if @rec.company%>
         </h1>
         <p>
           <%= link_to "<span class='glyphicon glyphicon-paperclip'/>".html_safe, @rec.attachment_url if @rec.attachment_url%>
-          <%="#{@rec.end_date < Time.now ? "Expired" : "Expiring"} #{I18n.l @rec.end_date, :format => :long}"%>
+          <%="#{@rec.end_date < Time.now ? "Expired" : "Expiring"} #{I18n.l @rec.en_ddate, :format => :long}"%>
         </p>
         <p>
           <% @rec.nature_of_operation.each do |tag| %>
@@ -47,7 +47,7 @@
     </div>
     <hr/>
 
-    <div class="row" style="margin-left: 0px;  margin-right:0px;">
+    <div class="row" style="margin-left: 0px; margin-right:0px;">
       <div class="col-sm-5 col-sm-offset-1">
         <div class="form-group">
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.grievance_handling")%></h2>

@@ -45,14 +45,14 @@ describe RecsController do
 
       describe "POST create" do
         it "won't allow assignment to non-colleague" do
-          post :create, {:rec => invalid_person, division_id: @division.id}
+          scoped_post :create, {:rec => invalid_person}
           expect(assigns(:rec).errors.count).to eq(1)
           expect(assigns(:rec).errors[:person]).to include('is not a colleague from your union so this assignment is not authorized.')
           expect(response).to render_template("new")
         end
         
         it "won't allow assignment to other union" do
-          post :create, {:rec => invalid_union, division_id: @division.id}
+          scoped_post :create, {:rec => invalid_union}
           expect(assigns(:rec).errors.count).to eq(1)
           expect(assigns(:rec).errors[:union]).to include('is not your union so this assignment is not authorized.')
           expect(response).to render_template("new")
@@ -62,20 +62,20 @@ describe RecsController do
       describe "update/edit" do
         it "won't allow edit of other union's agreement" do
           rec = Rec.create! invalid_union.merge(authorizer: @admin)
-          get :edit, {:id => rec.to_param, division_id: @division.id }
+          scoped_get :edit, {:id => rec.to_param }
           expect(response).to be_forbidden
         end
 
         it "won't allow update of other union's agreement" do
           rec = Rec.create! invalid_union.merge(authorizer: @admin)
-          put :update, {:id => rec.to_param, :rec => { name: "blah" }, division_id: @division.id }
+          scoped_put :update, {:id => rec.to_param, :rec => { name: "blah" } }
           expect(response).to be_forbidden
         end
 
         it "won't allow assignment to non-collegue" do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { person_id: invalid_person[:person_id] }, division_id: @division.id }
+          scoped_put :update, {:id => rec.to_param, :rec => { person_id: invalid_person[:person_id] } }
           expect(assigns(:rec).errors.count).to eq(1)
           expect(assigns(:rec).errors[:person]).to include('is not a colleague from your union so this assignment is not authorized.')
           expect(response).to render_template("edit")
@@ -84,7 +84,7 @@ describe RecsController do
         it "won't allow assignment to other union" do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { union_id: invalid_union[:union_id] }, division_id: @division.id }
+          scoped_put :update, {:id => rec.to_param, :rec => { union_id: invalid_union[:union_id] } }
           expect(assigns(:rec).errors.count).to eq(1)
           expect(assigns(:rec).errors[:union]).to include('is not your union so this assignment is not authorized.')
           expect(response).to render_template("edit")
@@ -100,7 +100,7 @@ describe RecsController do
           person = FactoryGirl.create(:authorized_person)
           expect(person.union_id).not_to eq(subject.current_person.union_id)
           
-          post :create, {:rec => valid_attributes.merge({person_id: person.id}), division_id: @division.id}
+          scoped_post :create, {:rec => valid_attributes.merge({person_id: person.id})}
           expect(assigns(:rec).errors[:person]).to be_empty
           expect(response).not_to render_template("new")
         end
@@ -109,7 +109,7 @@ describe RecsController do
           union = FactoryGirl.create(:union)
           expect(union.id).not_to eq(subject.current_person.union_id)
           
-          post :create, {:rec => valid_attributes.merge({union_id: union.id}), division_id: @division.id}
+          scoped_post :create, {:rec => valid_attributes.merge({union_id: union.id})}
           expect(assigns(:rec).errors[:union]).to be_empty
           expect(response).not_to render_template("new")
         end
@@ -118,14 +118,14 @@ describe RecsController do
       describe "edit/update" do
         it "allows edit of other union's agreement" do
           rec = Rec.create! valid_attributes.merge(union_id: @union.id)
-          get :edit, {:id => rec.to_param, division_id: @division.id }
+          scoped_get :edit, {:id => rec.to_param }
           expect(response).to be_successful
           expect(response).to render_template("edit")
         end
 
         it "allows update of other union's agreement" do
           rec = Rec.create! valid_attributes.merge(union_id: @union.id)
-          put :update, {:id => rec.to_param, :rec => { name: "blah" }, division_id: @division.id }
+          scoped_put :update, {:id => rec.to_param, :rec => { name: "blah" } }
           expect(response).to redirect_to(assigns(:rec))
         end
 
@@ -135,7 +135,7 @@ describe RecsController do
           expect(union.id).not_to eq(subject.current_person.union_id)
           
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { union_id: union.id }, division_id: @division.id }
+          scoped_put :update, {:id => rec.to_param, :rec => { union_id: union.id } }
           expect(assigns(:rec).errors[:person]).to be_empty
           expect(response).not_to render_template("edit")
         end
@@ -146,7 +146,7 @@ describe RecsController do
           expect(person.union_id).not_to eq(subject.current_person.union_id)
           
           # Trigger the behavior that occurs when invalid params are submitted
-          put :update, {:id => rec.to_param, :rec => { person_id: person.id }, division_id: @division.id }
+          scoped_put :update, {:id => rec.to_param, :rec => { person_id: person.id } }
           expect(assigns(:rec).errors[:person]).to be_empty
           expect(response).not_to render_template("edit")
         end
@@ -159,7 +159,7 @@ describe RecsController do
 
     it "will send thank you email" do
       expect {
-        post :create, {:rec => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:rec => valid_attributes}
         expect(ActionMailer::Base.deliveries.last.subject).to include("Thanks")
         expect(ActionMailer::Base.deliveries.last.to).to include(@admin.email)
       }.to change { ActionMailer::Base.deliveries.count }.by(1)
@@ -185,7 +185,7 @@ describe RecsController do
       follower4.follow! FactoryGirl.create(:company) # Shouldn't be notified
 
       expect {
-        post :create, {:rec => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:rec => valid_attributes}
         messages = ActionMailer::Base.deliveries
 
         # these should probably be separate tests
@@ -224,7 +224,7 @@ describe RecsController do
     # end
 
     it "person assigned is made to follow new rec" do
-      post :create, {:rec => valid_attributes, division_id: @division.id}
+      scoped_post :create, {:rec => valid_attributes}
       expect(assigns(:rec).followers(Person)).to include(subject.current_person)
     end
   end
@@ -242,14 +242,14 @@ describe RecsController do
         other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
         rec_out.divisions << other_division
 
-        get :index, {division_id: @division.id}
+        scoped_get :index
         expect(assigns(:recs)).to include(rec_in) # Have database cleaning issues
         expect(assigns(:recs)).not_to include(rec_out) # Have database cleaning issues
         other_division.destroy
       end
 
       it "returns not found if division is missing" do
-        get :index, {division_id: "junk"}
+        scoped_get :index, {division_id: "junk"}
         assert expect(response.status).to eq(404)
       end
     end
@@ -257,19 +257,19 @@ describe RecsController do
     describe "GET show" do
       it "assigns the requested rec as @rec" do
         rec = Rec.create! valid_attributes
-        get :show, {:id => rec.to_param, division_id: @division.id}
+        scoped_get :show, {:id => rec.to_param}
         expect(assigns(:rec)).to eq(rec)
       end
     end
 
     describe "GET new" do
       it "assigns a new rec as @rec" do
-        get :new, { division_id: @division.id }
+        scoped_get :new
         expect(assigns(:rec)).to be_a_new(Rec)
       end
       
       it "assigns @division into @rec's divisions" do
-        get :new, { division_id: @division.id }
+        scoped_get :new
         
         expect(assigns(:rec).divisions).to include(@division)
       end
@@ -278,7 +278,7 @@ describe RecsController do
     describe "GET edit" do
       it "assigns the requested rec as @rec" do
         rec = Rec.create! valid_attributes
-        get :edit, {:id => rec.to_param, division_id: @division.id}
+        scoped_get :edit, {:id => rec.to_param}
         expect(assigns(:rec)).to eq(rec)
       end
     end
@@ -287,18 +287,18 @@ describe RecsController do
       describe "with valid params" do
         it "creates a new Rec" do
           expect {
-            post :create, {:rec => valid_attributes, division_id: @division.id}
+            scoped_post :create, {:rec => valid_attributes}
           }.to change(Rec, :count).by(1)
         end
 
         it "assigns a newly created rec as @rec" do
-          post :create, {:rec => valid_attributes, division_id: @division.id}
+          scoped_post :create, {:rec => valid_attributes}
           expect(assigns(:rec)).to be_a(Rec)
           expect(assigns(:rec)).to be_persisted
         end
 
         it "redirects to the created rec" do
-          post :create, {:rec => valid_attributes, division_id: @division.id}
+          scoped_post :create, {:rec => valid_attributes}
           expect(response).to redirect_to(Rec.last)
         end
       end
@@ -307,14 +307,14 @@ describe RecsController do
         it "assigns a newly created but unsaved rec as @rec" do
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Rec).to receive(:save).and_return(false)
-          post :create, {:rec => { "name" => "invalid value" }, division_id: @division.id}
+          scoped_post :create, {:rec => { "name" => "invalid value" }}
           expect(assigns(:rec)).to be_a_new(Rec)
         end
 
         it "re-renders the 'new' template" do
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Rec).to receive(:save).and_return(false)
-          post :create, {:rec => { "name" => "invalid value" }, division_id: @division.id}
+          scoped_post :create, {:rec => { "name" => "invalid value" }}
           expect(response).to render_template("new")
         end
       end
@@ -330,18 +330,18 @@ describe RecsController do
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
           expect_any_instance_of(Rec).to receive(:update).with({ "name" => "MyText" })
-          put :update, {:id => rec.to_param, :rec => { "name" => "MyText" }, division_id: @division.id}
+          scoped_put :update, {:id => rec.to_param, :rec => { "name" => "MyText" }}
         end
 
         it "assigns the requested rec as @rec" do
           rec = Rec.create! valid_attributes
-          put :update, {:id => rec.to_param, :rec => valid_attributes, division_id: @division.id}
+          scoped_put :update, {:id => rec.to_param, :rec => valid_attributes}
           expect(assigns(:rec)).to eq(rec)
         end
 
         it "redirects to the rec" do
           rec = Rec.create! valid_attributes
-          put :update, {:id => rec.to_param, :rec => valid_attributes, division_id: @division.id}
+          scoped_put :update, {:id => rec.to_param, :rec => valid_attributes}
           expect(response).to redirect_to(rec)
         end
       end
@@ -351,7 +351,7 @@ describe RecsController do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Rec).to receive(:save).and_return(false)
-          put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }, division_id: @division.id}
+          scoped_put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }}
           expect(assigns(:rec)).to eq(rec)
         end
 
@@ -359,7 +359,7 @@ describe RecsController do
           rec = Rec.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           allow_any_instance_of(Rec).to receive(:save).and_return(false)
-          put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }, division_id: @division.id}
+          scoped_put :update, {:id => rec.to_param, :rec => { "name" => "invalid value" }}
           expect(response).to render_template("edit")
         end
       end
@@ -369,13 +369,13 @@ describe RecsController do
       it "destroys the requested rec" do
         rec = Rec.create! valid_attributes
         expect {
-          delete :destroy, {:id => rec.to_param, division_id: @division.id}
+          scoped_delete :destroy, {:id => rec.to_param}
         }.to change(Rec, :count).by(-1)
       end
 
       it "redirects to the recs list" do
         rec = Rec.create! valid_attributes
-        delete :destroy, {:id => rec.to_param, division_id: @division.id}
+        scoped_delete :destroy, {:id => rec.to_param}
         expect(response).to redirect_to(recs_url)
       end
     end

@@ -44,18 +44,18 @@ describe PostsController do
     describe "with valid params" do
       it "creates a new Post" do
         expect {
-          post :create, {:post => valid_attributes, division_id: @division.id}
+          scoped_post :create, {:post => valid_attributes}
         }.to change(Post, :count).by(1)
       end
 
       it "assigns a newly created post as @post" do
-        post :create, {:post => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:post => valid_attributes}
         expect(assigns(:post)).to be_a(Post)
         expect(assigns(:post)).to be_persisted
       end
 
       it "redirects to the created post" do
-        post :create, {:post => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:post => valid_attributes}
         expect(response).to redirect_to(@agreement)
       end
     end
@@ -66,14 +66,14 @@ describe PostsController do
     #   it "assigns a newly created but unsaved post as @post" do
     #     # Trigger the behavior that occurs when invalid params are submitted
     #     Post.any_instance.stub(:save).and_return(false)
-    #     post :create, {:post => { "body" => "invalid value" }}
+    #     scoped_post :create, {:post => { "body" => "invalid value" }}
     #     assigns(:post).should be_a_new(Post)
     #   end
 
     #   it "re-renders the 'new' template" do
     #     # Trigger the behavior that occurs when invalid params are submitted
     #     Post.any_instance.stub(:save).and_return(false)
-    #     post :create, {:post => { "body" => "invalid value" }}
+    #     scoped_post :create, {:post => { "body" => "invalid value" }}
     #     response.should render_template("new")
     #   end
     # end
@@ -95,7 +95,7 @@ describe PostsController do
       subject.current_person.follow! parent
 
       expect {
-        post :create, {:post => valid_attributes, division_id: @division.id}
+        scoped_post :create, {:post => valid_attributes}
         messages = ActionMailer::Base.deliveries
 
         # notification should be sent to admin because admin is the rec assignee
@@ -117,14 +117,14 @@ describe PostsController do
     it "destroys the requested post when user created post" do
       post = Post.create! valid_attributes.merge(person: subject.current_person)
       expect {
-        delete :destroy, {:id => post.to_param, division_id: @division.id}
+        scoped_delete :destroy, {:id => post.to_param}
       }.to change(Post, :count).by(-1)
     end
 
     it "does not destroy the requested post when another user created post" do
       post = Post.create! valid_attributes.merge(person: @admin)
       expect {
-        delete :destroy, {:id => post.to_param, division_id: @division.id}
+        scoped_delete :destroy, {:id => post.to_param}
       }.to change(Post, :count).by(0)
     end
 
@@ -133,7 +133,7 @@ describe PostsController do
       post = Post.create! valid_attributes.merge(person: subject.current_person)
       parent = post.parent
 
-      delete :destroy, {:id => post.to_param, division_id: @division.id}
+      scoped_delete :destroy, {:id => post.to_param}
       expect(response).to redirect_to(parent)
     end
   end

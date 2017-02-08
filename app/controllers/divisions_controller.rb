@@ -77,4 +77,8 @@ class DivisionsController < ApplicationController
     def forbid
       return forbidden unless owner?
     end
+    
+    def expand_navbar?
+      @expand_navbar = false
+    end
 end

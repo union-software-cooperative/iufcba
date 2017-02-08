@@ -19,5 +19,5 @@ The following people where notified
 
 <p>
 The private URL for the agreement is here 
-<%=link_to rec_url(id: @rec.id, division_id: @division.id), rec_url(id: @rec.id, division_id: @division.id) %>
+<%=link_to rec_url(id: @rec.id, division_id: @division.id, locale: I18n.locale), rec_url(id: @rec.id, division_id: @division.id, locale: I18n.locale) %>
 </p>
