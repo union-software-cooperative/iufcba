@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
 
-  before_action :authenticate_person!
+  before_action :authenticate_person!, except: [:pass_to_locale_scope]
   before_action :expand_navbar?
   before_action :set_division
   before_action :set_locale
@@ -10,6 +10,14 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+  def pass_to_locale_scope
+    redirect_to root_with_locale_path
+  end
+  
+  def after_sign_in_path_for(person)
+    divisions_path
+  end
 
   def default_url_options(options={})
     result = {} #{ locale: I18n.locale }
@@ -41,6 +49,7 @@ class ApplicationController < ActionController::Base
     # Order of provided_locales array determines precedence!
     I18n.locale = provided_locales.find(&supported_locales.method(:include?))
     
+    # redirect_to url_for(params.merge(locale: I18n.locale, only_path: true)) unless params[:locale]
     params[:locale] = I18n.locale
   end
   

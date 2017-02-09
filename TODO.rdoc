@@ -60,6 +60,6 @@ DONE hacker can't post delete division
 
 DONE breadcrumbs
 
-NOT DONE default route to divisions list, move getting started
+NOT TESTED default route to divisions list, move getting started
 
 -- TODO Migration and deploy scope --

@@ -38,7 +38,6 @@ Rails.application.routes.draw do
       resources :agreements, controller: :recs, type: 'Rec'
     end
 
-
     resources :divisions, except: [:show]
     
     resource :help, only: [:show] do
@@ -46,8 +45,9 @@ Rails.application.routes.draw do
     end
     # root "help#show"
     resources :unions, only: [:index], controller: :supergroups, type: 'Union', constraints: {:format => 'json'}, as: 'union_api'
+    root "help#show", as: "root_with_locale"
   end
-  root "help#show"
+	root "application#pass_to_locale_scope"
   
 
   # The priority is based upon order of creation: first created -> highest priority.
