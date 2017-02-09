@@ -47,7 +47,7 @@ Rails.application.routes.draw do
     resources :unions, only: [:index], controller: :supergroups, type: 'Union', constraints: {:format => 'json'}, as: 'union_api'
     root "help#show", as: "root_with_locale"
   end
-	root "application#pass_to_locale_scope"
+  root "application#pass_to_locale_scope"
   
 
   # The priority is based upon order of creation: first created -> highest priority.
