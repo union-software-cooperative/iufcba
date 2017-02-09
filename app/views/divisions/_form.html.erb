@@ -22,7 +22,7 @@
   <div class="form-group">
     <%= f.label :logo, "Logo" %><br>
     <%= division_logo_image %>
-    <%= f.file_field :logo, class: "form-control", accept: 'image/jpeg,image/gif,image/png'  %>
+    <%= f.file_field :logo, class: "btn btn-default", accept: 'image/jpeg,image/gif,image/png'  %>
     <% if @division.logo.url.present? %>
       <%= f.check_box :remove_logo %>
       <small><%= f.label :remove_logo, t(".remove_logo") %></small>

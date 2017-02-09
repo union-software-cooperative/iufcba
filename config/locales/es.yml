@@ -7,7 +7,7 @@ es:
     application:
       title: Convenios de la UITA
     navbar:
-      divisions: divisions
+      divisions: seccións
       agreements: convenios
       chat: chat
       unions: sindicatos
@@ -82,7 +82,12 @@ es:
     form:
       company_post_title: Post your questions or research here
       union_post_title: Publique fotos de su sindicato y actualizaciones aquí
+      rec_post_title: Post your questions or industrial action pics here
   recs:
+    new:
+      title: Nuevo convenio
+    edit:
+      title: Editando convenio
     recs:
       agreement_or_expiry: Convenio / Vencimiento
       union: Sindicato
@@ -122,12 +127,12 @@ es:
       company: Compañía
   divisions: 
     edit:
-      editing: Editing Divisions
-      permanently_delete: Permanently Delete This Division
+      editing: Editando sección
+      permanently_delete: Borrar a esta sección en forma permanente
       permanently_delete_confirm: Are you really really sure?
-      remove_logo: Remove logo
+      remove_logo: Eliminar logo
     new: 
-      new_division: Create Division 
+      new_division: Crear sección 
   helpers:
     label:
   gender: #Género
@@ -145,6 +150,7 @@ es:
       rec: convenio
       supergroup: organización
       union: sindicato
+      division: sección
     attributes:
       comment:
         # these fields are unlabelled, so translations go unused
@@ -174,12 +180,13 @@ es:
         body: Body
       rec:
         attachment: Documento del convenio
-        company_id: Company
-        union_id: Union
-        name: Name
-        person_id: Person
+        divisions: Seccións
+        company_id: Compañía
+        union_id: Sindicato
+        name: Nombre
+        person_id: Persona
         start_date: Fecha inicial del convenio
-        end_date: Agreement/Contract end date
+        end_date: Fecha final del convenio
         multi_site: Más de una planta
         coverage: Alcance
         anti_precariat: Limita el trabajo eventual

@@ -84,6 +84,10 @@ en:
       union_post_title: Post your union pictures and status updates here
       rec_post_title: Post your questions or industrial action pics here
   recs:
+    new:
+      title: New Agreement
+    edit:
+      title: Editing Agreement
     recs:
       agreement_or_expiry: Agreement / Expiry
       company: Company
@@ -146,6 +150,7 @@ en:
       rec: agreement
       supergroup: organisation
       union: union
+      division: division
     attributes:
       comment:
         # these fields are unlabelled, so translations go unused
@@ -175,6 +180,7 @@ en:
         body: Body
       rec:
         attachment: Agreement Document
+        divisions: Divisions
         company_id: Company
         union_id: Union
         name: Name
