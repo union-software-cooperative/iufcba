@@ -64,7 +64,8 @@ class DivisionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_division
-      @division = Division.find_by_short_name(params[:id])
+      # @division = Division.find_by_short_name(params[:id])
+      @division = Division::Translation.find_by_short_name(params[:id]).try(:first, :globalized_model)
       @division ||= Division.find_by_id(params[:id])
       #not_found unless @division
     end

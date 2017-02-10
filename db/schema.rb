@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170202061942) do
+ActiveRecord::Schema.define(version: 20170210004320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,9 +47,19 @@ ActiveRecord::Schema.define(version: 20170202061942) do
   add_index "division_supergroups", ["division_id"], name: "index_division_supergroups_on_division_id", using: :btree
   add_index "division_supergroups", ["supergroup_id"], name: "index_division_supergroups_on_supergroup_id", using: :btree
 
-  create_table "divisions", force: :cascade do |t|
+  create_table "division_translations", force: :cascade do |t|
+    t.integer  "division_id", null: false
+    t.string   "locale",      null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "name"
     t.string   "short_name"
+  end
+
+  add_index "division_translations", ["division_id"], name: "index_division_translations_on_division_id", using: :btree
+  add_index "division_translations", ["locale"], name: "index_division_translations_on_locale", using: :btree
+
+  create_table "divisions", force: :cascade do |t|
     t.string   "logo"
     t.string   "colour1"
     t.string   "colour2"

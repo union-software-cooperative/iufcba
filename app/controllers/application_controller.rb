@@ -27,7 +27,9 @@ class ApplicationController < ActionController::Base
 
   def set_division
     if params[:division_id]
-      @division = Division.where("short_name ilike ?", params[:division_id]).first
+      @division = Division::Translation.find_by_short_name(params[:division_id])
+        .try(:first, :globalized_model)
+      # @division = Division.where("short_name ilike ?", params[:division_id]).first
       @division ||= Division.find_by_id(params[:division_id]) 
       not_found unless @division
     end

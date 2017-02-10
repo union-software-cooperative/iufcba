@@ -71,6 +71,9 @@ gem 'autoprefixer-rails'
 gem 'rails_12factor', group: :production
 ruby "2.3.3"
 
+# Translation of user generated content
+gem 'globalize', '~> 5.0.0'
+
 # User Login
 gem 'devise'
 gem 'devise_invitable'
