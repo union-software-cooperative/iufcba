@@ -8,17 +8,21 @@ describe Division do
       @division = Division.create!(valid_attributes)
       
       I18n.with_locale(:en) do
-        expect(@division.name).to be_truthy
-        expect(@division.short_name).to be_truthy
-      end
-      
-      I18n.with_locale(:es) do
-        expect(@division.name).to be_nil
-        expect(@division.short_name).to be_nil
+        expect(@division.name).to eq("MyString")
+        expect(@division.short_name).to eq("MyString")
       end
     end
     
-    it "should allow assignment in other locales" do
+    it "should fallback to :en values when locale is missing" do
+      @division = Division.create!(valid_attributes)
+      
+      I18n.with_locale(:es) do
+        expect(@division.name).to eq("MyString")
+        expect(@division.short_name).to eq("MyString")
+      end
+    end
+    
+    it "should allow assignment in other locales, without fallback" do
       I18n.with_locale(:es) { @division = Division.create!(valid_attributes) }
 
       I18n.with_locale(:en) do
@@ -27,8 +31,8 @@ describe Division do
       end
       
       I18n.with_locale(:es) do
-        expect(@division.name).to be_truthy
-        expect(@division.short_name).to be_truthy
+        expect(@division.name).to eq("MyString")
+        expect(@division.short_name).to eq("MyString")
       end
     end
     

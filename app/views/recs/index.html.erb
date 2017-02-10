@@ -1,8 +1,14 @@
-<% if notice.present? %>
-	<p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
-<% end %>
-<h1>Listing Agreements</h1>
+<%= render 'application/notice' %>
 
-<%= link_to 'New Agreement', new_rec_path(division_id: @division.short_name), class: "btn btn-default new-button" %>
-<%= render 'recs' %>
-<br>
+<!-- Agreement Listing -->
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="text-right">
+      <%= link_to t('.new_agreement'), new_rec_path, class: "btn btn-default" %>
+    </div>
+    <h1><%= t('.listing_agreements') %></h1>
+    
+    <%= render 'recs' %>
+    
+  </div>
+</div>

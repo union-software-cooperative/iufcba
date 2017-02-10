@@ -11,6 +11,7 @@
         </ul>
       </div>
     <% end %>
+    
     <h3>
       <%=profile_thumb(current_person)%>
       <%= t(".#{@post.parent.type.downcase}_post_title") %>
@@ -20,10 +21,10 @@
       </small>
     </h3>
     <p>
-      <div class="form_group">
+      <div class="form-group">
         <%= f.file_field :attachment %>
       </div>
-      <div class="form_group">
+      <div class="form-group">
         <%= f.text_area :body, class: "form-control" %>
       </div>
     <p>

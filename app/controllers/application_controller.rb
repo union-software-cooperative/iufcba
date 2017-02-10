@@ -27,8 +27,8 @@ class ApplicationController < ActionController::Base
 
   def set_division
     if params[:division_id]
-      @division = Division::Translation.find_by_short_name(params[:division_id])
-        .try(:first, :globalized_model)
+      @division = Division::Translation.where(locale: I18n.locale).
+        find_by_short_name(params[:division_id]).try(:globalized_model)
       # @division = Division.where("short_name ilike ?", params[:division_id]).first
       @division ||= Division.find_by_id(params[:division_id]) 
       not_found unless @division
@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
     [
       [
         I18n.t("layouts.navbar.divisions").titlecase, 
-        divisions_path, 
+        divisions_path(division_id: nil),
         match_action?("divisions", "index")
       ],
       @division ? [

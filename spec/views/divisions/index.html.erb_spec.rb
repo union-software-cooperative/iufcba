@@ -9,8 +9,7 @@ describe "divisions/index" do
     allow(view).to receive(:owner?).and_return(false)
     render
     
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select ".row>h2", :text => "MyString".to_s, :count => 2
+    assert_select "tbody tr", :text => "MyString".to_s, :count => 2
   end
 
   describe "low privilege access" do

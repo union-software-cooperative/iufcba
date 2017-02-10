@@ -135,7 +135,7 @@ class RecsController < ApplicationController
     def breadcrumbs
       super + 
       [
-        [I18n.t('layouts.navbar.agreements').titlecase, recs_path(@division), match_action?("recs", "index")], 
+        [I18n.t('layouts.navbar.agreements').titlecase, recs_path, match_action?("recs", "index")], 
         @rec ? [@rec.name.titlecase, rec_path(@division, @rec), not_action?("recs", "index")] : nil
       ].compact
     end

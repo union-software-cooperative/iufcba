@@ -20,13 +20,14 @@
 @import "bootstrap";
 
 h1, h1, h2 {
-	color: #C44347;
-	small {
-	//	color: #D33;
-	}
-  margin-left: 15px;
+  color: #C44347;
+  small {
+  //  color: #D33;
+  }
+  // margin-left: 15px;
 }
 
+// html { x-overflow: hidden; }
 body {
   background-color: #FFF8EB;
   color: #5C5C5C;
@@ -42,11 +43,11 @@ body {
   background-color: #ffe;
 }
 */
-.content-area {
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-top: 0px;  
-}
+// .content-area {
+//   padding-left: 0px;
+//   padding-right: 0px;
+//   padding-top: 0px;  
+// }
 .navbar {
   margin-bottom: 0px;
 }
@@ -106,10 +107,13 @@ $a-tags-hover: 'a:active, a:hover';
   fieldset { display: table-cell; }
 }
 
-.form {
-  margin-left: 15px;
-  margin-right: 15px;
-}
+// .form {
+//   margin-left: 15px;
+//   margin-right: 15px;
+// }
+
+.btn-follow { margin-bottom: 10px; }
+tr.valign-mid td { vertical-align: middle !important; }
 
 .no-left-margin {
   margin-left: 0px;
@@ -125,10 +129,10 @@ $a-tags-hover: 'a:active, a:hover';
  margin-right: 0px;
 }
 
-.col-sm-8 {
-  padding-left: 0px;
-  padding-right: 0px;
-} 
+// .col-sm-8 {
+//   padding-left: 0px;
+//   padding-right: 0px;
+// } 
 
 
 

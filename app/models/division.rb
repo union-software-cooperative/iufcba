@@ -14,4 +14,8 @@ class Division < ActiveRecord::Base
   # def method_missing(m, **args)
   #   Rails.application.routes.url_helpers.send(m, { division_id: self.id }.merge(args))
   # end
+  
+  # def cache_key
+  #   super + "-" + Globalize.locale.to_s
+  # end
 end

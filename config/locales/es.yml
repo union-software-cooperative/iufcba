@@ -26,7 +26,7 @@ es:
     get_started:
       lets_get_started: Comencemos
       videos_might_help: El sistema es muy sencillo, pero estos videos pueden ayudar
-    show:
+    intro:
       bringing_together: Donde se aúnan las afiliadas del sector lácteo de la UITA
       request_invitation: Solicite invitación
       share_info_heading: Compartir información sobre organización
@@ -84,6 +84,9 @@ es:
       union_post_title: Publique fotos de su sindicato y actualizaciones aquí
       rec_post_title: Post your questions or industrial action pics here
   recs:
+    index:
+      listing_agreements: Listado de convenios
+      new_agreement: Nuevo convenio
     new:
       title: Nuevo convenio
     edit:
@@ -125,7 +128,13 @@ es:
       permanently_delete: Borrar a esta %{entity} en forma permanente
       union: Sindicato
       company: Compañía
-  divisions: 
+  divisions:
+    index:
+      listing_divisions: Listado de seccións
+      new_division: Nuevo sección
+      get_started: ¿Primera vez? Toque aquí para una introducción.
+      logo: Logo
+      name: Nombre
     edit:
       editing: Editando sección
       permanently_delete: Borrar a esta sección en forma permanente

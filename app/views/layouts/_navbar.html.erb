@@ -18,7 +18,7 @@
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
           <li>
-            <%= link_to t('.divisions'), divisions_path %>
+            <%= link_to t('.divisions'), divisions_path(division_id: nil) %>
           </li>
           <% if @division && @expand_navbar %>
             <li>

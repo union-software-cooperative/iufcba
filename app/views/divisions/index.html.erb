@@ -1,63 +1,33 @@
-<% if notice.present? %>
-  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
-<% end %>
+<%= render 'application/notice' %>
 
 <!-- Division Listing -->
-<a href="#getting-started">First time? Click here for an introduction.</a>
-<div class="col-sm-8 col-sm-offset-2" style="margin-bottom: 200px">
-  <h1>Listing divisions</h1>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2" style="margin-bottom: 100px">
+    <p class="text-right"><%= link_to t('.get_started'), root_with_locale_path %></p>
+    <% if owner? -%>
+      <div class="text-right"><%= link_to t('.new_division'), new_division_path, class: "btn btn-default" %></div>
+    <% end -%>
+    
+    <h1><%= t('.listing_divisions') %></h1>
 
-  <br/>
+    <table class="table table-condensed table-striped box-shadow">
+      <thead>
+        <tr>
+          <th><%= t('.logo') %></th>
+          <th><%= t('.name') %></th>
+          <th></th>
+        </tr>
+      </thead>
 
-  <%= link_to t('.new_division'), new_division_path, class: "btn btn-default pull-right" if owner? %>
-
-  <br/>
-
-  <% @divisions.each do |division| %>
-    <div class="row">
-      <h2>
-        <%= image_tag division.logo.url || image_path('iuf_logo.png'), class: "division-landing-logo-image" %>
-        <%= link_to division.name, agreements_path(division), class: "division-landing-link" %>
-        <%= link_to '', edit_division_path(division), class: "glyphicon glyphicon-pencil division-landing-edit-link" if owner? %>
-      </h2>
-      <hr/>
-    </div>
-  <% end %>
-</div>
-
-<!-- Getting Started -->
-<div class="jumbotron text-center" style="padding-left:0px; padding-right:0px;">
-  <div class="container" style="padding-left:0px; padding-right:0px;">
-    <div class="col-sm-2 hidden-xs">
-      <img src="<%=image_path('iuf_logo.png')%>" style="height:100%;x-overflow:hidden;">
-    </div>
-    <div class="col-sm-10">
-      <h1 id="getting-started" class="no-left-margin no-right-margin text-right"><%= t('help.get_started.lets_get_started') %></h1>
-      <p class="no-left-margin text-right no-right-margin"><%= t('help.get_started..videos_might_help') %></p>
-    </div>
-  </div>
-</div>
-
-<hr/>
-<div class="container" style="margin-bottom: 100px">
-  <div class="row">
-    <div class="col-sm-4">
-      <h2 class="no-left-margin">Overview</h2>
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCX19HYXZkVl80bk0/preview"></iframe>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <h2 class="no-left-margin">Get&nbsp;Started</h2>
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCN2ZFeFlkSTE1ejQ/preview"></iframe>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <h2 class="no-left-margin">Agreements</h2>
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCaEZsWHNrb0JQbjg/preview"></iframe>
-      </div>
-    </div>
+      <tbody>    
+        <% @divisions.each do |division| %>
+          <tr class="valign-mid">
+            <td><%= image_tag division.logo.url || image_path('iuf_logo.png'), class: "img-responsive", style: "max-width: 100px;" %></td>
+            <td><%= link_to division.name, agreements_path(division_id: division.short_name) %></td>
+            <td><%= link_to '', edit_division_path(division), class: "glyphicon glyphicon-pencil division-landing-edit-link" if owner? %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>

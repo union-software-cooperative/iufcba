@@ -20,7 +20,8 @@ ActiveRecord::Migration.maintain_test_schema!
 # Set locale for view specs, see https://github.com/rspec/rspec-rails/issues/255#issuecomment-2865917
 class ActionView::TestCase::TestController
   def default_url_options(options = {})
-    { locale: I18n.default_locale }
+    @division ||= FactoryGirl.create(:division)
+    { locale: I18n.default_locale, division_id: @division.short_name }.merge(options)
   end
 end
 

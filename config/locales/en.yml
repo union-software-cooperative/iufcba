@@ -26,7 +26,7 @@ en:
     get_started:
       lets_get_started: Let's get started
       videos_might_help: The system is pretty simple but these videos might help.
-    show:
+    intro:
       bringing_together: Bringing the affiliates of the IUF brewery division closer together
       request_invitation: Request An Invitation
       share_info_heading: Share organising info
@@ -84,6 +84,9 @@ en:
       union_post_title: Post your union pictures and status updates here
       rec_post_title: Post your questions or industrial action pics here
   recs:
+    index:
+      listing_agreements: Listing Agreements
+      new_agreement: New Agreement
     new:
       title: New Agreement
     edit:
@@ -126,6 +129,12 @@ en:
       union: Union
       company: Company
   divisions: 
+    index:
+      listing_divisions: Listing Divisions
+      new_division: New Division
+      get_started: First time? Tap here for an introduction.
+      logo: Logo
+      name: Name
     edit:
       editing: Editing Divisions
       permanently_delete: Permanently Delete This Division

@@ -1,7 +1,7 @@
 <% if notice.present? %>
   <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
 <% end %>
-<div class="outer-row">
+<div class="row">
   <div class="col-sm-8 col-sm-offset-2">
     <div class="rec">
       <div class="jumbotron">
@@ -24,7 +24,7 @@
         </h1>
         <p>
           <%= link_to "<span class='glyphicon glyphicon-paperclip'/>".html_safe, @rec.attachment_url if @rec.attachment_url%>
-          <%="#{@rec.end_date < Time.now ? "Expired" : "Expiring"} #{I18n.l @rec.en_ddate, :format => :long}"%>
+          <%="#{@rec.end_date < Time.now ? "Expired" : "Expiring"} #{I18n.l @rec.end_date, :format => :long}"%>
         </p>
         <p>
           <% @rec.nature_of_operation.each do |tag| %>
@@ -47,7 +47,7 @@
     </div>
     <hr/>
 
-    <div class="row" style="margin-left: 0px; margin-right:0px;">
+    <div class="row">
       <div class="col-sm-5 col-sm-offset-1">
         <div class="form-group">
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.grievance_handling")%></h2>
@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div class="row"  style="margin-left: 0px; margin-right:0px;">
+    <div class="row">
       <div class="col-sm-5 col-sm-offset-1">
         <div class="form-group">
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.anti_precariat")%></h2>
@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <div class="row" style="margin-left: 0px; margin-right:0px;">
+    <div class="row">
       <div class="col-sm-5 col-sm-offset-1"> 
         <div class="form-group"> 
           <h2 style="margin-left:0px;"><%=t("helpers.label.rec.other_provisions")%></h2> 
