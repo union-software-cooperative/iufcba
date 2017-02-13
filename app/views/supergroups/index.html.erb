@@ -34,7 +34,7 @@
               </td>
               <td><%=link_to supergroup.name, polymorphic_path(supergroup) %></td>
               <td class="hidden-xs"><%=ISO3166::Country(supergroup.country).name if supergroup.country%></td>
-              <td class="hidden-xs"><%=link_to supergroup.www, "http://#{supergroup.www}"%></td>
+              <td class="hidden-xs"><%=link_to supergroup.www, "#{supergroup.www}", target: "_blank" %></td>
               <td class="text-right"><%=supergroup.recs.count()%></td>
             </tr>
           <% end %>
