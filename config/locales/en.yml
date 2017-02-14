@@ -141,7 +141,9 @@ en:
       permanently_delete_confirm: Are you really really sure?
       remove_logo: Remove logo
     new: 
-      new_division: Create Division 
+      new_division: Create Division
+    form:
+      use_dark_colour: Use a dark colour or some text will be hard to read
   helpers:
     label:
   gender:
@@ -226,6 +228,6 @@ en:
         name: Name
         short_name: Short name
         logo: Logo
-        colour1: Colour 1
-        colour2: Colour 2
+        colour1: Background colour
+        colour2: Text/foreground colour
       # union:
