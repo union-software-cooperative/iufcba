@@ -83,4 +83,11 @@ class DivisionsController < ApplicationController
     def expand_navbar?
       @expand_navbar = false
     end
+    
+    def breadcrumbs
+      super + 
+      [
+        action?("new") ? [I18n.t('divisions.index.new_division'), new_division_path, true] : nil
+      ].compact
+    end
 end

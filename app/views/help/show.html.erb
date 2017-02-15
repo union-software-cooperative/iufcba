@@ -1,6 +1,4 @@
-<% if notice.present? %>
-  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
-<% end %>
+<%= render 'notice' %>
 
 <% if person_signed_in? %>
   <%= render "get_started" %>

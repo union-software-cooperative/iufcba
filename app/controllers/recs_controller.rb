@@ -1,6 +1,5 @@
 class RecsController < ApplicationController
   prepend_before_action :set_rec, only: [:show, :edit, :update, :destroy, :follow]
-  before_action :set_breadcrumbs
   before_action :forbid, only: [:edit, :update]
 
   # GET /recs
@@ -135,8 +134,9 @@ class RecsController < ApplicationController
     def breadcrumbs
       super + 
       [
-        [I18n.t('layouts.navbar.agreements').titlecase, recs_path, match_action?("recs", "index")], 
-        @rec ? [@rec.name.titlecase, rec_path(@division, @rec), not_action?("recs", "index")] : nil
+        [I18n.t('layouts.navbar.agreements').titlecase, recs_path, action?("index")], 
+        @rec ? [@rec.name.titlecase, rec_path(@division, @rec), action?("show", "edit")] : nil,
+        action?("new") ? [I18n.t('recs.new.title'), new_rec_path(@division), action?("new")] : nil
       ].compact
     end
 end

@@ -30,8 +30,7 @@ class People::InvitationsController < Devise::InvitationsController
   end
 
   def invite_params
-   	result = params.permit(person: [:authorizer, :gender, :email,:invitation_token, :union_id, :first_name, :last_name,  :title, :address, :mobile, :fax, :country, :languages => []
-])[:person].merge(authorizer: current_person)
+    result = params.permit(person: [:authorizer, :gender, :email,:invitation_token, :union_id, :first_name, :last_name,  :title, :address, :mobile, :fax, :country, :languages => []])[:person].merge(authorizer: current_person)
     result[:languages].delete("") if result[:languages]
     result
    end
@@ -41,5 +40,12 @@ class People::InvitationsController < Devise::InvitationsController
     invitee = resource_class.find_by_invitation_token(result[:invitation_token], false)
     authorizer = invitee.invited_by unless invitee.blank?
     result.merge(authorizer: authorizer)
+  end
+  
+  def breadcrumbs
+    [
+      [I18n.t("layouts.navbar.people").titlecase, people_path, controller?("people") && action?("index")],
+      [I18n.t("devise.invitations.new.header"), new_person_invitation_path, action?("new")]
+    ]
   end
 end

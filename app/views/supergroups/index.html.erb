@@ -1,11 +1,11 @@
-<%= render 'application/notice' %>
+<%= render 'notice' %>
 
 <!-- Union or Company Listing -->
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
     <% if owner? -%>
       <div class="text-right">
-        <%= link_to "New #{supergroup.titlecase}", new_polymorphic_path(@klass), class: "btn btn-default" %>
+        <%= link_to t('.new_supergroup', entity: t("supergroups.new.#{supergroup.downcase}")), new_polymorphic_path(@klass), class: "btn btn-default" %>
       </div>
     <% end -%>
     <h1><%= t('.listing_supergroup', entity: t(".#{supergroup.downcase.pluralize}")) %></h1>
@@ -14,8 +14,8 @@
       <table class="table table-condensed table-striped box-shadow">
         <thead>
           <tr>
-            <th><%= t('.logo') %></th>
-            <th><%= supergroup.titlecase %></th>
+            <th></th>
+            <th><%= t(".#{supergroup}") %></th>
             <th class="hidden-xs"><%= t('.country') %></th>
             <th class="hidden-xs"><%= t('.www') %></th>
             <th class="text-right"><%= t('.agreements') %></th>
@@ -41,7 +41,7 @@
         </tbody>
       </table>
     <% else %>
-      <strong class="text-center">Nothing to display</strong>
+      <%= render 'empty' %>
     <% end %>
   </div>
 </div>

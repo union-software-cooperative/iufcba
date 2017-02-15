@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
       [
         I18n.t("layouts.navbar.divisions").titlecase, 
         divisions_path(division_id: nil),
-        match_action?("divisions", "index")
+        (controller?("divisions") && action?("index"))
       ],
       @division ? [
         @division.short_name.titlecase, 
@@ -79,13 +79,21 @@ class ApplicationController < ActionController::Base
     @breadcrumbs = breadcrumbs
   end
   
-  def match_action?(controller, action)
-    params[:controller] == controller && params[:action] == action
+  def controller?(controller)
+    params[:controller] == controller
   end
   
-  def not_action?(controller, action)
-    params[:controller] == controller && params[:action] != action
+  def action?(*actions)
+    actions.include?(params[:action])
   end
+  
+  # def match_action?(controller, action)
+  #   params[:controller] == controller && params[:action] == action
+  # end
+  # 
+  # def not_action?(controller, action)
+  #   params[:controller] == controller && params[:action] != action
+  # end
   
   def format_html?
     request.format.html?

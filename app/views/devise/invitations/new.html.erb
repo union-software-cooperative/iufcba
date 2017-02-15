@@ -12,9 +12,9 @@
         @person.email = params[:email] if params[:email]
         @person.title = params[:title] if params[:title]
       %> 
-      <%=render partial: 'people/form_fields', locals: { f: f} %>
+      <%= render partial: 'people/form_fields', locals: { f: f } %>
 
-      <p><%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-default" %>&nbsp;&nbsp;<small>you will be BCC'd the invitation email FYI</small></p>
+      <p><%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-default" %>&nbsp;&nbsp;<small><%= t('people.form_fields.bcc_notice') %></small></p>
 
     <% end %>
   </div>

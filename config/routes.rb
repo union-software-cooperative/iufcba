@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   
   scope ":locale" do
     devise_for :people, :controllers => { :invitations => 'people/invitations' }
+    resources :people, only: [:index, :edit, :update, :destroy] do # people can only be invited, and edited (no readonly view)
+      member do 
+        get 'compose_email'
+        patch 'send_email'
+      end
+    end 
     resources :people, only: [:edit, :update], as: 'profile'
     
     scope ":division_id" do 
@@ -20,13 +26,6 @@ Rails.application.routes.draw do
           get 'follow'
         end
       end
-      
-      resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
-        member do 
-          get 'compose_email'
-          patch 'send_email'
-        end
-      end 
 
       resources :recs do
         member do

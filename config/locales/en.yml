@@ -17,6 +17,9 @@ en:
       invite: invite someone
       sign_out: sign out
       sign_in: sign in
+  application:
+    empty:
+      nothing_to_display: Nothing to display
   help:
     request_invites:
       new:
@@ -26,6 +29,9 @@ en:
     get_started:
       lets_get_started: Let's get started
       videos_might_help: The system is pretty simple but these videos might help.
+      overview: Overview
+      get_started: Get Started
+      agreements: Agreements
     intro:
       bringing_together: Bringing the affiliates of the IUF brewery division closer together
       request_invitation: Request An Invitation
@@ -87,6 +93,21 @@ en:
     index:
       listing_agreements: Listing Agreements
       new_agreement: New Agreement
+    show:
+      expired_at: Expired %{date}
+      expiring_at: Expiring %{date}
+      commenced_at: Commenced %{date}
+      commencing_at: Commencing %{date}
+      multi_site: Multi-site
+      coverage: Coverage
+      anti_precariat: Limit to casual work
+      health_and_safety: Health and Safety
+      grievance_handling: Grievance handling / Dispute resolution
+      specific_rights: Specific union rights
+      other_provisions: Other provisions and comments
+      nature_of_operation: Nature of products
+      no_notes: No notes
+      none_specified: None specified
     new:
       title: New Agreement
     edit:
@@ -98,6 +119,8 @@ en:
     form:
       new_company: new company
       new_union: new union
+      invite_person: invite person
+      select_company: Please select a company.
       select_union: Please select a union
       name_description: Please describe the agreement e.g. Nestle Australia (Tongara Plant) And NUW Enterprise Agreement 2014
       person_description: Please nominate a contact person.
@@ -113,6 +136,9 @@ en:
   supergroups:
     index:
       listing_supergroup: Listing %{entity}
+      new_supergroup: New %{entity}
+      union: Union
+      company: Company
       unions: Unions
       companies: Companies
       logo: Logo
@@ -216,6 +242,7 @@ en:
         other_provisions: Other provisions and comments
         nature_of_operation: Nature of products
       supergroup:
+        divisions: Divisions
         logo: Logo
         banner: Banner
         name: Name

@@ -27,14 +27,6 @@ describe PeopleController do
   let(:invalid_attributes) do
     { email: "invalid.email.com" }
   end
-  
-  before(:all) do
-    @division = FactoryGirl.create(:division)
-  end
-  
-  after(:all) do
-    @division.destroy
-  end
 
   describe "Security" do
     describe "low privilege" do
@@ -45,7 +37,7 @@ describe PeopleController do
           # User should only be able to choose people from their own union
           outsider = Person.create! valid_attributes
           insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)
-          scoped_get :index, {format: 'json', division_id: @division.id}
+          scoped_get :index, {format: 'json'}
           expect(assigns(:people)).to eq([subject.current_person]+[insider])
         end
       end
@@ -80,7 +72,7 @@ describe PeopleController do
           
           it "won't allow deleting of people" do
             expect {
-              scoped_delete :destroy, {:id => @insider.to_param, division_id: @division.id}
+              scoped_delete :destroy, { :id => @insider.to_param }
               expect(response).to be_forbidden
             }.to change(Person, :count).by(0)
           end
@@ -92,13 +84,13 @@ describe PeopleController do
           # end
 
           it "will allow editing colleagues" do 
-            scoped_get :edit, {id: @insider.to_param, division_id: @division.id}
+            scoped_get :edit, {id: @insider.to_param}
             expect(response).to be_successful
             expect(response).to render_template(:edit)
           end
 
           it "will allow updating of colleagues" do
-            scoped_put :update, {id: @insider.to_param, person: { first_name: "bob"}, division_id: @division.id }
+            scoped_put :update, {id: @insider.to_param, person: { first_name: "bob"} }
             expect(response).to redirect_to(people_path)
           end
         end
@@ -113,7 +105,7 @@ describe PeopleController do
           # User should only be able to choose people from their own union
           outsider = Person.create! valid_attributes
           insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)
-          scoped_get :index, {format: 'json', division_id: @division.id}
+          scoped_get :index, {format: 'json'}
           expect(assigns(:people)).to eq([subject.current_person]+[outsider]+[insider])
         end
       end
@@ -126,7 +118,7 @@ describe PeopleController do
     describe "GET index" do
       it "assigns all people as @people" do
         person = Person.create! valid_attributes
-        scoped_get :index, {division_id: @division.id}
+        scoped_get :index
         expect(assigns(:people)).to eq([subject.current_person]+[person])
       end
     end
@@ -142,7 +134,7 @@ describe PeopleController do
     describe "GET edit" do
       it "assigns the requested person as @person" do
         person = Person.create! valid_attributes
-        scoped_get :edit, {:id => person.to_param, division_id: @division.id}
+        scoped_get :edit, {:id => person.to_param}
         expect(assigns(:person)).to eq(person)
       end
     end
@@ -157,20 +149,20 @@ describe PeopleController do
           # submitted in the request.
           #Person.any_instance.should_receive(:update).with({ "firstname" => "MyString" })
           #expect_any_instance_of(Person).to receive(:update).with({ "firstname" => "MyString" })
-          scoped_put :update, {:id => person.to_param, :person => { "first_name" => "MyString" }, division_id: @division.id}
+          scoped_put :update, {:id => person.to_param, :person => { "first_name" => "MyString" }}
           person.reload
           expect(person.first_name).to eq("MyString")
         end
 
         it "assigns the requested person as @person" do
           person = Person.create! valid_attributes
-          scoped_put :update, {:id => person.to_param, :person => valid_attributes, division_id: @division.id}
+          scoped_put :update, {:id => person.to_param, :person => valid_attributes}
           expect(assigns(:person)).to eq(person)
         end
 
         it "redirects to the person" do
           person = Person.create! valid_attributes
-          scoped_put :update, {:id => person.to_param, :person => valid_attributes, division_id: @division.id}
+          scoped_put :update, {:id => person.to_param, :person => valid_attributes}
           expect(response).to redirect_to(people_path)
         end
       end
@@ -180,7 +172,7 @@ describe PeopleController do
           person = Person.create! valid_attributes
           # Trigger the behavior that occurs when invalid params are submitted
           #Person.any_instance.stub(:save).and_return(false)
-          scoped_put :update, {:id => person.to_param, :person => invalid_attributes, division_id: @division.id}
+          scoped_put :update, {:id => person.to_param, :person => invalid_attributes}
           updated = Person.find(person.id)
           expect(updated.email).to eq(person.email)
         end
@@ -189,12 +181,12 @@ describe PeopleController do
           person = Person.create! valid_attributes
 
           # test failure on invalid_params
-          scoped_put :update, {:id => person.to_param, :person => invalid_attributes, division_id: @division.id}
+          scoped_put :update, {:id => person.to_param, :person => invalid_attributes}
           expect(response).to render_template("edit")
 
           # test other failure on save
           allow_any_instance_of(Person).to receive(:save).and_return(false)
-          scoped_put :update, {:id => person.to_param, :person => valid_attributes, division_id: @division.id}
+          scoped_put :update, {:id => person.to_param, :person => valid_attributes}
           expect(response).to render_template("edit")
         end
       end
@@ -204,13 +196,13 @@ describe PeopleController do
       it "destroys the requested person" do
         person = Person.create! valid_attributes
         expect {
-          scoped_delete :destroy, {:id => person.to_param, division_id: @division.id}
+          scoped_delete :destroy, { :id => person.to_param }
         }.to change(Person, :count).by(-1)
       end
 
       it "redirects to the people list" do
         person = Person.create! valid_attributes
-        scoped_delete :destroy, {:id => person.to_param, division_id: @division.id}
+        scoped_delete :destroy, { :id => person.to_param }
         expect(response).to redirect_to(people_url)
       end
     end

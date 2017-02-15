@@ -14,8 +14,7 @@ describe "divisions/new" do
   it "renders new division form" do
     render
 
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form[action='/en/divisions'][method=?]", "post" do
+    assert_select("form[action='#{divisions_path}'][method='post']") do
       assert_select "input#division_name[name=?]", "division[name]"
       assert_select "input#division_short_name[name=?]", "division[short_name]"
       assert_select "input#division_logo[name=?]", "division[logo]"

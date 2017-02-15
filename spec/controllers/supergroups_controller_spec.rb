@@ -166,7 +166,7 @@ shared_examples "a supergroup type" do |type|
           other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
           scoped_post :create, { type_sym => valid_attributes.merge(divisions: [@division, other_division]), type: type }
           expect(assigns(:supergroup).divisions.size).to eq(2)
-          expect(assigns(:supergroup).divisions).to match [@division, other_division]
+          expect(assigns(:supergroup).divisions).to include(@division, other_division)
         end
       end
 

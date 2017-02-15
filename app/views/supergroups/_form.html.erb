@@ -14,7 +14,7 @@
    <div class="form-group">
     <%= f.label :logo %><br>
     <%=logo_image%>
-    <%= f.file_field :logo, accept: 'image/jpeg,image/gif,image/png'  %>
+    <%= f.file_field :logo, class: "btn btn-default", accept: 'image/jpeg,image/gif,image/png'  %>
     <% if @supergroup.logo.url.present? %>
       <%= f.check_box :remove_logo %>
       <small><%= f.label :remove_logo %></small>
@@ -23,7 +23,7 @@
   <div class="form-group">
     <%= f.label :banner %><br>
     <%=banner_image%>
-    <%= f.file_field :banner, accept: 'image/jpeg,image/gif,image/png'  %>
+    <%= f.file_field :banner, class: "btn btn-default", accept: 'image/jpeg,image/gif,image/png'  %>
     <% if @supergroup.banner.url.present? %>
       <%= f.check_box :remove_banner %>
       <small><%= f.label :remove_banner %></small>
@@ -41,7 +41,7 @@
       },
       multiple: true,
       data: {
-        url: divisions_path,
+        url: divisions_path(division_id: nil),
       },
       class: "ac-select2-multi form-control",
       style: "width: 100%;"

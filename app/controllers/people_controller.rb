@@ -27,9 +27,9 @@ class PeopleController < ApplicationController
       if @person.update(person_params)
         @person.invite!(current_person) if params['resend_invite']=='true' 
         
-        destination = @division ? people_path(division_id: @division.id) : divisions_path
+        # destination = @division ? people_path : divisions_path
         
-        format.html { redirect_to destination, notice: 'Profile successfully updated.' }
+        format.html { redirect_to people_path, notice: 'Profile successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
         format.html { render :edit }
@@ -81,16 +81,9 @@ class PeopleController < ApplicationController
     end
     
     def breadcrumbs
-      if @division.nil? && match_action?("people", "edit")
-        [
-          [I18n.t("layouts.navbar.my_profile").titlecase, edit_profile_path(@person), match_action?("people", "edit")]
-        ]
-      else
-        super + 
-        [
-          [I18n.t("layouts.navbar.people").titlecase, people_path(@division), match_action?("people", "index")], 
-          @person ? [@person.name, edit_person_path(@division, @person), not_action?("people", "index")] : nil
-        ].compact
-      end
+      [
+        [I18n.t("layouts.navbar.people").titlecase, people_path, action?("index")], 
+        @person ? [@person.name, edit_person_path(@person), !action?("index")] : nil
+      ].compact
     end
 end

@@ -114,8 +114,9 @@ class SupergroupsController < ApplicationController
       
       super + 
       [
-        [I18n.t("layouts.navbar.#{plural_klass}").titlecase, send("#{plural_klass}_path"), match_action?("supergroups", "index")], 
-        @supergroup ? [@supergroup.short_name, send("#{@klass.to_s.downcase}_path", [@division, @supergroup]), not_action?("supergroups", "index")] : nil
+        [I18n.t("layouts.navbar.#{plural_klass}").titlecase, send("#{plural_klass}_path"), action?("index")], 
+        @supergroup ? [@supergroup.short_name, send("#{@klass.to_s.downcase}_path", [@division, @supergroup]), action?("show", "edit")] : nil,
+        action?("new") ? [I18n.t("supergroups.index.new_supergroup", entity: I18n.t("supergroups.index.#{@klass.to_s.downcase}")), send("new_#{@klass.to_s.downcase}_path", [@division]), action?("new")] : nil
       ].compact
     end
 end

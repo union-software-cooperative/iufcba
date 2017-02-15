@@ -26,7 +26,9 @@ class ActionView::TestCase::TestController
 end
 
 RSpec.configure do |config|
-
+  config.before(:each, type: :view) do
+    self.view.lookup_context.prefixes << 'application'
+  end
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

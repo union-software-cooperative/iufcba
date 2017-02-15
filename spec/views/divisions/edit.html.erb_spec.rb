@@ -14,7 +14,7 @@ describe "divisions/edit" do
   it "renders the edit division form" do
     render
 
-    assert_select "form[action=?][method=?]", division_path(@division), "post" do
+    assert_select "form[action='#{division_path(@division)}'][method='post']" do
       assert_select "input#division_name[name=?]", "division[name]"
       assert_select "input#division_short_name[name=?]", "division[short_name]"
       assert_select "input#division_logo[name=?]", "division[logo]"
