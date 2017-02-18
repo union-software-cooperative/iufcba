@@ -4,7 +4,7 @@ describe PeopleController do
   describe "routing" do
 
     it "routes to #index" do
-      expect(get("/en/1/people")).to route_to("people#index", division_id: "1", locale: "en")
+      expect(get("/en/people")).to route_to("people#index", locale: "en")
     end
 
     #it "routes to #new" do
@@ -28,7 +28,7 @@ describe PeopleController do
     end
 
     it "routes to #destroy" do
-      expect(delete("/en/1/people/1")).to route_to("people#destroy", id: "1", division_id: "1", locale: "en")
+      expect(delete("/en/people/1")).to route_to("people#destroy", id: "1", locale: "en")
     end
 
   end

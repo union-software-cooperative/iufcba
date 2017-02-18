@@ -10,7 +10,9 @@
       </ul>
     </div>
   <% end %>
+  
   <%= render partial: 'form_fields', locals: { f: f } %>
+  
   <div class="actions">
     <%= f.submit value: t('.save_profile'), class: "btn btn-default" %>
   </div>

@@ -64,7 +64,9 @@ class DivisionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_division
-      @division = Division.find_by_short_name(params[:id])
+      # @division = Division.find_by_short_name(params[:id])
+      @division = Division::Translation.where(locale: I18n.locale)
+        .find_by_short_name(params[:id]).try(:globalized_model)
       @division ||= Division.find_by_id(params[:id])
       #not_found unless @division
     end
@@ -80,5 +82,12 @@ class DivisionsController < ApplicationController
     
     def expand_navbar?
       @expand_navbar = false
+    end
+    
+    def breadcrumbs
+      super + 
+      [
+        action?("new") ? [I18n.t('divisions.index.new_division'), new_division_path, true] : nil
+      ].compact
     end
 end

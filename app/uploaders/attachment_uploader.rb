@@ -17,9 +17,10 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
   
-  # downscale images to HD width or height 
-  process :set_content_type
+  # As of v0.11.0, the `mime-types` gem is a runtime dependency and the content type is set automatically. You no longer need to do this manually.
+  # process :set_content_type
   
+  # downscale (OR upscale!) images to HD width or height
   process resize_to_limit: [1280,1280], if: :image?
   process quality: 51, if: :jpeg?
 

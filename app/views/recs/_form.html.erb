@@ -1,4 +1,4 @@
-<%= form_for(@rec, url: recs_path(division_id: @division.id), :html => { class: "form"}) do |f| %>
+<%= form_for(@rec, url: recs_path, :html => { class: "form"}) do |f| %>
   <% if @rec.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@rec.errors.count, "error") %> prohibited this rec from being saved:</h2>
@@ -10,9 +10,10 @@
       </ul>
     </div>
   <% end %>
+  
   <div class="form-group">
     <%= f.label :attachment %><br>
-    <%= f.file_field :attachment %>
+    <%= f.file_field :attachment, class: "btn btn-default" %>
   </div>
   
   <div id="division-select2" class="form-group">
@@ -26,7 +27,7 @@
       },
       multiple: true,
       data: {
-        url: divisions_path,
+        url: divisions_path(division_id: nil),
       },
       class: "ac-select2-multi form-control",
       style: "width: 100%;"
@@ -34,16 +35,17 @@
   </div>
   
   <div class="form-group">
-    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company, division_id: @division.id), placeholder: "Please select a company.",
-        class: "small", :target => "_blank"%><br>
+    <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company),
+      class: "small", :target => "_blank"%><br/>
     <%= f.select :company_id, 
       selected_option(@rec.company),
       #options_for_select(Union.all.collect {|u| [u.name, u.id ]}, @rec.union_id) , 
       {
         include_blank: false,
       },
-      data: { 
-        url: companies_path(division_id: @division.id)
+      data: {
+        placeholder: t('.select_company'),
+        url: companies_path
       }, 
       class: "ac-select2 form-control", 
       style: "width: 100%;"
@@ -52,7 +54,8 @@
 
   <div class="form-group">
     <% if owner? %>
-      <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union, division_id: @division.id), class: "small", :target => "_blank"%><br>
+      <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union), 
+        class: "small", :target => "_blank"%><br/>
       <%= f.select :union_id, 
         selected_option(@rec.union),  
         {
@@ -60,7 +63,7 @@
         },
         data: { 
           placeholder: t('.select_union'),
-          url: unions_path(division_id: @division.id)
+          url: unions_path
         }, 
         class: "ac-select2 form-control", 
         style: "width: 100%;"
@@ -85,7 +88,7 @@
   </div>
   
   <div class="form-group">
-    <%= f.label :person_id %> <%=link_to "invite person", new_person_invitation_path, class: "small", :target => "_blank"%><br>
+    <%= f.label :person_id %> <%=link_to t(".invite_person"), new_person_invitation_path, class: "small", :target => "_blank"%><br>
     <%= f.select :person_id,
       selected_option(@rec.person),
       {
@@ -93,7 +96,7 @@
       },
       data: { 
         placeholder: t('.person_description'),
-        url: people_path(@division)
+        url: people_path
       }, 
       class: "ac-select2 form-control", 
       style: "width: 100%;"

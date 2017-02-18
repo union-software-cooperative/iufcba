@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 ready = ->
-  
+
   $('.switch').bootstrapSwitch();
   $('.ac-select2').each ->
     url = $(this).data('url')
@@ -91,3 +91,4 @@ ready = ->
   
 $(document).ready(ready);
 $(document).on('page:load', ready);
+$(document).on('turbolinks:load', ready);

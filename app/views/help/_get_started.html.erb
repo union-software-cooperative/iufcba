@@ -1,39 +1,38 @@
-<% if notice.present? %>
-  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
-<% end %>
-
-<div class="jumbotron text-center" style="padding-left:0px; padding-right:0px">
-  <div class="container" style="padding-left:0px; padding-right:0px;">
-  <div class="col-sm-2 hidden-xs">
-  <img src="<%=image_path('iuf_logo.png')%>" style="height:100%;x-overflow:hidden;">
-  </div>
-  <div class="col-sm-10">
-  <h1 class="no-left-margin no-right-margin text-right"><%= t('.lets_get_started') %></h1>
-  <p class="no-left-margin text-right no-right-margin"><%= t('.videos_might_help') %></p>
-  </div>
-  
+<!-- Getting Started -->
+<div class="jumbotron text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2 hidden-xs">
+        <img src="<%=image_path('iuf_logo.png')%>" class="img-responsive">
+      </div>
+      <div class="col-sm-10 text-right">
+        <h1><%= t('help.get_started.lets_get_started') %></h1>
+        <p class="text-right"><%= t('help.get_started.videos_might_help') %></p>
+      </div>
+    </div>
   </div>
 </div>
+
 <hr/>
-<div class="container">
+<div class="container" style="margin-bottom: 100px">
   <div class="row">
-  <div class="col-sm-4">
-  <h2 class="no-left-margin">Overview</h2>
-  <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCX19HYXZkVl80bk0/preview"></iframe>
-  </div>
-  </div>
-  <div class="col-sm-4">
-  <h2  class="no-left-margin">Get&nbsp;Started</h2>
-  <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCN2ZFeFlkSTE1ejQ/preview"></iframe>
-  </div>
-  </div>
-  <div class="col-sm-4">
-  <h2  class="no-left-margin">Agreements</h2>
-  <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCaEZsWHNrb0JQbjg/preview"></iframe>
-  </div>
-  </div>
+    <div class="col-sm-4">
+      <h2><%= t('.overview') %></h2>
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCX19HYXZkVl80bk0/preview"></iframe>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h2><%= t('.get_started') %></h2>
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCN2ZFeFlkSTE1ejQ/preview"></iframe>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h2><%= t('.agreements') %></h2>
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/0B2OH1LC53jmCaEZsWHNrb0JQbjg/preview"></iframe>
+      </div>
+    </div>
   </div>
 </div>

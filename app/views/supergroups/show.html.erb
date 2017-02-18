@@ -1,11 +1,11 @@
-<% if notice.present? %>
-  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
-<% end %>
-<div class="outer-row">
+<%= render 'notice' %>
+
+<div class="row">
   <div class="col-sm-8 col-sm-offset-2">
-    <div style="position:relative; float:right">
-    <%= link_to current_person.follows?(@supergroup) ? t('unfollow') : t('follow'), follow_polymorphic_path, class: "btn btn-primary supergroup-follow" %>  
+    <div class="text-right">
+      <%= link_to current_person.follows?(@supergroup) ? t('unfollow') : t('follow'), follow_polymorphic_path, class: "btn btn-primary btn-follow" %>
     </div>
+    
     <% if @supergroup.banner.present? %>
       <div class="banner-placeholder">
         <%=banner_image %>
@@ -13,7 +13,7 @@
       </div>
 
     <% else %>
-      <%=render 'show' %>
+      <%= render 'show' %>
     <% end %>
   </div>
 </div>

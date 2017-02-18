@@ -1,4 +1,5 @@
 module PostsHelper
+  # TODO I18n integration may require breaking up this string.
   def notification_indicator(post)
     result = ""
     assignee_id = nil

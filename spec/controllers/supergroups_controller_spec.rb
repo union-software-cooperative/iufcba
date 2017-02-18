@@ -161,6 +161,13 @@ shared_examples "a supergroup type" do |type|
           scoped_post :create, {type_sym => valid_attributes, type: type}
           expect(response).to redirect_to(Supergroup.last)
         end
+        
+        it "can assign multiple divisions" do
+          other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
+          scoped_post :create, { type_sym => valid_attributes.merge(divisions: [@division, other_division]), type: type }
+          expect(assigns(:supergroup).divisions.size).to eq(2)
+          expect(assigns(:supergroup).divisions).to include(@division, other_division)
+        end
       end
 
       describe "with invalid params" do

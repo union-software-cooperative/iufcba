@@ -2,21 +2,22 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-1
-2
-3
-	
+# 1
+# 2
+# 3
+  
 resize = ->
-	if $("body").width() < 768
-		$('.banner-link').text($('.banner-link').data("short-name"))
-	else
-		$('.banner-link').text($('.banner-link').data("name"))
-		
+  if $("body").width() < 768
+    $('.banner-link').text($('.banner-link').data("short-name"))
+  else
+    $('.banner-link').text($('.banner-link').data("name"))
+    
 $( window ).resize ->
-	resize()
+  resize()
 
 supergroup_ready = ->
-	resize()
+  resize()
 
 $(document).ready(supergroup_ready);
 $(document).on('page:load', supergroup_ready);
+$(document).on('turbolinks:load', supergroup_ready);

@@ -1,4 +1,4 @@
-<%= form_for(@division) do |f| %>
+<%= form_for(@division, html: { class: "form" }) do |f| %>
   <% if @division.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@division.errors.count, "error") %> prohibited this division from being saved:</h2>
@@ -22,7 +22,7 @@
   <div class="form-group">
     <%= f.label :logo, "Logo" %><br>
     <%= division_logo_image %>
-    <%= f.file_field :logo, class: "form-control", accept: 'image/jpeg,image/gif,image/png'  %>
+    <%= f.file_field :logo, class: "btn btn-default", accept: 'image/jpeg,image/gif,image/png'  %>
     <% if @division.logo.url.present? %>
       <%= f.check_box :remove_logo %>
       <small><%= f.label :remove_logo, t(".remove_logo") %></small>
@@ -35,10 +35,11 @@
   <div class="form-group">
     <%= f.label :colour2 %><br>
     <%= f.text_field :colour2, class: "form-control" %>
+    <div class="text-right">
+      <small><%= t('.use_dark_colour') %></small>
+    </div>
   </div>
   <div class="actions">
     <%= f.submit class: "btn btn-default" %>
   </div>
 <% end %>
-
-   

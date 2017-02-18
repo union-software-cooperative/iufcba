@@ -7,7 +7,7 @@ es:
     application:
       title: Convenios de la UITA
     navbar:
-      divisions: divisions
+      divisions: seccións # Google Translate of "divisions"
       agreements: convenios
       chat: chat
       unions: sindicatos
@@ -17,6 +17,9 @@ es:
       invite: invitar a alguien
       sign_out: cerrar sesión
       sign_in: iniciar sesión
+  application:
+    empty:
+      nothing_to_display: Nothing to display
   help:
     request_invites:
       new: # TODO model attributes?
@@ -26,6 +29,9 @@ es:
     get_started:
       lets_get_started: Comencemos
       videos_might_help: El sistema es muy sencillo, pero estos videos pueden ayudar
+      overview: Aspectos generales
+      get_started: Cómo empezar
+      agreements: Convenios
     intro:
       bringing_together: Donde se aúnan las afiliadas del sector lácteo de la UITA
       request_invitation: Solicite invitación
@@ -82,7 +88,30 @@ es:
     form:
       company_post_title: Post your questions or research here
       union_post_title: Publique fotos de su sindicato y actualizaciones aquí
+      rec_post_title: Post your questions or industrial action pics here
   recs:
+    index:
+      listing_agreements: Listado de convenios
+      new_agreement: Nuevo convenio
+    show:
+      expired_at: Expired %{date}
+      expiring_at: Expiring %{date}
+      commenced_at: Commenced %{date}
+      commencing_at: Commencing %{date}
+      multi_site: Más de una planta
+      coverage: Alcance
+      anti_precariat: Limita el trabajo eventual
+      health_and_safety: Salud y seguridad
+      grievance_handling: Gestión de reclamos / Solución de conflictos
+      specific_rights: Especifique derechos sindicales
+      other_provisions: Otras cláusulas y comentarios
+      nature_of_operation: Naturaleza de los productos
+      no_notes: No notes
+      none_specified: None specified
+    new:
+      title: Nuevo convenio
+    edit:
+      title: Editando convenio
     recs:
       agreement_or_expiry: Convenio / Vencimiento
       union: Sindicato
@@ -90,6 +119,8 @@ es:
     form:
       new_company: nuevo compañía
       new_union: nuevo sindicato
+      invite_person: invita a persona
+      select_company: Seleccione un compañía
       select_union: Seleccione un sindicato
       name_description: Describa el convenio, por ejemplo, Convenio de empresa entre Nestlé Australia (Planta de Tongara) y NUW, 2014
       person_description: Designe a una persona de contacto
@@ -105,6 +136,9 @@ es:
   supergroups:
     index:
       listing_supergroup: Listado de %{entity}
+      new_supergroup: Nuevo %{entity}
+      union: Sindicato
+      company: Compañía
       unions: sindicatos
       companies: compañías
       logo: Logo
@@ -120,14 +154,22 @@ es:
       permanently_delete: Borrar a esta %{entity} en forma permanente
       union: Sindicato
       company: Compañía
-  divisions: 
+  divisions:
+    index:
+      listing_divisions: Listado de seccións # Google Translate of "divisions"
+      new_division: Nuevo sección # Google Translate of "divisions"
+      get_started: ¿Primera vez? Toque aquí para una introducción. # Google Translate
+      logo: Logo
+      name: Nombre
     edit:
-      editing: Editing Divisions
-      permanently_delete: Permanently Delete This Division
+      editing: Editando sección # Google Translate of "divisions"
+      permanently_delete: Borrar a esta sección en forma permanente # Google Translate of "divisions"
       permanently_delete_confirm: Are you really really sure?
-      remove_logo: Remove logo
+      remove_logo: Eliminar logo
     new: 
-      new_division: Create Division 
+      new_division: Crear sección  # Google Translate of "divisions"
+    form:
+      use_dark_colour: Utilice un color oscuro o algún texto será difícil de leer # Google Translate
   helpers:
     label:
   gender: #Género
@@ -145,6 +187,7 @@ es:
       rec: convenio
       supergroup: organización
       union: sindicato
+      division: sección # Google Translate of "divisions"
     attributes:
       comment:
         # these fields are unlabelled, so translations go unused
@@ -174,12 +217,13 @@ es:
         body: Body
       rec:
         attachment: Documento del convenio
-        company_id: Company
-        union_id: Union
-        name: Name
-        person_id: Person
-        start_date: Fecha inicial del convenio
-        end_date: Agreement/Contract end date
+        divisions: Seccións # Google Translate
+        company_id: Compañía
+        union_id: Sindicato
+        name: Nombre
+        person_id: Persona
+        start_date: Fecha inicial del convenio # Google Translate?
+        end_date: Fecha final del convenio # Google Translate?
         multi_site: Más de una planta
         coverage: Alcance
         anti_precariat: Limita el trabajo eventual
@@ -198,6 +242,7 @@ es:
         other_provisions: Otras cláusulas y comentarios
         nature_of_operation: Naturaleza de los productos
       supergroup:
+        divisions: Seccións # Google Translate
         logo: Logo
         banner: Banner (estandarte)
         name: Nombre
@@ -210,21 +255,16 @@ es:
         name: Nombre
         short_name: Nombre de usuario
         logo: Logo
-        colour1: Colour 1
-        colour2: Colour 2
+        colour1: Color de fondo # Google Translate
+        colour2: Color del texto o del primero plano # Google Translate
       # union:
 
     # Browse: Navegar
     # Browse / No file selected: Examinar / No ha seleccionado un archivo 
-    # Get Started: Cómo empezar
     # Invited By: Invitado/a por
     # No file selected: No ha seleccionado un archivo
     # Not yet accepted: No aceptado todavía
-    # Overview: Aspectos generales
-    # Person invite person: Persona invita a persona
     # Send: Enviar
-    # Send an invitation: Enviar invitación
-    # Send invitation: Enviar invitación
     # Signed in successfully: Ingresó correctamente
     # Signed out successfully: Cerró sesión correctamente
     # Title: Cargo

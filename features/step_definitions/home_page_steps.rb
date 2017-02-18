@@ -26,8 +26,10 @@ Then(/^I see a list of "(.*?)"$/) do |items|
 end
 
 Then(/^I should see "(.*?)" branding$/) do |division|
-	division = Division.find_by_short_name(division)
-	page.should have_xpath("//img[@src=\"#{division.logo.url}\"]")
+  #division = Division.find_by_short_name(division)
+	division = Division::Translation.
+    find_by_short_name(division).try(:globalized_model)
+  page.should have_xpath("//img[@src=\"#{division.logo.url}\"]")
 	expect(page).to have_title "#{I18n.t('layouts.application.title')} - #{division.name}"
 end
 

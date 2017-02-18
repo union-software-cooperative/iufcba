@@ -20,12 +20,15 @@ ActiveRecord::Migration.maintain_test_schema!
 # Set locale for view specs, see https://github.com/rspec/rspec-rails/issues/255#issuecomment-2865917
 class ActionView::TestCase::TestController
   def default_url_options(options = {})
-    { locale: I18n.default_locale }
+    @division ||= FactoryGirl.create(:division)
+    { locale: I18n.default_locale, division_id: @division.short_name }.merge(options)
   end
 end
 
 RSpec.configure do |config|
-
+  config.before(:each, type: :view) do
+    self.view.lookup_context.prefixes << 'application'
+  end
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

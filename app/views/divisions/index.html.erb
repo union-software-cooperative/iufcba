@@ -1,24 +1,33 @@
-<% if notice.present? %>
-  <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
-<% end %>
+<%= render 'notice' %>
 
-<div class="col-sm-8 col-sm-offset-2"/>
-  <h1 class="row">Listing divisions</h1>
+<!-- Division Listing -->
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2" style="margin-bottom: 100px">
+    <p class="text-right"><%= link_to t('.get_started'), root_with_locale_path %></p>
+    <% if owner? -%>
+      <div class="text-right"><%= link_to t('.new_division'), new_division_path, class: "btn btn-default" %></div>
+    <% end -%>
+    
+    <h1><%= t('.listing_divisions') %></h1>
 
-  <br/>
+    <table class="table table-condensed table-striped box-shadow">
+      <thead>
+        <tr>
+          <th><%= t('.logo') %></th>
+          <th><%= t('.name') %></th>
+          <th></th>
+        </tr>
+      </thead>
 
-  <%= link_to t('.new_division'), new_division_path, class: "btn btn-default pull-right" if owner? %>
-
-  <br/>
-
-  <% @divisions.each do |division| %>
-    <div class="row">
-      <h2>
-        <%= image_tag division.logo.url || image_path('iuf_logo.png'), class: "division-landing-logo-image" %>
-        <%= link_to division.name, agreements_path(division), class: "division-landing-link" %>
-        <%= link_to '', edit_division_path(division), class: "glyphicon glyphicon-pencil division-landing-edit-link" if owner? %>
-      </h2>
-      <hr/>
-    </div>
-  <% end %>
+      <tbody>    
+        <% @divisions.each do |division| %>
+          <tr class="valign-mid">
+            <td><%= image_tag division.logo.url || image_path('iuf_logo.png'), class: "img-responsive", style: "max-width: 100px;" %></td>
+            <td><%= link_to division.name, agreements_path(division_id: division.short_name) %></td>
+            <td><%= link_to '', edit_division_path(division), class: "glyphicon glyphicon-pencil division-landing-edit-link" if owner? %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

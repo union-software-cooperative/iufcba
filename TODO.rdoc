@@ -26,7 +26,7 @@ DONE Only IUF can create, edit and delete division
 
 DONE hide division edit buttons for non-iuf
 
-Globalize division
+DONE Globalize division
 
 NOT TESTED Language picker
 
@@ -44,9 +44,9 @@ DONE division brand
 
 DONE IUF BRAND for unscoped pages
 
-NOT TESTED companies can one or more divisions
+DONE companies can have one or more divisions
 
-NOT TESTED unions can have one or more divisions
+DONE unions can have one or more divisions
 
 DONE agreements can have one or more divisions
 
@@ -54,12 +54,12 @@ NOT TESTED Anyone can choose any existing division when creating a union, compan
 
 DONE defaults to current division when creating companies, unions and agreements
 
-NOT TESTED Delete button on edit division, with prominent warning
+DONE Delete button on edit division, with prominent warning
 
 DONE hacker can't post delete division
 
 DONE breadcrumbs
 
-NOT DONE default route to divisions list, move getting started
+NOT TESTED default route to divisions list, move getting started
 
 -- TODO Migration and deploy scope --

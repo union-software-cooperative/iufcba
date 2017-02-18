@@ -1,7 +1,7 @@
 <% if notice.present? %>
   <p id="notice" class="alert alert-success text-center"><strong><%= notice %></strong></p>
 <% end %>
-<div class="outer-row">
+<div class="row">
   <div class="col-sm-8 col-sm-offset-2">
     <div class="rec">
       <div class="jumbotron">
@@ -24,7 +24,7 @@
         </h1>
         <p>
           <%= link_to "<span class='glyphicon glyphicon-paperclip'/>".html_safe, @rec.attachment_url if @rec.attachment_url%>
-          <%="#{@rec.end_date < Time.now ? "Expired" : "Expiring"} #{I18n.l @rec.end_date, :format => :long}"%>
+          <%= t(".#{@rec.end_date < Time.now ? "expired" : "expiring"}_at", date: I18n.l(@rec.end_date, :format => :long)) %>
         </p>
         <p>
           <% @rec.nature_of_operation.each do |tag| %>
@@ -32,10 +32,10 @@
           <% end %>  
         </p>
         <h2>
-          <%=@rec.name%> - <%="#{@rec.start_date < Time.now ? "commenced" : "commencing"} #{I18n.l @rec.start_date, :format => :long}"%>
+          <%=@rec.name%> - <%= t(".#{@rec.start_date < Time.now ? "commenced" : "commencing"}_at", date: I18n.l(@rec.start_date, :format => :long)) %>
         </h2>
         <p class="form-group">
-          <%= label_tag :check_box, "multi site" %><br>
+          <%= label_tag :check_box, t('.multi_site') %><br>
           <%= check_box_tag "rec_multi_site", 1, @rec.multi_site, class: "switch", readonly: true, :data => l10n_switch_data %>
         </p>
         <p><%=@rec.coverage%></p>
@@ -47,58 +47,58 @@
     </div>
     <hr/>
 
-    <div class="row" style="margin-left: 0px; margin-right:0px;">
+    <div class="row">
       <div class="col-sm-5 col-sm-offset-1">
         <div class="form-group">
-          <h2 style="margin-left:0px;"><%=t("helpers.label.rec.grievance_handling")%></h2>
-          <%= check_box_tag "rec_greivance_handling", 1, @rec.grievance_handling, class: "switch", readonly: true, :data => l10n_switch_data %>
+          <h2 style="margin-left:0px;"><%=t(".grievance_handling")%></h2>
+          <%= check_box_tag "rec_grievance_handling", 1, @rec.grievance_handling, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.grievance_handling == false || @rec.grievance_handling.blank? ? "" : "#{@rec.grievance_handling_page}:" %>
-            <%= @rec.grievance_handling == false || @rec.grievance_handling_clause.blank? ? "No notes" : @rec.grievance_handling_clause %>
+            <%= @rec.grievance_handling == false || @rec.grievance_handling_clause.blank? ? t('.no_notes') : @rec.grievance_handling_clause %>
           </p>
         </div>
       </div>
 
       <div class="col-sm-5">
         <div class="form-group">
-          <h2 style="margin-left:0px; margin-right:0px;"><%=t("helpers.label.rec.health_and_safety")%></h2>
+          <h2 style="margin-left:0px; margin-right:0px;"><%=t(".health_and_safety")%></h2>
           <%= check_box_tag "rec_health_and_safety", 1, @rec.health_and_safety, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.health_and_safety == false || @rec.health_and_safety_page.blank? ? "" : "#{@rec.health_and_safety_page}:" %>
-            <%= @rec.health_and_safety == false  || @rec.health_and_safety_clause.blank? ? "No notes" : @rec.health_and_safety_clause %>
+            <%= @rec.health_and_safety == false  || @rec.health_and_safety_clause.blank? ? t('.no_notes') : @rec.health_and_safety_clause %>
           </p>
         </div>
       </div>
     </div>
-    <div class="row"  style="margin-left: 0px; margin-right:0px;">
+    <div class="row">
       <div class="col-sm-5 col-sm-offset-1">
         <div class="form-group">
-          <h2 style="margin-left:0px;"><%=t("helpers.label.rec.anti_precariat")%></h2>
+          <h2 style="margin-left:0px;"><%=t(".anti_precariat")%></h2>
           <%= check_box_tag "rec_anti_precariat", 1, @rec.anti_precariat, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.anti_precariat == false || @rec.anti_precariat_page.blank? ? "" : "#{@rec.anti_precariat_page}:" %>
-            <%= @rec.anti_precariat == false || @rec.anti_precariat_clause.blank? ? "No notes" : @rec.anti_precariat_clause %>
+            <%= @rec.anti_precariat == false || @rec.anti_precariat_clause.blank? ? t('.no_notes') : @rec.anti_precariat_clause %>
           </p>
         </div>
       </div>
       <div class="col-sm-5">
         <div class="form-group">
-          <h2 style="margin-left:0px;"><%=t("helpers.label.rec.specific_rights")%></h2>
+          <h2 style="margin-left:0px;"><%=t(".specific_rights")%></h2>
           <%= check_box_tag "rec_specific_rights", 1, @rec.specific_rights, class: "switch", readonly: true, :data => l10n_switch_data %>
           <p>
             <%= @rec.specific_rights == false || @rec.specific_rights_page.blank? ? "" : "#{@rec.specific_rights_page}:" %>
-            <%= @rec.specific_rights == false || @rec.specific_rights_clause.blank? ? "No notes" : @rec.specific_rights_clause %>
+            <%= @rec.specific_rights == false || @rec.specific_rights_clause.blank? ? t('.no_notes') : @rec.specific_rights_clause %>
           </p>
         </div>
       </div>
     </div>
 
-    <div class="row" style="margin-left: 0px; margin-right:0px;">
+    <div class="row">
       <div class="col-sm-5 col-sm-offset-1"> 
         <div class="form-group"> 
-          <h2 style="margin-left:0px;"><%=t("helpers.label.rec.other_provisions")%></h2> 
+          <h2 style="margin-left:0px;"><%=t(".other_provisions")%></h2> 
             <p>
-              <%= @rec.other_provisions.blank? ? "None Specified" : @rec.other_provisions %>
+              <%= @rec.other_provisions.blank? ? t('.none_specified') : @rec.other_provisions %>
             </p>
         </div>
       </div>

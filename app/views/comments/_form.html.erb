@@ -1,11 +1,9 @@
-<div class="new_comment">
-  <%= form_for(@comment, html: {class: "form"}) do |f| %>
-    <%= current_person.display_name%>  
-    <div class="form-group">
-      <%= f.text_field :body, placeholder: "Leave a comment.", class: "form-control comment_body" %>
-    </div>
-    <%= f.hidden_field :post_id %>
-    <%= f.hidden_field :person_id %>
-    <%= f.submit value: "Post", class: "btn btn-default" %>
-  <% end %>
-</div>
+<%= form_for(@comment, html: { class: "form new-comment" }) do |f| %>
+  <%= current_person.display_name %>  
+  <div class="form-group">
+    <%= f.text_field :body, placeholder: "Leave a comment.", class: "form-control comment_body" %>
+  </div>
+  <%= f.hidden_field :post_id %>
+  <%= f.hidden_field :person_id %>
+  <%= f.submit value: "Post", class: "btn btn-default" %>
+<% end %>

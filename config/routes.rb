@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   
   scope ":locale" do
     devise_for :people, :controllers => { :invitations => 'people/invitations' }
+    resources :people, only: [:index, :edit, :update, :destroy] do # people can only be invited, and edited (no readonly view)
+      member do 
+        get 'compose_email'
+        patch 'send_email'
+      end
+    end 
     resources :people, only: [:edit, :update], as: 'profile'
     
     scope ":division_id" do 
@@ -20,13 +26,6 @@ Rails.application.routes.draw do
           get 'follow'
         end
       end
-      
-      resources :people, except: [:new, :show] do # people can only be invited, and edited (no readonly view)
-        member do 
-          get 'compose_email'
-          patch 'send_email'
-        end
-      end 
 
       resources :recs do
         member do
@@ -38,7 +37,6 @@ Rails.application.routes.draw do
       resources :agreements, controller: :recs, type: 'Rec'
     end
 
-
     resources :divisions, except: [:show]
     
     resource :help, only: [:show] do
@@ -46,8 +44,9 @@ Rails.application.routes.draw do
     end
     # root "help#show"
     resources :unions, only: [:index], controller: :supergroups, type: 'Union', constraints: {:format => 'json'}, as: 'union_api'
+    root "help#show", as: "root_with_locale"
   end
-  root "help#show"
+  root "application#pass_to_locale_scope"
   
 
   # The priority is based upon order of creation: first created -> highest priority.

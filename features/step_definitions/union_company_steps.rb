@@ -1,6 +1,6 @@
 Given(/^in the "(.*?)" division, there's a "(.*?)" titled "(.*?)"$/) do |division, entity, title|
 	entity = FactoryGirl.create(entity.to_sym, name: title)
-	entity.divisions << Division.find_by_short_name(division)
+	entity.divisions << Division::Translation.find_by_short_name(division).try(:globalized_model)
 	entity.save
 end
 

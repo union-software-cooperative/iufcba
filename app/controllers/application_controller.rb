@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
 
-  before_action :authenticate_person!
+  before_action :authenticate_person!, except: [:pass_to_locale_scope]
   before_action :expand_navbar?
   before_action :set_division
   before_action :set_locale
@@ -11,6 +11,14 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  def pass_to_locale_scope
+    redirect_to root_with_locale_path
+  end
+  
+  def after_sign_in_path_for(person)
+    divisions_path
+  end
+
   def default_url_options(options={})
     result = {} #{ locale: I18n.locale }
     [:locale, :division_id].each { |p| result.merge!(p => params[p]) if params[p] }
@@ -19,7 +27,9 @@ class ApplicationController < ActionController::Base
 
   def set_division
     if params[:division_id]
-      @division = Division.where("short_name ilike ?", params[:division_id]).first
+      @division = Division::Translation.where(locale: I18n.locale).
+        find_by_short_name(params[:division_id]).try(:globalized_model)
+      # @division = Division.where("short_name ilike ?", params[:division_id]).first
       @division ||= Division.find_by_id(params[:division_id]) 
       not_found unless @division
     end
@@ -41,6 +51,7 @@ class ApplicationController < ActionController::Base
     # Order of provided_locales array determines precedence!
     I18n.locale = provided_locales.find(&supported_locales.method(:include?))
     
+    # redirect_to url_for(params.merge(locale: I18n.locale, only_path: true)) unless params[:locale]
     params[:locale] = I18n.locale
   end
   
@@ -53,8 +64,8 @@ class ApplicationController < ActionController::Base
     [
       [
         I18n.t("layouts.navbar.divisions").titlecase, 
-        divisions_path, 
-        match_action?("divisions", "index")
+        divisions_path(division_id: nil),
+        (controller?("divisions") && action?("index"))
       ],
       @division ? [
         @division.short_name.titlecase, 
@@ -68,13 +79,21 @@ class ApplicationController < ActionController::Base
     @breadcrumbs = breadcrumbs
   end
   
-  def match_action?(controller, action)
-    params[:controller] == controller && params[:action] == action
+  def controller?(controller)
+    params[:controller] == controller
   end
   
-  def not_action?(controller, action)
-    params[:controller] == controller && params[:action] != action
+  def action?(*actions)
+    actions.include?(params[:action])
   end
+  
+  # def match_action?(controller, action)
+  #   params[:controller] == controller && params[:action] == action
+  # end
+  # 
+  # def not_action?(controller, action)
+  #   params[:controller] == controller && params[:action] != action
+  # end
   
   def format_html?
     request.format.html?

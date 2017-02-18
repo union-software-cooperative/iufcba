@@ -1,5 +1,7 @@
+<%= render 'notice' %>
+
 <% if person_signed_in? %>
-	<%= render "get_started" %>
+  <%= render "get_started" %>
 <% else %>
-	<%= render "intro" %>
+  <%= render "intro" %>
 <% end %>
