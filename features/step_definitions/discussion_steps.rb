@@ -1,12 +1,12 @@
 
 Given(/^I'm looking at an agreement titled "(.*?)"$/) do |title|
 	agreement = FactoryGirl.create(:authorized_agreement, name: title )
-	visit rec_path(agreement, division_id: agreement.divisions.first.id)
+	visit rec_path(agreement, division_id: agreement.divisions.first.id, locale: :en)
 end
 
 Given(/^I'm looking at a company titled "(.*?)"$/) do |title|
 	company = FactoryGirl.create(:company, name: title )
-	visit company_path(company, division_id: company.divisions.first.id)
+	visit company_path(company, division_id: company.divisions.first.id, locale: :en)
 end
 
 Then(/^I can post "(.*?)"$/) do |post_body|
@@ -38,7 +38,7 @@ Given(/^I'm looking at an agreement with "(.*?)" posting "(.*?)"$/) do |who, pos
 	agreement = FactoryGirl.create(:authorized_agreement, name: title )
 	
 	post = FactoryGirl.create(:post, person: get_person(who), parent: agreement, body: post_body)
-	visit rec_path(agreement, division_id: agreement.divisions.first.id)
+	visit rec_path(agreement, division_id: agreement.divisions.first.id, locale: :en)
 end
 
 
@@ -46,7 +46,7 @@ Given(/^I'm on an agreement with "(.*?)" posting "(.*?)" and "(.*?)" comment "(.
 	agreement = FactoryGirl.create(:authorized_agreement, name: title )
 	post = FactoryGirl.create(:post, person: get_person(who), parent: agreement, body: post_body)
 	comment = FactoryGirl.create(:comment, person: get_person(comment_who), post: post, body: comment_body)
-	visit rec_path(agreement, division_id: agreement.divisions.first.id)
+	visit rec_path(agreement, division_id: agreement.divisions.first.id, locale: :en)
 end
 
 Then(/^I can delete the posting "(.*?)"$/) do |post_body|
@@ -92,7 +92,7 @@ end
 
 Then(/^I can't force delete the posting "(.*?)"$/) do |post_body|
 	post = Post.find_by_body post_body
-	url = post_path post, division_id: post.parent.divisions.first.id
+	url = post_path post, division_id: post.parent.divisions.first.id, locale: :en
 	page.driver.submit :delete, url, {}
 	page.should have_content("You are not authorized to do that")
 	page.should have_content(post_body)
@@ -101,7 +101,7 @@ end
 Then(/^I can't force delete the comment "(.*?)" from "(.*?)"$/) do |comment_body, post_body|
 	post = Post.find_by_body post_body
 	comment = post.comments.find_by_body comment_body
-	url = comment_path comment, division_id: post.parent.divisions.first.id
+	url = comment_path comment, division_id: post.parent.divisions.first.id, locale: :en
 	page.driver.submit :delete, url, {}
 	page.should have_content("You are not authorized to do that")
 	page.should have_content(post_body)

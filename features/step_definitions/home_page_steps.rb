@@ -32,6 +32,6 @@ Then(/^I should see "(.*?)" branding$/) do |division|
 end
 
 Then(/^I should see application branding$/) do
-	page.should have_xpath("//img[@src=\"/assets/iuf_logo.png\"]")
+  page.should have_xpath("//img[@src=\"/images/iuf_logo.png\"]")
 	expect(page).to have_title I18n.t('layouts.application.title')
 end

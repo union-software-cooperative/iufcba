@@ -24,7 +24,7 @@
         </h1>
         <p>
           <%= link_to "<span class='glyphicon glyphicon-paperclip'/>".html_safe, @rec.attachment_url if @rec.attachment_url%>
-          <%="#{@rec.end_date < Time.now ? "Expired" : "Expiring"} #{I18n.l @rec.en_ddate, :format => :long}"%>
+          <%="#{@rec.end_date < Time.now ? "Expired" : "Expiring"} #{I18n.l @rec.end_date, :format => :long}"%>
         </p>
         <p>
           <% @rec.nature_of_operation.each do |tag| %>

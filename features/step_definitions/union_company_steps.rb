@@ -9,7 +9,7 @@ Given(/^there's a "(.*?)" titled "(.*?)"$/) do |entity, title|
 end
 
 When(/^I'm on the "(.*?)" division "(.*?)" list$/) do |division, entity|
-	visit polymorphic_path(entity, division_id: division)
+	visit polymorphic_path(entity, division_id: division, locale: :en)
 end
 
 Then(/^I can view the "(.*?)" titled "(.*?)"$/) do |entity_name, title|

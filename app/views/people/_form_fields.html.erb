@@ -73,7 +73,7 @@
   </div>
 
 
-  <div class="form-group">
+  <div class="form-group" id="person_union_select2">
     <% if owner? %>
       <%= f.label :union_id %> 
       <% #link_to t('.new_union'), new_polymorphic_path(Union, division_id: (@division || owner_union.divisions.first).id), class: "small", :target => "_blank" %>

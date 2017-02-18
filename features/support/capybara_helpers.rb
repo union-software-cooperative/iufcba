@@ -13,9 +13,14 @@ module CapybaraHelpers
 	  	first("##{selector[:div]} .select2-search__field").set(value)
 	  end
 
+	  if selector[:argh]
+	  	first("##{selector[:argh]} .select2-selection").click
+	  	all('input').last.set(value)
+		end
+
 	  if selector[:label]
 	  	field_labeled(selector[:label]).click 
-			all('input').last.set(value)
+	  	all('input').last.set(value)
 		end
 
 		if selector[:placeholder]
