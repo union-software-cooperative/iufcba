@@ -4,25 +4,27 @@
 
 <p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token, locale: I18n.locale) %></p>
 
-<h1>What's this for?</h1>
+<h1><%= t("devise.mailer.invitation_instructions.heading") %></h1>
 <p>
-  This website has been put together by the IUF and the NUW Australia to help IUF brewery affiliates share collective bargaining information in major brewery companies and communicate more effectively amongst themselves. 
+   <%= t("devise.mailer.invitation_instructions.explanation") %>
 </p>
 
-<h1>Interested? What do I do next?</h1>
+<h1><%= t("devise.mailer.invitation_instructions.interested") %></h1>
 <ol>
-  <li>Click <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token, locale: I18n.locale) %> and setup your account/contact details</li>
-  <li>Click the follow button on companies, agreements or other unions, then keep an eye out for relevant notifications in your email inbox</li>
+  <li>
+  	<%= t("devise.mailer.invitation_instructions.step1", url:  link_to(t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token, locale: I18n.locale))).html_safe %>
+</li>
+  <li><%= t("devise.mailer.invitation_instructions.step2") %></li>
 </ol>
 
-<h1>Not interested?</h1>
-<p>If you are not the right person, please reply and tell me who is, so I can invite them instead.  Or accept the invite, then <%= link_to 'invite them yourself', new_person_invitation_url(locale: I18n.locale) %>.  Thanks.</p>
+<h1><%= t("devise.mailer.invitation_instructions.not_interested") %></h1>
+<p><%= t("devise.mailer.invitation_instructions.somebody_else", url: link_to(t("devise.mailer.invitation_instructions.invite_temp_yourself"), new_person_invitation_url(locale: I18n.locale))).html_safe %></p>
 <p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>
 
-In Solidarity,<br/>
+<%= t("devise.mailer.invitation_instructions.in_solidarity")%><br/>
 <%= @resource.invited_by.display_name %><br/>
 <%= "#{@resource.invited_by.title}<br/>".html_safe if @resource.invited_by.title.present?%>
 <%= "#{@resource.invited_by.union.name}<br/>".html_safe %>
 
 <br/>
-p.s. This message was generated from <%=root_url%> 
+<%= t("devise.mailer.invitation_instructions.ps")%>

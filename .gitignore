@@ -25,3 +25,4 @@ i18n_report
 *.crt
 /keys/*
 .floo*
+/backup
