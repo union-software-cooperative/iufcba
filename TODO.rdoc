@@ -16,11 +16,11 @@ DONE unions index api, returns all if unscoped
 
 DONE division index api
 
-DONE Landing page for divisions, 
+DONE Landing page for divisions,
 
 DONE all divisions are shown for all users
 
-DONE selecting a division changes the scope.  
+DONE selecting a division changes the scope.
 
 DONE Only IUF can create, edit and delete division
 
@@ -61,5 +61,7 @@ DONE hacker can't post delete division
 DONE breadcrumbs
 
 NOT TESTED default route to divisions list, move getting started
+
+NOT TESTED person languages multi select doesn't try and use an AJAX fetch
 
 -- TODO Migration and deploy scope --

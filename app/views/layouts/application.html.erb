@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-   
+
 
 
   <title><%= page_title %></title>
@@ -38,21 +38,5 @@
       </ul>
     </div>
   </footer>
-
-  <% if person_signed_in? %>
-    <script type="text/javascript">
-      function refresh_chat_icon(message) {
-        $(".chat-badge").html(Object.keys(message.data).length);
-      }
-      function flash_message(message) {
-        flash = '<div class="alert alert-info" style="z-index: 1000; position:fixed; right: 10px; top: 10px; box-shadow: 0 0 30px black;"><a href="/messages">' + message.eval + '</a></div>';
-        $(flash).appendTo("#message-flash-zone").slideDown('fast').delay(3000).slideUp('slow');
-        localise_time();
-        $.playSound('/public/bleep');
-      }
-    </script>
-    <%= subscribe_to "/presence", person_id: current_person.id, person_handle: current_person.display_name, callback: 'refresh_chat_icon' %>
-    <%= subscribe_to "/messages/new", person_id: current_person.id, person_handle: current_person.display_name, callback: 'flash_message' unless params[:controller] == 'messages'%>
-  <% end %>
 </body>
 </html>

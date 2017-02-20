@@ -25,35 +25,35 @@ module ApplicationHelper
     end
   end
 
-  def profile_thumb(person)		
+  def profile_thumb(person)
     unless person.attachment.blank?
       image_tag person.attachment.thumb.url, class: "profile_thumb"
     else
       "<span class=\"glyphicon glyphicon-user\"></span>".html_safe
     end
   end
-  
+
   def l10n_switch_data(size: 'small', on_color: 'success')
     { :size => size, 'on-color' => on_color, 'on-text' => t('switch_yes'), 'off-text' => t('switch_no') }
   end
 
-  def profile_logo(person)		
+  def profile_logo(person)
     unless person.attachment.blank?
       image_tag person.attachment.quote.url, class: "profile_logo"
     end
   end
 
   def pencil_button
-    "<span class=\"small glyphicon glyphicon-pencil\"/>".html_safe 
+    "<span class=\"small glyphicon glyphicon-pencil\"/>".html_safe
   end
 
   def gender_options(person)
     options_for_select(
       ([
-        t('gender.male'), 
+        t('gender.male'),
         t('gender.female'),
         t('gender.other')
-        ]).uniq, 
+        ]).uniq,
       person.gender
     )
   end
@@ -67,7 +67,7 @@ module ApplicationHelper
   def owner?
     return false unless current_person.present?
     return false unless owner_union.present?
-    current_person.union.id == owner_union.id 
+    current_person.union.id == owner_union.id
   end
 
   def iso_languages
@@ -96,14 +96,14 @@ module ApplicationHelper
         true
       else
         false
-      end 
+      end
     else
       false
     end
   end
 
   def selected_option(entity)
-    entity ? 
+    entity ?
       options_for_select([[entity.name, entity.id]], entity.id) :
       []
   end
@@ -113,7 +113,7 @@ module ApplicationHelper
   end
 
   def local_time_tag(t)
-  	content_tag(:span, I18n.l(t, format: :long), data: { time: t.iso8601 })
+    content_tag(:span, I18n.l(t, format: :long), data: { time: t.iso8601 })
   end
 
   # def method_missing(m, *args, &block)
@@ -127,14 +127,14 @@ module ApplicationHelper
   #   end
   #   send(m, *args, &block)
   # end
-  
+
   def page_colours
     bg = ENV["background_color"]
     bg = @division.colour1 if @division && @division.colour1
 
     fg = ENV["foreground_color"]
     fg = @division.colour2 if @division && @division.colour2
-    
+
     <<~CSS.html_safe
       <style>
         body {

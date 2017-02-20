@@ -4,12 +4,12 @@ class SupergroupsController < ApplicationController
   before_action :forbid, only: [:new, :create, :edit, :update]
 
   include SupergroupsHelper
-  
+
   # GET /supergroups
   # GET /supergroups.json
   def index
     klass = (params[:type] || "Supergroup").downcase.pluralize
-    
+
     if @division
       @supergroups = @division.send(klass).filter(params.slice(:name_like)).order(:name, :id)
     else
@@ -97,24 +97,24 @@ class SupergroupsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def supergroup_params
       params[supergroup]['type'] = @klass.name
-      result = params.require(supergroup).permit(:name, :type, :www, :banner, 
-        :logo, :short_name, :remove_banner, :remove_logo, :country, 
+      result = params.require(supergroup).permit(:name, :type, :www, :banner,
+        :logo, :short_name, :remove_banner, :remove_logo, :country,
         :divisions => [])
       result[:divisions] = Division.find(result[:divisions].reject(&:blank?)) if result[:divisions]
-      
+
       result
     end
 
     def forbid
-      return forbidden unless (owner? || params[:id] == current_person.union.id.to_s)
+      return forbidden unless (@klass == Company || owner? || params[:id] == current_person.union.id.to_s)
     end
-    
+
     def breadcrumbs
       plural_klass = @klass.to_s.pluralize.downcase
-      
-      super + 
+
+      super +
       [
-        [I18n.t("layouts.navbar.#{plural_klass}").titlecase, send("#{plural_klass}_path"), action?("index")], 
+        [I18n.t("layouts.navbar.#{plural_klass}").titlecase, send("#{plural_klass}_path"), action?("index")],
         @supergroup ? [@supergroup.short_name, send("#{@klass.to_s.downcase}_path", [@division, @supergroup]), action?("show", "edit")] : nil,
         action?("new") ? [I18n.t("supergroups.index.new_supergroup", entity: I18n.t("supergroups.index.#{@klass.to_s.downcase}")), send("new_#{@klass.to_s.downcase}_path", [@division]), action?("new")] : nil
       ].compact

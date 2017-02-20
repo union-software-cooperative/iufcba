@@ -3,7 +3,7 @@
 <!-- Union or Company Listing -->
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
-    <% if owner? -%>
+    <% if owner? || @klass == Company -%>
       <div class="text-right">
         <%= link_to t('.new_supergroup', entity: t("supergroups.new.#{supergroup.downcase}")), new_polymorphic_path(@klass), class: "btn btn-default" %>
       </div>
@@ -25,7 +25,7 @@
         <tbody>
           <% @supergroups.each do |supergroup| %>
             <tr class="valign-mid">
-              <td> 
+              <td>
                 <% if supergroup.logo.url.blank? %>
                   <strong><%= supergroup.short_name || supergroup.name %></strong>
                 <% else %>

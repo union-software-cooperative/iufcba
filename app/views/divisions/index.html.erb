@@ -3,11 +3,11 @@
 <!-- Division Listing -->
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2" style="margin-bottom: 100px">
-    <p class="text-right"><%= link_to t('.get_started'), root_with_locale_path %></p>
+    <p class="text-right"><%= link_to t('.get_started'), root_with_locale_path, class: "upsize" %></p>
     <% if owner? -%>
       <div class="text-right"><%= link_to t('.new_division'), new_division_path, class: "btn btn-default" %></div>
     <% end -%>
-    
+
     <h1><%= t('.listing_divisions') %></h1>
 
     <table class="table table-condensed table-striped box-shadow">
@@ -19,7 +19,7 @@
         </tr>
       </thead>
 
-      <tbody>    
+      <tbody>
         <% @divisions.each do |division| %>
           <tr class="valign-mid">
             <td><%= image_tag division.logo.url || image_path('iuf_logo.png'), class: "img-responsive", style: "max-width: 100px;" %></td>

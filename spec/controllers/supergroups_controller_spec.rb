@@ -18,24 +18,23 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-
 shared_examples "a supergroup type" do |type|
   let(:type) {type}
   let(:type_sym) {type.downcase.to_sym}
 
   let(:valid_attributes) { { "name" => "name", "short_name" => "sn", "type"=> type } }
-  
+
   before(:all) do
     @division = FactoryGirl.create(:division)
   end
-  
+
   after(:all) do
     @division.destroy
   end
-  
-  describe "Security" do 
 
-    before(:all) do 
+  describe "Security" do
+
+    before(:all) do
       @admin = admin
     end
 
@@ -43,35 +42,45 @@ shared_examples "a supergroup type" do |type|
       login_person
 
       describe "POST create" do
-        it "won't allow union or company creation" do
+        it "allows creation of companies but not unions" do
           scoped_post :create, {type_sym => valid_attributes, type: type}
-          expect(response).to be_forbidden
+          if type == "Union"
+            expect(response).to be_forbidden
+          elsif type == "Company"
+            expect(response).to redirect_to(assigns(:supergroup))
+          end
         end
       end
 
       describe "edit/update" do
-        it "won't allow edit of unions or companies unless my own" do
+        it "allows edit companies, but not unions unless owned" do
           supergroup = Supergroup.create! valid_attributes
-          scoped_get :edit, {:id => supergroup.to_param, type: type }
-          expect(response).to be_forbidden
+          scoped_get :edit, { id: supergroup.to_param, type: type }
 
           if type == "Union"
+            expect(response).to be_forbidden
+
             supergroup = subject.current_person.union
-            scoped_get :edit, {:id => supergroup.to_param, type: type }
-            expect(response).to render_template(:edit)   
-          end       
+            scoped_get :edit, { id: supergroup.to_param, type: type }
+            expect(response).to render_template(:edit)
+          elsif type == "Company"
+            expect(response).to render_template(:edit)
+          end
         end
 
-        it "won't allow update of unions or companies unless my own" do
+        it "allows update companies, but not unions unless owned" do
           supergroup = Supergroup.create! valid_attributes
-          scoped_post :edit, {:id => supergroup.to_param, name: "blah", type: type }
-          expect(response).to be_forbidden
+          scoped_put :update, { id: supergroup.to_param, type_sym => { name: "blah" }, type: type }
 
           if type == "Union"
+            expect(response).to be_forbidden
+
             supergroup = subject.current_person.union
-            scoped_put :update, { :id => supergroup.to_param, type_sym => {name: "blah"}, type: type }
-            expect(response).to redirect_to(supergroup)  
-          end        
+            scoped_put :update, { id: supergroup.to_param, type_sym => {name: "blah"}, type: type }
+            expect(response).to redirect_to(supergroup)
+          elsif type == "Company"
+            expect(response).to redirect_to(supergroup)
+          end
         end
       end
     end
@@ -90,9 +99,9 @@ shared_examples "a supergroup type" do |type|
         supergroup_out.divisions << other_division
 
         scoped_get :index, {type: type}
-        
-        expect(assigns(:supergroups)).to include(supergroup_in) 
-        expect(assigns(:supergroups)).not_to include(supergroup_out) 
+
+        expect(assigns(:supergroups)).to include(supergroup_in)
+        expect(assigns(:supergroups)).not_to include(supergroup_out)
       end
     end
 
@@ -108,8 +117,8 @@ shared_examples "a supergroup type" do |type|
 
           get :index, {type: type, format: "json", locale: I18n.default_locale}
 
-          expect(assigns(:supergroups)).to include(supergroup_in) 
-          expect(assigns(:supergroups)).to include(supergroup_out) 
+          expect(assigns(:supergroups)).to include(supergroup_in)
+          expect(assigns(:supergroups)).to include(supergroup_out)
         end
       end
     end
@@ -127,10 +136,10 @@ shared_examples "a supergroup type" do |type|
         scoped_get :new, {type: type}
         expect(assigns(:supergroup)).to be_a_new(Supergroup)
       end
-      
+
       it "assigns @division into @supergroup's divisions" do
         scoped_get :new, { type: type }
-        
+
         expect(assigns(:supergroup).divisions).to include(@division)
       end
     end
@@ -161,7 +170,7 @@ shared_examples "a supergroup type" do |type|
           scoped_post :create, {type_sym => valid_attributes, type: type}
           expect(response).to redirect_to(Supergroup.last)
         end
-        
+
         it "can assign multiple divisions" do
           other_division = FactoryGirl.create(:division, name: "other_division", short_name: "other")
           scoped_post :create, { type_sym => valid_attributes.merge(divisions: [@division, other_division]), type: type }

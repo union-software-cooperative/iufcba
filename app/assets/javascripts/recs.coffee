@@ -27,15 +27,15 @@ ready = ->
               id: item['id']
               text: item['name']
             return
-          { 
-            results: formatted 
+          {
+            results: formatted
           }
       formatResult: (item, page) ->
         item.name
       formatSelection: (item, page) ->
         item.name
     return
-  
+
   $('.ac-select2-tags').each ->
     placeholder = $(this).data('placeholder')
     $(this).select2
@@ -49,13 +49,15 @@ ready = ->
   $('.ac-select2-multi').each ->
     url = $(this).data('url')
     placeholder = $(this).data('placeholder')
-    $(this).select2
+    init =
       theme: "bootstrap"
       minimumInputLength: 0
       multiple: true
       placeholder: placeholder
       allowClear: false
-      ajax:
+
+    if url
+      init.ajax =
         url: url
         dataType: 'json'
         quietMillis: 500
@@ -75,6 +77,9 @@ ready = ->
           item.name
         formatSelection: (item, page) ->
           item.name
+
+    $(this).select2(init)
+
     return
 
   # This is a hack the preserves selection order, but its then lost when rendering!  I want selection order preserved to specify language preference
@@ -88,7 +93,6 @@ ready = ->
 
   return
 
-  
 $(document).ready(ready);
 $(document).on('page:load', ready);
 $(document).on('turbolinks:load', ready);
