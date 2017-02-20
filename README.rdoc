@@ -1,21 +1,21 @@
 == README
 
--- NEW HEROKU APPLICATION -- breweryworker
+-- NEW HEROKU APPLICATION -- iufcba
 
-git clone git@github.com:union-software-cooperative/iufad breweryworker
-cd breweryworker
-git remote set-url origin git@github.com:union-software-cooperative/breweryworker
+git clone git@github.com:union-software-cooperative/iufad iufcba
+cd iufcba
+git remote set-url origin git@github.com:union-software-cooperative/iufcba
 git push origin master
 
 cp ../iufad/config/application.yml config/
 cp ../iufad/config/database.yml config/
 
-# replaced iufad with brewery_worker
-# replaced Iufad with BreweryWorker
-# replaced IUFAD with BREWERYWORKER
-# replaced iufdb with brewery_worker except for aws config which needs brewery-worker
-# replaced dairy with brewery
-# replaced Dairy with Brewery
+# replaced iufad with iufcba
+# replaced Iufad with IUFCBA
+# replaced IUFAD with IUFCBA
+# replaced iufdb with iufcba except for aws config which needs iufcba
+# replaced dairy with iufcba
+# replaced Dairy with iufcba
 
 # updated gemfile to 2.3.1
 bundle install
@@ -31,14 +31,14 @@ heroku create lhisa
 
 # https://devcenter.heroku.com/articles/ssl-
 mkdir keys
-openssl genrsa -des3 -out keys/breweryworker.pass.key 2048
-openssl rsa -in keys/breweryworker.pass.key -out keys/breweryworker.key
-rm keys/breweryworker.pass.key
-# make sure you don't put www in the hostname i.e. breweryworker.org
-openssl req -nodes -new -key keys/breweryworker.key -out keys/breweryworker.csr
-# used CH, Geneva, Petit-Lancy, IUF, Brewery Division, breweryworker.org
+openssl genrsa -des3 -out keys/iufcba.pass.key 2048
+openssl rsa -in keys/iufcba.pass.key -out keys/iufcba.key
+rm keys/iufcba.pass.key
+# make sure you don't put www in the hostname i.e. iufcba.org
+openssl req -nodes -new -key keys/iufcba.key -out keys/iufcba.csr
+# used CH, Geneva, Petit-Lancy, IUF, iufcba.org
 echo keys >> .gitignore
-cat keys/breweryworker.csr
+cat keys/iufcba.csr
 
 # setup certificate with heroku before configuring dns, because the cname changes
 # purchased ssl from rapid ssl when buying domain name
@@ -51,28 +51,28 @@ cat keys/breweryworker.csr
 # created new mailgun domain  - lukerohde@gmail.com login
 
 # namecheap dns setup
-# CNAME www.breweryworker.org breweryworker.herokuapp.com.
-#	TXT	mg.breweryworker.org 		v=spf1 include:mailgun.org ~all
-#	TXT	krs._domainkey.mg.breweryworker.org		k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVLK4upPjdfkd/ollWZtMh14QULE5vjo/ke4A8/FxAO7V7p+rIck5MoM5oTQtO4iVT1JMaz+adXZU+QhumStyQKZuB5supCoOYLb5pXP7c/MlbyoxqyRzGAB1foko3SjHMUP1QrRmznnrprZt3sJn4PGy5++gzK+KY0gW0L+aDuQIDAQAB
-#	CNAME	email.mg.breweryworker.org	mailgun.org
+# CNAME www.iufcba.org iufcba.herokuapp.com.
+#  TXT  mg.iufcba.org     v=spf1 include:mailgun.org ~all
+#  TXT  krs._domainkey.mg.iufcba.org    k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVLK4upPjdfkd/ollWZtMh14QULE5vjo/ke4A8/FxAO7V7p+rIck5MoM5oTQtO4iVT1JMaz+adXZU+QhumStyQKZuB5supCoOYLb5pXP7c/MlbyoxqyRzGAB1foko3SjHMUP1QrRmznnrprZt3sJn4PGy5++gzK+KY0gW0L+aDuQIDAQAB
+#  CNAME  email.mg.iufcba.org  mailgun.org
 
 # I didn't add the following - no need to receive, happy with namecheap catch all instead.
 # MX priority 10 mxa.mailgun.org
 # MX priority 10 mxb.mailgun.org
 
 figaro heroku:set -e production
-git push heroku breweryworker master
+git push heroku iufcba master
 heroku run rake db:migrate
 heroku run rake db:seed
-heroku domains:add www.breweryworker.org
+heroku domains:add www.iufcba.org
 # restart after seed so owner union works
-heroku restart 
+heroku restart
 
 # after rapidssl approves?
-vim keys/breweryworker.crt
+vim keys/iufcba.crt
 # pasted in certificate
 heroku addons:create ssl:endpoint
-heroku certs:add keys/breweryworker.crt keys/breweryworker.key
+heroku certs:add keys/iufcba.crt keys/iufcba.key
 # got cname fukui-60213.herokussl.com
 
 # updated logo and colour scheme
@@ -82,15 +82,15 @@ heroku certs:add keys/breweryworker.crt keys/breweryworker.key
 
 You'll need to be running Ruby 2.2.3, if you don't have it already.
 
-For rbenv users, first make sure your ruby-build is up to date with 
-`cd ~/.rbenv/plugins/ruby-build` and `git pull`. Then you should be able 
+For rbenv users, first make sure your ruby-build is up to date with
+`cd ~/.rbenv/plugins/ruby-build` and `git pull`. Then you should be able
 to run `rbenv install 2.2.3` without any problems.
 
 RVM instructions to come.
 
-With your version sorted, `git clone 
+With your version sorted, `git clone
 https://github.com/union-software-cooperative/labourhireinquiry.git`.
-In the project directory, first set your `rbenv local 2.2.3`. Then 
+In the project directory, first set your `rbenv local 2.2.3`. Then
 you're clear to run `bundle install`. You may need to first install
 Bundler with `gem install bundler` if yours was a fresh `ruby-2.2.3`
 installation.

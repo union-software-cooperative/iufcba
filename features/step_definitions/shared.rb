@@ -1,5 +1,5 @@
 Given /^I am not authenticated$/ do
-  visit('/people/sign_out') # ensure that at least
+  visit('/en/people/sign_out') # ensure that at least
 end
 
 Given /^I am a new, authenticated person$/ do
@@ -8,7 +8,7 @@ Given /^I am a new, authenticated person$/ do
   @current_person = FactoryGirl.create(:authorized_person, :email => email, :password => password, :password_confirmation => password)
   @current_person.save!
   
-  visit '/people/sign_in'
+  visit '/en/people/sign_in'
   fill_in "person_email", :with => email
   fill_in "person_password", :with => password
   click_button "Sign in"
@@ -18,7 +18,7 @@ Given /^I am authenticated as admin$/ do
   # Admin is created by seed
   @current_person = admin(password: 'temptemp', password_confirmation: 'temptemp')
 
-  visit '/people/sign_in'
+  visit '/en/people/sign_in'
   fill_in "person_email", :with => @current_person.email
   fill_in "person_password", :with => 'temptemp'
   click_button "Sign in"
@@ -31,7 +31,7 @@ Given(/^I am a new, authenticated person belonging to "(.*?)"$/) do |union_name|
   @current_person = FactoryGirl.create(:person, :union => union, :email => email, :password => password, :password_confirmation => password)
   @current_person.save!
   
-  visit '/people/sign_in'
+  visit '/en/people/sign_in'
   fill_in "person_email", :with => email
   fill_in "person_password", :with => password
   click_button "Sign in"

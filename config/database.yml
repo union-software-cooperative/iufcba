@@ -7,17 +7,17 @@ default: &default
 
 development:
   <<: *default
-  database: brewery_worker_development
+  database: iufcba_development
 
 test: &test
   <<: *default
-  database: brewery_worker_test
+  database: iufcba_test
 
 production:
   <<: *default
-  database: brewery_worker_production
-  username: brewery_worker
-  password: <%= ENV['BREWERY_WORKER_DATABASE_PASSWORD'] %>
+  database: iufcba_production
+  username: iufcba
+  password: <%= ENV['IUFCBA_DATABASE_PASSWORD'] %>
 
 cucumber:
   <<: *test

@@ -1,111 +1,111 @@
-<div class="form-group">
-  <%= f.label :attachment %><br>
-  <%=profile_image%>
-  <%= f.file_field :attachment, accept: 'image/jpeg,image/gif,image/png'  %>
+  <div class="form-group">
+    <%= f.label :attachment %><br>
+    <%=profile_image%>
+    <%= f.file_field :attachment, accept: 'image/jpeg,image/gif,image/png'  %>
 
-  <% if @person.attachment.url.present? %> 
-    <%= f.check_box :remove_attachment %>
-    <small><%= f.label :remove_attachment %></small>
-  <% end %> 
-
-</div>
-<div class="form-group">
-  <%= f.label :first_name %><br>
-  <%= f.text_field :first_name, class: "form-control" %>
-</div>
-<div class="form-group">
-  <%= f.label :last_name %><br>
-  <%= f.text_field :last_name, class: "form-control" %>
-</div>
-<div class="form-group">
-  <%= f.label :title %><br>
-  <%= f.text_field :title, class: "form-control" %>
-</div>
-<div class="form-group">
-  <%= f.label :gender %><br>
-  <%= f.select :gender,
-    gender_options(@person), 
-    {
-      include_blank: true,
-    },
-    data: {
-      placeholder: t('.gender'),
-    }, 
-    class: "form-control", 
-    style: "width: 100%;"
-  %>
-</div>
-<div class="form-group">
-  <%= f.label :address %><br>
-  <%= f.text_area :address, class: "form-control" %>
-</div>
-<div class="form-group">
-  <%= f.label :mobile %><br>
-  <%= f.text_field :mobile, class: "form-control" %>
-</div>
-<div class="form-group">
-  <%= f.label :fax %><br>
-  <%= f.text_field :fax, class: "form-control" %>
-</div>
-<div class="form-group">
-  <%= f.label :email %><br>
-  <%= f.text_field :email, class: "form-control" %>
-</div>
-
-<div class="form-group">
-  <%= f.label :languages %><br>
-  <%= f.select :languages,
-    language_options(@person.languages), 
-    {
-      include_blank: true,
-    },
-    data: { 
-      placeholder: t('.select_language'),
-    }, 
-    multiple: true, 
-    class: "ac-select2-multi form-control", 
-    style: "width: 100%;"
-  %>
-</div>
-<div class="form-group">
-  <%= f.label :country %><br>
-  <%= f.country_select :country, {}, { class: 'form-control', style: "width: 100%" } %>
-</div>
-
-
-<div class="form-group">
-  <% if owner? %>
-    <%= f.label :union_id %> 
-    <% #link_to t('.new_union'), new_polymorphic_path(Union, division_id: (@division || owner_union.divisions.first).id), class: "small", :target => "_blank" %>
-    <br>
-
-    <% if params[:affiliate_union].present? %>
-      <strong style="color:red">Please set this to '<%= params[:affiliate_union] %>'</strong> <BR/>
+    <% if @person.attachment.url.present? %> 
+      <%= f.check_box :remove_attachment %>
+      <small><%= f.label :remove_attachment %></small>
     <% end %> 
-  
-    <%= f.select :union_id, 
-      selected_option(@person.union || current_person.union),  
+
+  </div>
+  <div class="form-group">
+    <%= f.label :first_name %><br>
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :last_name %><br>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :gender %><br>
+    <%= f.select :gender,
+      gender_options(@person), 
       {
-        include_blank: false,
+        include_blank: true,
       },
-      data: { 
-        placeholder: t('.select_union'),
-        url: union_api_index_path
+      data: {
+        placeholder: t('.gender'),
       }, 
-      class: "ac-select2 form-control", 
+      class: "form-control", 
       style: "width: 100%;"
     %>
-  <% else %>
-    <%= f.label :union_id %> 
-    <br/><%= (@person.union || current_person.union).name %>
-    <br/><small>you can only assign yourself and other people to your union</small>
-    <%= f.hidden_field :union_id, value: ((@person.union || current_person.union).id) %>
-  <% end %>
-</div>
-
-<% unless params[:action] == "new" %>
-  <div class="form-group">
-    <%= label_tag t('.resend_invite') %>&nbsp;&nbsp;<small><%= t('.bcc_notice') %></small><br>
-    <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => l10n_switch_data %> 
   </div>
-<% end %>
+  <div class="form-group">
+    <%= f.label :address %><br>
+    <%= f.text_area :address, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :mobile %><br>
+    <%= f.text_field :mobile, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :fax %><br>
+    <%= f.text_field :fax, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :email %><br>
+    <%= f.text_field :email, class: "form-control" %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :languages %><br>
+    <%= f.select :languages,
+      language_options(@person.languages), 
+      {
+        include_blank: true,
+      },
+      data: { 
+        placeholder: t('.select_language'),
+      }, 
+      multiple: true, 
+      class: "ac-select2-multi form-control", 
+      style: "width: 100%;"
+    %>
+  </div>
+  <div class="form-group">
+    <%= f.label :country %><br>
+    <%= f.country_select :country, {}, { class: 'form-control', style: "width: 100%" } %>
+  </div>
+
+
+  <div class="form-group" id="person_union_select2">
+    <% if owner? %>
+      <%= f.label :union_id %> 
+      <% #link_to t('.new_union'), new_polymorphic_path(Union, division_id: (@division || owner_union.divisions.first).id), class: "small", :target => "_blank" %>
+      <br>
+
+      <% if params[:affiliate_union].present? %>
+        <strong style="color:red">Please set this to '<%= params[:affiliate_union] %>'</strong> <BR/>
+      <% end %> 
+    
+      <%= f.select :union_id, 
+        selected_option(@person.union || current_person.union),  
+        {
+          include_blank: false,
+        },
+        data: { 
+          placeholder: t('.select_union'),
+          url: union_api_index_path
+        }, 
+        class: "ac-select2 form-control", 
+        style: "width: 100%;"
+      %>
+    <% else %>
+      <%= f.label :union_id %> 
+      <br/><%= (@person.union || current_person.union).name %>
+      <br/><small>you can only assign yourself and other people to your union</small>
+      <%= f.hidden_field :union_id, value: ((@person.union || current_person.union).id) %>
+    <% end %>
+  </div>
+
+  <% unless params[:action] == "new" %>
+    <div class="form-group">
+      <%= label_tag t('.resend_invite') %>&nbsp;&nbsp;<small><%= t('.bcc_notice') %></small><br>
+      <%= check_box_tag "resend_invite", 'true', false, class: "switch", :data => l10n_switch_data %> 
+    </div>
+  <% end %>
