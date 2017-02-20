@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       resources :messages
       resources :comments
       resources :posts
-      resources :people, only: [:index, :edit], as: "division_directory" do
+      resources :people, only: [:index, :edit], as: "division_people" do
         member do
           get 'compose_email'
         end

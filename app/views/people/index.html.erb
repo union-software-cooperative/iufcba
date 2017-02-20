@@ -29,7 +29,7 @@
             </td>
             <td> <strong>
               <% if person.is_authorized?(current_person) %>
-                <%= link_to person.display_name, (@division ? edit_division_directory_path(person) : edit_person_path(person)) %>
+                <%= link_to person.display_name, (@division ? edit_division_person_path(person) : edit_person_path(person)) %>
               <% else %>
                 <%=person.display_name%>
               <% end %>
@@ -47,7 +47,7 @@
               <% end %>
             </td>
             <td>
-              <%= link_to (@division ? compose_email_division_directory_path(person) : compose_email_person_path(person)) do %>
+              <%= link_to (@division ? compose_email_division_person_path(person) : compose_email_person_path(person)) do %>
                 <span class="glyphicon glyphicon-envelope"></span>
               <% end %>
             </td>
