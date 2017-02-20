@@ -14,7 +14,11 @@ Rails.application.routes.draw do
       resources :messages
       resources :comments
       resources :posts
-      resources :people, only: [:index], as: "division_directory"
+      resources :people, only: [:index, :edit], as: "division_directory" do
+        member do
+          get 'compose_email'
+        end
+      end
 
       resources :companies, controller: :supergroups, type: 'Company'  do
         member do

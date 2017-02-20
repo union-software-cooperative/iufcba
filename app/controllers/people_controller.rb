@@ -33,7 +33,7 @@ class PeopleController < ApplicationController
 
         # destination = @division ? people_path : divisions_path
 
-        format.html { redirect_to people_path, notice: 'Profile successfully updated.' }
+        format.html { redirect_to (@division ? division_directory_index_path : people_path), notice: 'Profile successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
         format.html { render :edit }
@@ -63,7 +63,7 @@ class PeopleController < ApplicationController
 
   def send_email
     PersonMailer.private_email(@person, current_person, params[:subject], params[:body], request).deliver_now
-    redirect_to people_url, notice: "Email sent..."
+    redirect_to (@division ? division_directory_index_path : people_url), notice: "Email sent..."
   end
 
   private
@@ -85,8 +85,8 @@ class PeopleController < ApplicationController
     end
 
     def breadcrumbs
-      [
-        [I18n.t("layouts.navbar.people").titlecase, people_path, action?("index")],
+      (@division ? super : []) + [
+        [I18n.t("layouts.navbar.people").titlecase, (@division ? division_directory_index_path : people_path), action?("index")],
         @person ? [@person.name, edit_person_path(@person), !action?("index")] : nil
       ].compact
     end

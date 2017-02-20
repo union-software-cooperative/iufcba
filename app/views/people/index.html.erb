@@ -3,10 +3,10 @@
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
     <div class="text-right">
-      <%= link_to t('.invite_someone'), new_person_invitation_path, class: "btn btn-default" %>
+      <%= link_to t('.invite_someone'), new_person_invitation_path(division_id: nil), class: "btn btn-default" %>
     </div>
     <h1><%= t('.listing_people') %></h1>
-    
+
     <table class="table table-condensed table-striped box-shadow">
       <thead>
         <tr>
@@ -29,7 +29,7 @@
             </td>
             <td> <strong>
               <% if person.is_authorized?(current_person) %>
-                <%=link_to person.display_name, edit_person_path(person)%>
+                <%= link_to person.display_name, (@division ? edit_division_directory_path(person) : edit_person_path(person)) %>
               <% else %>
                 <%=person.display_name%>
               <% end %>
@@ -46,7 +46,11 @@
                 <small>not yet invited</small>
               <% end %>
             </td>
-            <td><a href="<%=compose_email_person_path(person)%>"><span class="glyphicon glyphicon-envelope"></a></span></td>
+            <td>
+              <%= link_to (@division ? compose_email_division_directory_path(person) : compose_email_person_path(person)) do %>
+                <span class="glyphicon glyphicon-envelope"></span>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
