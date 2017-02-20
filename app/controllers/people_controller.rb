@@ -5,9 +5,13 @@ class PeopleController < ApplicationController
   # GET /people
   # GET /people.json
   def index
-    @people = Person.filter(params.slice(:name_like))
-    @people = @people.where(["union_id = ?", current_person.union_id]) if request.format.json? && !owner?
-    @people = @people.order([:last_name, :first_name, :id])
+    if @division
+      @people = @division.unions.map(&:people).flatten
+    else
+      @people = Person.filter(params.slice(:name_like))
+      @people = @people.where(["union_id = ?", current_person.union_id]) if request.format.json? && !owner?
+      @people = @people.order([:last_name, :first_name, :id])
+    end
 
     respond_to do |format|
       format.html
@@ -25,10 +29,10 @@ class PeopleController < ApplicationController
     @person.authorizer = current_person
     respond_to do |format|
       if @person.update(person_params)
-        @person.invite!(current_person) if params['resend_invite']=='true' 
-        
+        @person.invite!(current_person) if params['resend_invite']=='true'
+
         # destination = @division ? people_path : divisions_path
-        
+
         format.html { redirect_to people_path, notice: 'Profile successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -58,9 +62,9 @@ class PeopleController < ApplicationController
   end
 
   def send_email
-    PersonMailer.private_email(@person, current_person, params[:subject], params[:body], request).deliver_now     
-    redirect_to people_url, notice: "Email sent..."  
-  end  
+    PersonMailer.private_email(@person, current_person, params[:subject], params[:body], request).deliver_now
+    redirect_to people_url, notice: "Email sent..."
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -79,10 +83,10 @@ class PeopleController < ApplicationController
       return forbidden if params[:action] == "destroy" && !owner?
       return forbidden unless can_edit_union?(@person.union)
     end
-    
+
     def breadcrumbs
       [
-        [I18n.t("layouts.navbar.people").titlecase, people_path, action?("index")], 
+        [I18n.t("layouts.navbar.people").titlecase, people_path, action?("index")],
         @person ? [@person.name, edit_person_path(@person), !action?("index")] : nil
       ].compact
     end

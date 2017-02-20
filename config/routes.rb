@@ -1,20 +1,21 @@
 Rails.application.routes.draw do
-  
+
   scope ":locale" do
     devise_for :people, :controllers => { :invitations => 'people/invitations' }
     resources :people, only: [:index, :edit, :update, :destroy] do # people can only be invited, and edited (no readonly view)
-      member do 
+      member do
         get 'compose_email'
         patch 'send_email'
       end
-    end 
+    end
     resources :people, only: [:edit, :update], as: 'profile'
-    
-    scope ":division_id" do 
-      resources :messages 
+
+    scope ":division_id" do
+      resources :messages
       resources :comments
       resources :posts
-        
+      resources :people, only: [:index], as: "division_directory"
+
       resources :companies, controller: :supergroups, type: 'Company'  do
         member do
           get 'follow'
@@ -38,7 +39,7 @@ Rails.application.routes.draw do
     end
 
     resources :divisions, except: [:show]
-    
+
     resource :help, only: [:show] do
       resource :request_invite, only: [:new, :create], module: :help
     end
@@ -47,7 +48,7 @@ Rails.application.routes.draw do
     root "help#show", as: "root_with_locale"
   end
   root "application#pass_to_locale_scope"
-  
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

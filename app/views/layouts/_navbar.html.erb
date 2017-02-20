@@ -3,7 +3,7 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
-        <img src="<%=navbar_logo%>"/> 
+        <img src="<%=navbar_logo%>"/>
       </a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -29,6 +29,9 @@
             </li>
             <li>
               <%= link_to t('.companies'), companies_path %>
+            </li>
+            <li>
+              <%= link_to t('.people'), division_directory_index_path %>
             </li>
           <% else %>
             <li>
