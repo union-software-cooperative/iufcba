@@ -1,4 +1,4 @@
-<%= form_for(@rec, url: recs_path, :html => { class: "form"}) do |f| %>
+<%= form_for(@rec, :html => { class: "form"}) do |f| %>
   <% if @rec.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@rec.errors.count, "error") %> prohibited this rec from being saved:</h2>
@@ -10,12 +10,12 @@
       </ul>
     </div>
   <% end %>
-  
+
   <div class="form-group">
     <%= f.label :attachment %><br>
     <%= f.file_field :attachment, class: "btn btn-default" %>
   </div>
-  
+
   <div id="division-select2" class="form-group">
     <%= f.label :divisions %>
     <%= f.select :divisions,
@@ -33,43 +33,43 @@
       style: "width: 100%;"
     %>
   </div>
-  
+
   <div class="form-group">
     <%= f.label :company_id %> <%=link_to t('.new_company'), new_polymorphic_path(Company),
       class: "small", :target => "_blank"%><br/>
-    <%= f.select :company_id, 
+    <%= f.select :company_id,
       selected_option(@rec.company),
-      #options_for_select(Union.all.collect {|u| [u.name, u.id ]}, @rec.union_id) , 
+      #options_for_select(Union.all.collect {|u| [u.name, u.id ]}, @rec.union_id) ,
       {
         include_blank: false,
       },
       data: {
         placeholder: t('.select_company'),
         url: companies_path
-      }, 
-      class: "ac-select2 form-control", 
+      },
+      class: "ac-select2 form-control",
       style: "width: 100%;"
     %>
   </div>
 
   <div class="form-group">
     <% if owner? %>
-      <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union), 
+      <%= f.label :union_id %> <%=link_to t('.new_union'), new_polymorphic_path(Union),
         class: "small", :target => "_blank"%><br/>
-      <%= f.select :union_id, 
-        selected_option(@rec.union),  
+      <%= f.select :union_id,
+        selected_option(@rec.union),
         {
           include_blank: false,
         },
-        data: { 
+        data: {
           placeholder: t('.select_union'),
           url: unions_path
-        }, 
-        class: "ac-select2 form-control", 
+        },
+        class: "ac-select2 form-control",
         style: "width: 100%;"
       %>
     <% else %>
-      <%= f.label :union_id %> 
+      <%= f.label :union_id %>
       <br/><%= (@rec.union || current_person.union).name %>
       <br/><small>you can only create and edit agreements belonging to your union</small>
       <%= f.hidden_field :union_id, value: ((@rec.union || current_person.union).id) %>
@@ -86,7 +86,7 @@
     <%= f.label :name %><br>
     <%= f.text_field :name, class: "form-control", placeholder: t('.name_description') %>
   </div>
-  
+
   <div class="form-group">
     <%= f.label :person_id %> <%=link_to t(".invite_person"), new_person_invitation_path, class: "small", :target => "_blank"%><br>
     <%= f.select :person_id,
@@ -94,11 +94,11 @@
       {
         include_blank: false,
       },
-      data: { 
+      data: {
         placeholder: t('.person_description'),
         url: people_path
-      }, 
-      class: "ac-select2 form-control", 
+      },
+      class: "ac-select2 form-control",
       style: "width: 100%;"
     %>
   </div>
@@ -128,15 +128,15 @@
   <div class="form-group">
     <%= f.label :nature_of_operation %><br>
     <%= f.select :nature_of_operation,
-      nature_of_operation_options, 
+      nature_of_operation_options,
       {
         include_blank: true,
       },
-      data: { 
+      data: {
         placeholder:  t(".nature_of_operation_description"),
-      }, 
-      multiple: true, 
-      class: "ac-select2-tags form-control", 
+      },
+      multiple: true,
+      class: "ac-select2-tags form-control",
       style: "width: 100%;"
     %>
   </div>
@@ -198,7 +198,7 @@
 <% end %>
 
 <script type="text/javascript">
-  
+
   function rec_ready() {
 
     $('input[type=number]').bind('keypress', function (e) {
@@ -216,13 +216,13 @@
           $('#rec_<%= q %>_page').parent().slideUp();
           $('#rec_<%= q %>_clause').parent().slideUp();
         }
-      }  
+      }
 
       $('#rec_<%= q %>').bootstrapSwitch({
         onSwitchChange: toggle_<%= q %>
       });
 
-      toggle_<%= q %>();  
+      toggle_<%= q %>();
     <% end %>
   }
 

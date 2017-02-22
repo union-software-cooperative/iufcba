@@ -11,6 +11,7 @@ describe "recs/edit" do
     render
 
     expect(rendered).to_not have_content('you can only create and edit agreements')
+    assert_select("form[action='#{rec_path(@rec)}'][method='post']")
   end
 
   it "renders warning when user can't set a union" do

@@ -64,4 +64,6 @@ NOT TESTED default route to divisions list, move getting started
 
 NOT TESTED person languages multi select doesn't try and use an AJAX fetch
 
+DONE edit rec form posts to rec_path, create rec form posts to recs_path
+
 -- TODO Migration and deploy scope --
