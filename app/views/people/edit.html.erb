@@ -4,7 +4,8 @@
   <div class="col-sm-8 col-sm-offset-2">
     <% unless @person.union.nil? %>
       <% @person.union.divisions.each do |division| %> 
-        <%= link_to @person.union.short_name + " #{t('.agreements')}", union_path(@person.union, division_id: division.id), class: "btn btn-default pull-right" %>
+        <%= link_to "#{@person.union.short_name} #{@person.division.short_name} #{t('.agreements')}", union_path(@person.union, division_id: division.id), class: "btn btn-default pull-right" %>
+          &nbsp;
       <% end %>
     <% end %>
     <h1>

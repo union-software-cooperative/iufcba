@@ -55,14 +55,14 @@ Developed in Ruby on Rails 4.2
 
 ## Testing
 
-`bundle exec spring bin/cucumber`
+`bundle exec spring cucumber`
 
-\# Please let us know if you find a reliable way to test select2 in all it permutations 
+\# Please let us know if you find a reliable way to test select2 in all it's permutations. 
 
-`bundle exec spring bin/rspec`
+`bundle exec spring rspec`
 
 ## Contributing
 
-We'd love language translations, but will look at any pull request.  
+We'd love language translations but will look at any pull request.  
 
 In Solidarity
