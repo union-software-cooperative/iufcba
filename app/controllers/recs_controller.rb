@@ -32,7 +32,7 @@ class RecsController < ApplicationController
   def create
     @rec = Rec.new(rec_params)
     @rec.authorizer = current_person
-    
+
     respond_to do |format|
       if @rec.save
         subscribe
@@ -52,7 +52,7 @@ class RecsController < ApplicationController
   # PATCH/PUT /recs/1.json
   def update
     @rec.authorizer = current_person
-    
+
     respond_to do |format|
       if @rec.update(rec_params)
         format.html { redirect_to @rec, notice: 'Rec was successfully updated.' }
@@ -87,19 +87,19 @@ class RecsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rec_params
-      result = params.require(:rec).permit(:taking_action, :name, :tags, 
-        :start_date, :end_date, :attachment, :coverage, :union_id, :company_id, 
-        :person_id, :multi_site, :health_and_safety, :health_and_safety_page, 
-        :health_and_safety_clause, :anti_precariat, :anti_precariat_page, 
-        :anti_precariat_clause, :grievance_handling, :grievance_handling_page, 
-        :grievance_handling_clause, :other_provisions, :specific_rights, 
-        :specific_rights_page, :specific_rights_clause, 
-        :nature_of_operation => [], :divisions => [])
+      result = params.require(:rec).permit(
+        :taking_action, :name, :tags, :start_date, :end_date, :attachment,
+        :coverage, :union_id, :company_id, :person_id, :multi_site, 
+        :health_and_safety, :health_and_safety_page, :health_and_safety_clause,
+        :anti_precariat, :anti_precariat_page, :anti_precariat_clause,
+        :grievance_handling, :grievance_handling_page, :grievance_handling_clause,
+        :specific_rights, :specific_rights_page, :specific_rights_clause,
+        :other_provisions, :nature_of_operation => [], :divisions => [])
       result['nature_of_operation'].delete("") if result['nature_of_operation']
       result[:divisions] = Division.find(result[:divisions].reject(&:blank?)) if result[:divisions]
       result
     end
-    
+
     # def assign_divisions
     #   rec_params[:divisions].each { |id| @rec.divisions << Division.find(id) }
     # end
@@ -130,12 +130,12 @@ class RecsController < ApplicationController
     def thank
       PersonMailer.thanks(current_person, @rec, @division, notification_recipients(@rec)).deliver_now
     end
-    
+
     def breadcrumbs
-      super + 
+      super +
       [
-        [I18n.t('layouts.navbar.agreements').titlecase, recs_path, action?("index")], 
-        @rec ? [@rec.name.titlecase, rec_path(@division, @rec), action?("show", "edit")] : nil,
+        [I18n.t('layouts.navbar.agreements').titlecase, recs_path, action?("index")],
+        @rec ? [@rec.name, rec_path(@division, @rec), action?("show", "edit")] : nil,
         action?("new") ? [I18n.t('recs.new.title'), new_rec_path(@division), action?("new")] : nil
       ].compact
     end
