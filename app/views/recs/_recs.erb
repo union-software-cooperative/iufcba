@@ -1,11 +1,17 @@
+<div class="row">
+  <div class="col-xs-12">
+    <%= link_to t('.new_agreement'), new_rec_path, class: "btn btn-default pull-right" %>
+  </div>
+</div>
+
 <% unless @recs.blank? %>
   <table class="table table-condensed table-striped box-shadow">
     <thead>
       <tr>
         <th></th>
         <th><%= t('.agreement_or_expiry') %></th>
-        <th><%= t('.company') %></th>
-        <th><%= t('.union') %></th>
+        <th class="text-right"><%= t('.company') %></th>
+        <th class="text-right"><%= t('.union') %></th>
       </tr>
     </thead>
 
@@ -17,8 +23,8 @@
             <strong><%= I18n.l rec.end_date, :format => :long %></strong>
             <p><%= link_to rec.name, rec_path(rec) %></p>
           </td>
-          <td><%= render rec.company if rec.company %></td>
-          <td><%= render rec.union if rec.union %></td>
+          <td class="text-right"><%= render rec.company if rec.company %></td>
+          <td class="text-right"><%= render rec.union if rec.union %></td>
         </tr>
       <% end %>
     </tbody>
