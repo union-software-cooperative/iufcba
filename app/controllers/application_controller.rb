@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
   end
 
   def breadcrumbs
-    [
+    person_signed_in? ? [
       [
         I18n.t("layouts.navbar.divisions").titlecase,
         divisions_path(division_id: nil),
@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
         division_path(@division),
         true # there's no Division#show action
       ] : nil
-    ].compact
+    ].compact : []
   end
 
   def set_breadcrumbs
