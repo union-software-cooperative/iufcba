@@ -13,7 +13,13 @@
 
   <div class="form-group">
     <%= f.label :attachment %><br>
+    <%= link_to Pathname(@rec.attachment.file.path).basename, @rec.attachment_url if @rec.attachment_url%>
     <%= f.file_field :attachment, class: "btn btn-default" %>
+
+    <% if @rec.attachment.url.present? %>
+      <%= f.check_box :remove_attachment %>
+      <small><%= f.label :remove_attachment %></small>
+    <% end %>
   </div>
 
   <div id="division-select2" class="form-group">

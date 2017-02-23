@@ -89,12 +89,13 @@ class RecsController < ApplicationController
     def rec_params
       result = params.require(:rec).permit(
         :taking_action, :name, :tags, :start_date, :end_date, :attachment,
-        :coverage, :union_id, :company_id, :person_id, :multi_site, 
+        :coverage, :union_id, :company_id, :person_id, :multi_site,
         :health_and_safety, :health_and_safety_page, :health_and_safety_clause,
         :anti_precariat, :anti_precariat_page, :anti_precariat_clause,
         :grievance_handling, :grievance_handling_page, :grievance_handling_clause,
         :specific_rights, :specific_rights_page, :specific_rights_clause,
-        :other_provisions, :nature_of_operation => [], :divisions => [])
+        :other_provisions, :remove_attachment, :nature_of_operation => [],
+        :divisions => [])
       result['nature_of_operation'].delete("") if result['nature_of_operation']
       result[:divisions] = Division.find(result[:divisions].reject(&:blank?)) if result[:divisions]
       result

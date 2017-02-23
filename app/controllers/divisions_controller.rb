@@ -73,19 +73,19 @@ class DivisionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def division_params
-      params.require(:division).permit(:name, :short_name, :logo, :colour1, :colour2)
+      params.require(:division).permit(:name, :short_name, :logo, :colour1, :colour2, :remove_logo)
     end
 
     def forbid
       return forbidden unless owner?
     end
-    
+
     def expand_navbar?
       @expand_navbar = false
     end
-    
+
     def breadcrumbs
-      super + 
+      super +
       [
         action?("new") ? [I18n.t('divisions.index.new_division'), new_division_path, true] : nil
       ].compact

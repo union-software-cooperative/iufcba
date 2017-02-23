@@ -4,4 +4,9 @@ class HelpController < ApplicationController
   def show
     # redirect_to divisions_path if person_signed_in?
   end
+
+  private
+  def breadcrumbs
+    []
+  end
 end
