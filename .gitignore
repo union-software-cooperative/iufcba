@@ -16,6 +16,8 @@
 #/config/secrets.yml
 /public/uploads
 .DS_Store
+._.DS_Store
+
 i18n_report
 
 # Ignore application configuration
