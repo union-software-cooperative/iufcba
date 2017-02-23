@@ -11,6 +11,7 @@ Developed in Ruby on Rails 4.2
 
 `git clone git@github.com:union-software-cooperative/iufcba`
 
+\# update the application config  
 
 `cp config/application.example.yml config/application.yml`
 
