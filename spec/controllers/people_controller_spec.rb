@@ -19,7 +19,7 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 describe PeopleController do
-  
+
   # This should return the minimal set of attributes required to create a valid
   # Person. As you add validations to Person, be sure to
   # adjust the attributes here as well.
@@ -45,7 +45,7 @@ describe PeopleController do
       describe "access to" do
 
         describe "outsiders" do
-          before(:each) do 
+          before(:each) do
             @outsider = Person.create! valid_attributes
           end
 
@@ -67,9 +67,9 @@ describe PeopleController do
 
         describe "colleagues" do
           before(:each) do
-            @insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)        
-          end  
-          
+            @insider = Person.create! FactoryGirl.attributes_for(:authorized_person, union_id: subject.current_person.union.id)
+          end
+
           it "won't allow deleting of people" do
             expect {
               scoped_delete :destroy, { :id => @insider.to_param }
@@ -83,7 +83,7 @@ describe PeopleController do
           #   response.should render_template(:show)
           # end
 
-          it "will allow editing colleagues" do 
+          it "will allow editing colleagues" do
             scoped_get :edit, {id: @insider.to_param}
             expect(response).to be_successful
             expect(response).to render_template(:edit)
@@ -95,7 +95,7 @@ describe PeopleController do
           end
         end
       end
-    end 
+    end
 
     describe "High privilege access" do
       login_admin
@@ -109,10 +109,10 @@ describe PeopleController do
           expect(assigns(:people)).to eq([subject.current_person]+[outsider]+[insider])
         end
       end
-    end 
+    end
   end
 
-  describe "Basic Functionality" do 
+  describe "Basic Functionality" do
     login_admin
 
     describe "GET index" do
@@ -120,6 +120,23 @@ describe PeopleController do
         person = Person.create! valid_attributes
         scoped_get :index
         expect(assigns(:people)).to eq([subject.current_person]+[person])
+      end
+
+      it "filters by name and division" do
+        person1 = Person.create! valid_attributes
+        person2 = Person.create! valid_attributes.merge(first_name: "Bust", last_name: "Buster", email: "buster@iuf.org")
+        person2.union = owner_union
+
+        scoped_get :index, { format: 'json', name_like: 'Bust' }
+
+        expect(assigns(:people)).to include(person2)
+        expect(assigns(:people)).not_to include(person1)
+
+        @division = Division.first
+
+        scoped_get :index, { format: 'json' }
+
+        expect(assigns(:people).size).to be(1)
       end
     end
 

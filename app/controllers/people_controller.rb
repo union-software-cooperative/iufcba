@@ -5,13 +5,10 @@ class PeopleController < ApplicationController
   # GET /people
   # GET /people.json
   def index
-    if @division
-      @people = @division.unions.map(&:people).flatten
-    else
-      @people = Person.filter(params.slice(:name_like))
-      @people = @people.where(["union_id = ?", current_person.union_id]) if request.format.json? && !owner?
-      @people = @people.order([:last_name, :first_name, :id])
-    end
+    @people = Person.filter(params.slice(:name_like))
+    @people = @people.in_division(@division.id) if @division.present?
+    @people = @people.where(["union_id = ?", current_person.union_id]) if request.format.json? && !owner?
+    @people = @people.order([:last_name, :first_name, :id])
 
     respond_to do |format|
       format.html

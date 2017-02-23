@@ -13,7 +13,7 @@ class SupergroupsController < ApplicationController
     if @division
       @supergroups = @division.send(klass).filter(params.slice(:name_like)).order(:name, :id)
     else
-      @supergroups = Supergroup.all
+      @supergroups = @klass.filter(params.slice(:name_like)).order(:name, :id)
     end
 
     # @supergroups = @klass.filter(params.slice(:name_like)).order(:name, :id)

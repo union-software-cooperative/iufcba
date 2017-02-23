@@ -7,18 +7,19 @@ class Person < ActiveRecord::Base
   serialize :languages, Array
 
   mount_uploader :attachment, ProfileUploader
-  
+
   belongs_to :union
 
   #validates :email, presence: true # devise does this already
   validates :union, presence: true
   validate :is_authorized?
 
-  
+
   acts_as_follower
-  
+
   include Filterable
   scope :name_like, -> (name) {where("first_name ilike ? or last_name ilike ? or email ilike ?", "%#{name}%", "%#{name}%", "%#{name}%")}
+  scope :in_division, -> (division_id) {where("union_id in (SELECT supergroup_id FROM division_supergroups WHERE division_id = #{division_id})")}
 
   def name
     "#{first_name} #{last_name}"
@@ -36,14 +37,14 @@ class Person < ActiveRecord::Base
     @authorizer = person unless person.blank?
     result = true
     if Person.count > 0
-      if @authorizer.blank? 
+      if @authorizer.blank?
         errors.add(:authorizer, "hasn't be specified, so this person update cannot be made.")
         result = false
       else
         # there is an authorizer
         if @authorizer.union.short_name != ENV['OWNER_UNION']
           # the authorizer isn't an owner
-          if self.union_id_was.present? 
+          if self.union_id_was.present?
             if self.union_id_was != self.union_id
               # there was a union id and it is being changed changed
               errors.add(:union, "cannot be changed.")

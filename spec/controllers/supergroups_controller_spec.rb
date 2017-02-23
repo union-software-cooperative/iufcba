@@ -119,6 +119,7 @@ shared_examples "a supergroup type" do |type|
 
           expect(assigns(:supergroups)).to include(supergroup_in)
           expect(assigns(:supergroups)).to include(supergroup_out)
+          expect(assigns(:supergroups)).to all(be_instance_of Union)
         end
       end
     end
