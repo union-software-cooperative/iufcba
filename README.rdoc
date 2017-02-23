@@ -1,118 +1,32 @@
 == README
 
--- NEW HEROKU APPLICATION -- iufcba
+A collective bargaining agreement database for affiliates of The International Union of Food, Agricultural, Hotel, Restaurant, Catering, Tobacco and Allied Workers' Associations (IUF).
 
-git clone git@github.com:union-software-cooperative/iufad iufcba
-cd iufcba
-git remote set-url origin git@github.com:union-software-cooperative/iufcba
-git push origin master
+== DEPLOYMENT
 
-cp ../iufad/config/application.yml config/
-cp ../iufad/config/database.yml config/
+git clone git@github.com:union-software-cooperative/iufcba
 
-# replaced iufad with iufcba
-# replaced Iufad with IUFCBA
-# replaced IUFAD with IUFCBA
-# replaced iufdb with iufcba except for aws config which needs iufcba
-# replaced dairy with iufcba
-# replaced Dairy with iufcba
+cp config/application.example.yml config/application.yml
+# Setup AWS buckets for production and development ( or change to local storage in config/initializers/carrierwave.rb )
+# Configure mailgun ( or change config.action_mailer.delivery_method in config/environments/... )
+# Generate secret keys for secpubsub and rails application
+# change the name of the owner union
 
-# updated gemfile to 2.3.1
+# change the db/seeds.rb file - the first union's short_name must match the owner union name from application.yml
+
 bundle install
-
-# fixed migration and seeding so it works with authorization
-
 bundle exec rake db:create
 bundle exec rake db:migrate
 bundle exec rake db:seed
 
-heroku create lhisa
-# setup AWS buckets lhisa-us-east-1 & lhisa-us-east-1-dev and updated application.yml
-
-# https://devcenter.heroku.com/articles/ssl-
-mkdir keys
-openssl genrsa -des3 -out keys/iufcba.pass.key 2048
-openssl rsa -in keys/iufcba.pass.key -out keys/iufcba.key
-rm keys/iufcba.pass.key
-# make sure you don't put www in the hostname i.e. iufcba.org
-openssl req -nodes -new -key keys/iufcba.key -out keys/iufcba.csr
-# used CH, Geneva, Petit-Lancy, IUF, iufcba.org
-echo keys >> .gitignore
-cat keys/iufcba.csr
-
-# setup certificate with heroku before configuring dns, because the cname changes
-# purchased ssl from rapid ssl when buying domain name
-# name cheap, product list, activate, paste in CSR
-# from name cheap setup mail catch all
-# email verification method for ssl, followed steps after confirming mail catch all was working
-
-# rapid ssl decided to have a human review my certificate - defered this config
-
-# created new mailgun domain  - lukerohde@gmail.com login
-
-# namecheap dns setup
-# CNAME www.iufcba.org iufcba.herokuapp.com.
-#  TXT  mg.iufcba.org     v=spf1 include:mailgun.org ~all
-#  TXT  krs._domainkey.mg.iufcba.org    k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVLK4upPjdfkd/ollWZtMh14QULE5vjo/ke4A8/FxAO7V7p+rIck5MoM5oTQtO4iVT1JMaz+adXZU+QhumStyQKZuB5supCoOYLb5pXP7c/MlbyoxqyRzGAB1foko3SjHMUP1QrRmznnrprZt3sJn4PGy5++gzK+KY0gW0L+aDuQIDAQAB
-#  CNAME  email.mg.iufcba.org  mailgun.org
-
-# I didn't add the following - no need to receive, happy with namecheap catch all instead.
-# MX priority 10 mxa.mailgun.org
-# MX priority 10 mxb.mailgun.org
-
+# to deploy on heroku
+heroku apps:create my_unique_app_name
+# you may have to add the heroku remote
 figaro heroku:set -e production
-git push heroku iufcba master
+git push heroku master
 heroku run rake db:migrate
 heroku run rake db:seed
 heroku domains:add www.iufcba.org
 # restart after seed so owner union works
 heroku restart
 
-# after rapidssl approves?
-vim keys/iufcba.crt
-# pasted in certificate
-heroku addons:create ssl:endpoint
-heroku certs:add keys/iufcba.crt keys/iufcba.key
-# got cname fukui-60213.herokussl.com
-
-# updated logo and colour scheme
-# Invited ron & paul
-
-==== Installation
-
-You'll need to be running Ruby 2.2.3, if you don't have it already.
-
-For rbenv users, first make sure your ruby-build is up to date with
-`cd ~/.rbenv/plugins/ruby-build` and `git pull`. Then you should be able
-to run `rbenv install 2.2.3` without any problems.
-
-RVM instructions to come.
-
-With your version sorted, `git clone
-https://github.com/union-software-cooperative/labourhireinquiry.git`.
-In the project directory, first set your `rbenv local 2.2.3`. Then
-you're clear to run `bundle install`. You may need to first install
-Bundler with `gem install bundler` if yours was a fresh `ruby-2.2.3`
-installation.
-
-Things you may want to cover:
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.

@@ -1,0 +1,59 @@
+# Add configuration values here, as shown below.
+#
+# pusher_app_id: "2954"
+# pusher_key: 7381a978f7dd7f9a1117
+# pusher_secret: abdc3b896a0ffb85d373
+# stripe_api_key: sk_test_2J0l093xOyW72XUYJHE4Dv2r
+# stripe_publishable_key: pk_test_ro9jV5SNwGb1yYlQfzG17LHK
+#
+# production:
+#   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
+#   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
+development: 
+  mailgun_api_key: key-32e476683f04287680e409250023e6b9
+  mailgun_domain: sandboxSECRET
+  mailgun_host: localhost
+  AWS_REGION: us-east-1 #ap-southeast-2
+  AWS_ACCESS_KEY_ID: SECRET
+  AWS_SECRET_ACCESS_KEY: SECRET
+  AWS_BUCKET: mybucket-dev  #iufcba-us-east-1-dev
+  AWS_ASSET_URL: http://localhost/
+  OWNER_UNION: IUF
+  secpubsub_server: "http://localhost:3000"
+  secpubsub_secret_token: "secret"
+  SECRET_KEY_BASE: my secret key - run rake secret
+  admin_email: admin@iufcba.org
+  background_colour: "#FFF8EB"
+  foreground_colour: "#5C5C5C"
+production:
+  mailgun_api_key: key-secret
+  mailgun_domain: mg.iufcba.org
+  mailgun_host: iufcba.org
+  AWS_REGION: us-east-1 #ap-southeast-2
+  AWS_ACCESS_KEY_ID: SECRET
+  AWS_SECRET_ACCESS_KEY: SECRET
+  AWS_BUCKET: my_bucket
+  AWS_ASSET_URL: http://iufcba.org/
+  OWNER_UNION: IUF
+  secpubsub_server: "https://www.iufcba.org"
+  secpubsub_secret_token: my secret key - run rake secret
+  SECRET_KEY_BASE: my secret key - run rake secret
+  admin_email: admin@iufcba.org
+  background_colour: "#FFF8EB"
+  foreground_colour: "#5C5C5C"
+test:
+  mailgun_api_key: key-32e476683f04287680e409250023e6b9
+  mailgun_domain: sandboxSECRET
+  mailgun_host: localhost
+  AWS_REGION: us-east-1 #ap-southeast-2
+  AWS_ACCESS_KEY_ID: SECRET
+  AWS_SECRET_ACCESS_KEY: SECRET
+  AWS_BUCKET: mybucket-dev  #iufcba-us-east-1-dev
+  AWS_ASSET_URL: http://localhost/
+  OWNER_UNION: IUF
+  secpubsub_server: "http://localhost:3000"
+  secpubsub_secret_token: "secret"
+  SECRET_KEY_BASE: my secret key - run rake secret
+  admin_email: admin@iufcba.org
+  background_colour: "#FFF8EB"
+  foreground_colour: "#5C5C5C"
