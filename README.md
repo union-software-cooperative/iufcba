@@ -12,18 +12,13 @@ Developed in Ruby on Rails 4.2
 `git clone git@github.com:union-software-cooperative/iufcba`
 
 
-cp config/application.example.yml config/application.yml
+'cp config/application.example.yml config/application.yml'
 
-\# Setup AWS buckets for production and development ( or change to local storage in config/initializers/carrierwave.rb )
-
-\# Configure mailgun ( or change config.action_mailer.delivery_method in config/environments/... )
-
-\# Generate secret keys for secpubsub and rails application
-
-\# change the name of the owner union
-
-
-\# change the db/seeds.rb file - the first union's short_name must match the owner union name from application.yml
+\# Setup AWS buckets for production and development ( or change to local storage in config/initializers/carrierwave.rb )  
+\# Configure mailgun ( or change config.action_mailer.delivery_method in config/environments/... )  
+\# Generate secret keys for secpubsub and rails application  
+\# change the name of the owner union  
+\# change the db/seeds.rb file - the first union's short_name must match the owner union name from application.yml  
 
 
 `bundle install`
@@ -41,6 +36,8 @@ cp config/application.example.yml config/application.yml
 
 \# you may have to add the heroku remote
 
+`git remote add heroku https://git.heroku.com/iufcba.git`
+
 `figaro heroku:set -e production`
 
 `git push heroku master`
@@ -55,3 +52,8 @@ cp config/application.example.yml config/application.yml
 
 `heroku restart`
 
+## Contributing
+
+We'd love language translations, but will look at any pull request.  
+
+In Solidarity
