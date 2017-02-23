@@ -12,7 +12,7 @@ Developed in Ruby on Rails 4.2
 `git clone git@github.com:union-software-cooperative/iufcba`
 
 
-'cp config/application.example.yml config/application.yml'
+`cp config/application.example.yml config/application.yml`
 
 \# Setup AWS buckets for production and development ( or change to local storage in config/initializers/carrierwave.rb )  
 \# Configure mailgun ( or change config.action_mailer.delivery_method in config/environments/... )  
@@ -51,6 +51,14 @@ Developed in Ruby on Rails 4.2
 \# restart after seed so owner union works
 
 `heroku restart`
+
+## Testing
+
+`bundle exec spring bin/cucumber`
+
+\# Please let us know if you find a reliable way to test select2 in all it permutations 
+
+`bundle exec spring bin/rspec`
 
 ## Contributing
 
