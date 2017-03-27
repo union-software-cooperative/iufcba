@@ -90,6 +90,6 @@ gem "puma", "~> 2.6.0"
 
 gem "exception_notification"
 
-gem 'sucker_punch', '~> 2.0'
+gem 'sucker_punch', '1.6.0' # '~> 2.0' # Suspect v2 is crashing production
 
 gem 'country_select'
