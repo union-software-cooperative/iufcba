@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  scope ":locale" do
+  scope ":locale", locale: /en|es/ do
     devise_for :people, :controllers => { :invitations => 'people/invitations' }
     resources :people, only: [:index, :edit, :update, :destroy] do # people can only be invited, and edited (no readonly view)
       member do
