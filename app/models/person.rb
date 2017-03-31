@@ -33,6 +33,8 @@ class Person < ActiveRecord::Base
     @authorizer = person
   end
 
+  include Owner
+
   def is_authorized?(person = nil)
     @authorizer = person unless person.blank?
     result = true
@@ -42,7 +44,7 @@ class Person < ActiveRecord::Base
         result = false
       else
         # there is an authorizer
-        if @authorizer.union.short_name != ENV['OWNER_UNION']
+        if !owner?(@authorizer)
           # the authorizer isn't an owner
           if self.union_id_was.present?
             if self.union_id_was != self.union_id
@@ -58,7 +60,7 @@ class Person < ActiveRecord::Base
               end
             end
           else
-            if self.union_id != @authorizer.union_id
+            if @authorizer.union.id != self.union_id
               # the authorizer is attempting to invite/create a person outside their union
               errors.add(:authorizer, "cannot assign a person to a union other than their own.")
               self.union_id = @authorizer.union_id # put it back

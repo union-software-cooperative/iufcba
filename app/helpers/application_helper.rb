@@ -64,10 +64,15 @@ module ApplicationHelper
     Union.find_by_short_name(ENV['OWNER_UNION']) rescue nil
   end
 
+  def other_owners
+    ENV['OTHER_OWNERS'].split(',') rescue []
+  end
+
   def owner?
     return false unless current_person.present?
     return false unless owner_union.present?
-    current_person.union.id == owner_union.id
+    current_person.union.id == owner_union.id ||
+      other_owners.include?(current_person.email)
   end
 
   def iso_languages

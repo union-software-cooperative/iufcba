@@ -4,7 +4,7 @@
 
 # first time? link your www directory to heroku app
 # heroku git:remote -a <appname>
-heroku pg:backups --app dairyworker capture
+heroku pg:backups --app iufcba capture
 mkdir -p backup
-curl -o backup/latest.dump `heroku pg:backups --app dairyworker public-url`
+curl -o backup/latest.dump `heroku pg:backups --app iufcba public-url`
 pg_restore --verbose --clean --no-acl --no-owner -d iufcba_development backup/latest.dump

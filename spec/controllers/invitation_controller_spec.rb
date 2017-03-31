@@ -19,7 +19,7 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 describe People::InvitationsController do
-  
+
   before(:all) do
     @division = FactoryGirl.create(:division)
     #@union = FactoryGirl.create(:union)
@@ -27,7 +27,7 @@ describe People::InvitationsController do
     #@company = FactoryGirl.create(:company)
     #@admin = admin
   end
-  
+
   after(:all) do
     @division.destroy
   end
@@ -35,10 +35,10 @@ describe People::InvitationsController do
   # This should return the minimal set of attributes required to create a valid
   # Rec. As you add validations to Rec, be sure to
   # adjust the attributes here as well.
-  let(:insider_attributes) { FactoryGirl.attributes_for(:person, union_id: subject.current_person.union.id ) }  
-  let(:outsider_attributes) { FactoryGirl.attributes_for(:person, union_id: FactoryGirl.create(:union).id ) } 
-  let(:invalid_attributes) { FactoryGirl.attributes_for(:person, email: "") } 
-  
+  let(:insider_attributes) { FactoryGirl.attributes_for(:person, union_id: subject.current_person.union.id ) }
+  let(:outsider_attributes) { FactoryGirl.attributes_for(:person, union_id: FactoryGirl.create(:union).id ) }
+  let(:invalid_attributes) { FactoryGirl.attributes_for(:person, email: "") }
+
   describe "Security" do
     describe "Low privilege access" do
       login_person
@@ -62,7 +62,7 @@ describe People::InvitationsController do
     end
   end
 
-  describe "Basic Functionality" do 
+  describe "Basic Functionality" do
 
     login_admin
 
@@ -90,7 +90,7 @@ describe People::InvitationsController do
         scoped_post :create, {:person => outsider_attributes}
         expect(response).to redirect_to(edit_profile_path(assigns(:person)))
       end
-      
+
       describe "with invalid params" do
         it "assigns a newly created but unsaved rec as @rec" do
           # Trigger the behavior that occurs when invalid params are submitted
@@ -140,12 +140,12 @@ describe People::InvitationsController do
     it "upon accepting an invitation, user will be following their union" do
       invitee = FactoryGirl.create(:person, union: @admin.union, authorizer: @admin)
       invitee.invite! @admin
-      
+
       #agreement = FactoryGirl.create(:agreement, union_id: invitee.union_id, authorizer: @admin)
-      
+
       @request.env["devise.mapping"] = Devise.mappings[:person]
       scoped_put :update, { person: { id: invitee.id, invitation_token: invitee.raw_invitation_token, password: 'asdfasdf', password_confirmation: 'asdfasdf' } }
-      
+
       expect(invitee.union.followers(Person)).to include(invitee)
       #agreement.followers(Person).should include(invitee)
     end
