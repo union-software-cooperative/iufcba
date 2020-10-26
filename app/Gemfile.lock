@@ -366,7 +366,7 @@ GEM
       byebug (~> 9.0)
       pry (~> 0.10)
     public_suffix (2.0.5)
-    puma (2.6.0)
+    puma (3.4.0)
       rack (>= 1.1, < 2.0)
     rack (1.6.5)
     rack-test (0.6.3)
@@ -541,7 +541,7 @@ DEPENDENCIES
   mini_magick
   pg
   pry-byebug
-  puma (~> 2.6.0)
+  puma (~> 3.4.0)
   rails (~> 4.2.4)
   rails_12factor
   rspec-activemodel-mocks
@@ -561,7 +561,7 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 RUBY VERSION
-   ruby 2.3.3p222
+   ruby 2.3.7p456
 
 BUNDLED WITH
-   1.14.3
+   1.16.2

@@ -4,14 +4,17 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
+  host: <%= ENV['POSTGRES_HOST'] %>
+  user: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 development:
   <<: *default
-  database: iufcba_development
+  database: <%= ENV['POSTGRES_DB'] %>
 
 test: &test
   <<: *default
-  database: iufcba_test
+  database: <%= ENV['POSTGRES_DB'] %>_test
 
 production:
   <<: *default
