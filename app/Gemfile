@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
-
+#ruby "2.3.7"
+ruby "2.6.6"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.4'
+gem 'rails', '~> 4.2.11.2'
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '~> 0.20'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -51,7 +52,9 @@ group :test do
   gem 'shoulda-matchers', '~> 3.0'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
-  gem 'selenium-webdriver', '~> 3.0.5'
+  #gem 'geckodriver-helper'
+  gem 'selenium-webdriver' # 2.53 doesn't need geckodriver, but can't use higher than firefox 47
+  gem 'chromedriver-helper'
 end
 
 group :development do
@@ -64,12 +67,13 @@ end
 
 gem 'carrierwave'
 gem 'fog'
+gem 'fog-aws'
 gem 'mini_magick'
 gem 'jquery-fileupload-rails'
 gem 'bootstrap-sass', '~> 3.3.1'
 gem 'autoprefixer-rails'
 gem 'rails_12factor', group: :production
-ruby "2.3.3"
+
 
 # Translation of user generated content
 gem 'globalize', '~> 5.0.0'
@@ -86,7 +90,7 @@ gem "figaro"
 gem "socialization", :git => 'https://github.com/union-software-cooperative/socialization.git'
 
 gem "faye-websocket"
-gem "puma", "~> 2.6.0"
+gem "puma", "~> 5.0.3"
 
 gem "exception_notification"
 

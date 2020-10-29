@@ -8,23 +8,24 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
-!/log/.keep
-/tmp
+/app/log/*
+!/app/log/.keep
+/app/tmp
 
-#/config/database.yml
-#/config/secrets.yml
-/public/uploads
+/app/config/database.yml
+/app/config/secrets.yml
+/app/public/uploads
 .DS_Store
 ._.DS_Store
-
 i18n_report
 
 # Ignore application configuration
-/config/application.yml
-*.key
-*.csr
-*.crt
-/keys/*
-.floo*
-/backup
+/app/config/application.yml
+/app/backup
+
+bundle
+pgdata
+docker-compose.override.yml
+docker-sync.yml
+.docker-sync
+.env
