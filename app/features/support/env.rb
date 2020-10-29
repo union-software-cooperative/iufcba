@@ -6,6 +6,67 @@
 
 require 'cucumber/rails'
 
+
+# Capybara.register_driver :selenium do |app|
+#   browser_options = ::Selenium::WebDriver::Firefox::Options.new()
+#   browser_options.args << '--headless'
+# 
+#   capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(accept_insecure_certs: true)
+# 
+#   Capybara::Selenium::Driver.new(
+#     app,
+#     browser: :firefox,
+#     options: browser_options,
+#     desired_capabilities: capabilities
+#   )
+# end
+# 
+# Capybara.register_driver :headless_chrome do |app|
+#   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+#     chromeOptions: { args: %w(headless disable-gpu no-sandbox window-size=1420,1080) }
+#   )
+# 
+#   Capybara::Selenium::Driver.new app,
+#     browser: :chrome,
+#     desired_capabilities: capabilities
+# end
+# 
+# Capybara.javascript_driver = :headless_chrome
+# 
+# 
+# 
+
+# 
+# Capybara.register_driver :selenium do |app|
+#   browser_options = ::Selenium::WebDriver::Firefox::Options.new()
+#   browser_options.args << '--headless'
+# 
+#   Capybara::Selenium::Driver.new(
+#     app,
+#     browser: :firefox,
+#     options: browser_options
+#   )
+# end
+
+# # From https://github.com/mattheworiordan/capybara-screenshot/issues/84#issuecomment-41219326
+# Capybara::Screenshot.register_driver(:firefox_headless) do |driver, path|
+#   driver.browser.save_screenshot(path)
+# end
+
+# NOT WORKING - NEED A HEADLESS CHROME OR DOCKER SELENIUM SERVICE
+Capybara.register_driver :chrome_headless do |app|
+  options = ::Selenium::WebDriver::Chrome::Options.new
+
+  options.add_argument('--headless')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-dev-shm-usage')
+  options.add_argument('--window-size=1400,1400')
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.javascript_driver = :chrome_headless
+
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any
 # selectors in your step definitions to use the XPath syntax.

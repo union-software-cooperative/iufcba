@@ -3,6 +3,9 @@
 echo "Configuring nokogiri"
 bundle config build.nokogiri --use-system-libraries
 
+echo "Install old bundler" 
+gem install bundler:1.16.2
+
 echo "Bundling gems"
 bundle check || bundle install --jobs 4 --retry 3
 

@@ -55,11 +55,20 @@ Developed in Ruby on Rails 4.2
 
 ## Testing
 
+Run this before you run your tests for the first time
+
+`rake db:test:prepare`
+
+ \# Run unit tests like this 
+ 
+`bundle exec spring rspec`
+
+\# Run acceptance tests like this
+
 `bundle exec spring cucumber`
 
 \# Please let us know if you find a reliable way to test select2 in all it's permutations. 
 
-`bundle exec spring rspec`
 
 ## Contributing
 
