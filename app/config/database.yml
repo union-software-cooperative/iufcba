@@ -18,9 +18,8 @@ test: &test
 
 production:
   <<: *default
-  database: iufcba_production
-  username: iufcba
-  password: <%= ENV['IUFCBA_DATABASE_PASSWORD'] %>
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
 
 cucumber:
   <<: *test
