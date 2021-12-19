@@ -25,5 +25,5 @@ bundle exec rake tmp:clear
 rm ./tmp/pids/*
 
 bundle exec rake assets:precompile
-#exec bundle exec rails s -p 3000 -b '0.0.0.0'
-exec bundle exec puma -C config/puma.rb
+exec bundle exec rails s -p 3000 -b '0.0.0.0'
+#exec bundle exec puma -C config/puma.rb
